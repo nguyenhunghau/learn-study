@@ -1,7 +1,6 @@
 package com.example.management.component;
 
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
-import com.example.management.service.WebAnalyticService;
 import com.sendgrid.Content;
 import com.sendgrid.Email;
 import com.sendgrid.Mail;
@@ -40,7 +39,7 @@ public class EmailUtils {
    @Value("${send_grid.from_name}")
    private String sendGridFromName;
    
-   private static final Logger logger = LoggerFactory.getLogger(WebAnalyticService.class);
+   private static final Logger logger = LoggerFactory.getLogger(EmailUtils.class);
    
    //<editor-fold defaultstate="collapsed" desc="SEND MAIL AFTER FINISH ANALYTIS JOB">
    public void sendMailInfoAnalystJob(String subject, String content, List<String> sendToEmails, List<String> ccEmails, List<String> bccEmails) {
