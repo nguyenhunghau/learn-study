@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AccountEntity.findAll", query = "SELECT a FROM AccountEntity a")
     , @NamedQuery(name = "AccountEntity.findById", query = "SELECT a FROM AccountEntity a WHERE a.id = :id")
     , @NamedQuery(name = "AccountEntity.findByUsername", query = "SELECT a FROM AccountEntity a WHERE a.username = :username")
-    , @NamedQuery(name = "AccountEntity.findByPassword", query = "SELECT a FROM AccountEntity a WHERE a.password = :password")
+    , @NamedQuery(name = "AccountEntity.findByUsernameAndPass", query = "SELECT a FROM AccountEntity a WHERE a.username = :username and a.password = :password")
     , @NamedQuery(name = "AccountEntity.findByName", query = "SELECT a FROM AccountEntity a WHERE a.name = :name")
     , @NamedQuery(name = "AccountEntity.findByEmail", query = "SELECT a FROM AccountEntity a WHERE a.email = :email")
     , @NamedQuery(name = "AccountEntity.findByPhone", query = "SELECT a FROM AccountEntity a WHERE a.phone = :phone")
@@ -159,6 +159,16 @@ public class AccountEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void merge(AccountEntity accountEntity) {
+        this.address = accountEntity.getAddress();
+        this.birthday = accountEntity.getBirthday();
+        this.description = accountEntity.getDescription();
+        this.email = accountEntity.getEmail();
+        this.name = accountEntity.getName();
+        this.phone = accountEntity.getPhone();
+        this.photo = accountEntity.getPhoto();
     }
 
 }

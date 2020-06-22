@@ -12,7 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -55,8 +57,11 @@ public class TeachingClassEntity implements Serializable {
     private String timetable;
     @Column(name = "COST")
     private Integer cost;
-    @Column(name = "UNIT_ID")
-    private Integer unitId;
+    
+    @ManyToOne
+    @JoinColumn(name = "UNIT_ID")
+    private UnitEntity unitEntity;
+    
     @Size(max = 100)
     @Column(name = "TYPE_TEACHING")
     private String typeTeaching;
@@ -64,8 +69,10 @@ public class TeachingClassEntity implements Serializable {
     @Size(max = 65535)
     @Column(name = "ADDRESS")
     private String address;
-    @Column(name = "ACCOUNT_ID")
-    private Integer accountId;
+    
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
+    private AccountEntity accountEntity;
 
     public TeachingClassEntity() {
     }
@@ -114,14 +121,6 @@ public class TeachingClassEntity implements Serializable {
         this.cost = cost;
     }
 
-    public Integer getUnitId() {
-        return unitId;
-    }
-
-    public void setUnitId(Integer unitId) {
-        this.unitId = unitId;
-    }
-
     public String getTypeTeaching() {
         return typeTeaching;
     }
@@ -138,37 +137,29 @@ public class TeachingClassEntity implements Serializable {
         this.address = address;
     }
 
-    public Integer getAccountId() {
-        return accountId;
+    public UnitEntity getUnitEntity() {
+        return unitEntity;
     }
 
-    public void setAccountId(Integer accountId) {
-        this.accountId = accountId;
+    public void setUnitEntity(UnitEntity unitEntity) {
+        this.unitEntity = unitEntity;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public AccountEntity getAccountEntity() {
+        return accountEntity;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TeachingClassEntity)) {
-            return false;
-        }
-        TeachingClassEntity other = (TeachingClassEntity) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+    public void setAccountEntity(AccountEntity accountEntity) {
+        this.accountEntity = accountEntity;
     }
 
-    @Override
-    public String toString() {
-        return "com.example.management.entity.TeachingClassEntity[ id=" + id + " ]";
+    public void merge(TeachingClassEntity entity) {
+        this.address = entity.getAddress();
+        this.cost = entity.getCost();
+        this.level = entity.getLevel();
+        this.subjectIds = entity.getSubjectIds();
+        this.timetable = entity.getTimetable();
+        this.typeTeaching = entity.getTypeTeaching();
+        this.unitEntity = entity.getUnitEntity();
     }
-    
 }
