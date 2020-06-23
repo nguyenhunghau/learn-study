@@ -1,6 +1,6 @@
 package com.example.management.entity;
 
-import java.io.Serializable;
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,6 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+//</editor-fold>
 
 /**
  *
@@ -35,7 +36,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "AccountEntity.findByBirthday", query = "SELECT a FROM AccountEntity a WHERE a.birthday = :birthday")
     , @NamedQuery(name = "AccountEntity.findByPhoto", query = "SELECT a FROM AccountEntity a WHERE a.photo = :photo")
     , @NamedQuery(name = "AccountEntity.findByAddress", query = "SELECT a FROM AccountEntity a WHERE a.address = :address")})
-public class AccountEntity implements Serializable {
+public class AccountEntity {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -69,6 +70,10 @@ public class AccountEntity implements Serializable {
     @Size(max = 500)
     @Column(name = "ADDRESS")
     private String address;
+    
+//    @OneToMany
+//    @JoinColumn(name = "ROLE_ID")
+//    private List<RoleEntity> roleList;
     @Lob
     @Size(max = 65535)
     @Column(name = "DESCRIPTION")
@@ -160,6 +165,14 @@ public class AccountEntity implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+//    public List<String> getRoleList() {
+//        return roleList.stream().map(RoleEntity::getName).collect(toList());
+//    }
+//
+//    public void setRoleList(List<RoleEntity> roleList) {
+//        this.roleList = roleList;
+//    }
 
     public void merge(AccountEntity accountEntity) {
         this.address = accountEntity.getAddress();

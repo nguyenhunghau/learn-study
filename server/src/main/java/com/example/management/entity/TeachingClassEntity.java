@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TeachingClassEntity.findBySubjectIds", query = "SELECT t FROM TeachingClassEntity t WHERE t.subjectIds = :subjectIds")
     , @NamedQuery(name = "TeachingClassEntity.findByLevel", query = "SELECT t FROM TeachingClassEntity t WHERE t.level = :level")
     , @NamedQuery(name = "TeachingClassEntity.findByCost", query = "SELECT t FROM TeachingClassEntity t WHERE t.cost = :cost")
-    , @NamedQuery(name = "TeachingClassEntity.findByUnitId", query = "SELECT t FROM TeachingClassEntity t WHERE t.unitId = :unitId")
-    , @NamedQuery(name = "TeachingClassEntity.findByTypeTeaching", query = "SELECT t FROM TeachingClassEntity t WHERE t.typeTeaching = :typeTeaching")
-    , @NamedQuery(name = "TeachingClassEntity.findByAccountId", query = "SELECT t FROM TeachingClassEntity t WHERE t.accountId = :accountId")})
+    , @NamedQuery(name = "TeachingClassEntity.findByUnitId", query = "SELECT t FROM TeachingClassEntity t WHERE t.unitEntity.id = :unitId")
+    , @NamedQuery(name = "TeachingClassEntity.findByTypeTeaching", query = "SELECT t FROM TeachingClassEntity t WHERE t.typeTeaching.id = :typeTeaching")
+    , @NamedQuery(name = "TeachingClassEntity.findByAccountId", query = "SELECT t FROM TeachingClassEntity t WHERE t.accountEntity.id = :accountId")})
 public class TeachingClassEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
