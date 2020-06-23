@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
+import userLogo from '../../components/img/user2-160x160.jpg';
 
 export const TeachingClass = () => {
 
     useEffect(() => {
-        document.title= "Teaching";
+        document.title = "Teaching";
     }, []);
 
     return (
@@ -31,96 +32,175 @@ export const TeachingClass = () => {
                         <div class="col-md-3">
                             <div class="card card-solid">
                                 <div class="card-body pb-0">
+                                    <p class="login-box-msg">Search Class</p>
+
+                                    <form action="../../index3.html" method="post">
+                                        <div class="input-group mb-3">
+                                            <input type="email" class="form-control" placeholder="Keyword" />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-envelope"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <select class="form-control custom-select">
+                                                <option>Chọn Tỉnh/ Thành Phố</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <select class="form-control custom-select">
+                                                <option>Chọn Quận/ Huyện</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <select class="form-control custom-select">
+                                                <option>Chọn Phường/ Xã</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <select class="form-control custom-select">
+                                                <option>Chọn Môn Học</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <select class="form-control custom-select">
+                                                <option>Chọn Level</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="date" class="form-control" placeholder="Ngày mở lớp" />
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="social-auth-links text-center mb-3">
+                                        <a href="#" class="btn btn-block btn-primary">
+                                            <i class="fab fa-facebook mr-2"></i> Tìm kiếm
+        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-9">
-                        <div class="card card-solid">
-                            <div class="card-body pb-0">
-                                <div class="row d-flex align-items-stretch">
-                                    <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
-                                        <div class="card bg-light job-item">
-                                            <div class="card-header text-muted border-bottom-0">
-                                                Digital Strategist
+                            <div class="card card-solid">
+                                <div class="card-body pb-0">
+                                    <div class="row d-flex align-items-stretch">
+                                        <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
+                                            <div class="card bg-light job-item">
+                                                <div class="card-header text-muted border-bottom-0">
+                                                    Title: cần mở lớp dạy gấp
                                         </div>
-                                            <div class="card-body pt-0">
-                                                <div class="row">
-                                                    <div class="col-4 text-center">
-                                                        <img src="../../dist/img/user1-128x128.jpg" alt="" class="img-circle img-fluid"></img>
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <h2 class="lead"><b>Nicole Pearson</b></h2>
-                                                        <p class="text-muted text-sm"><b>Môn dạy: </b> Tiếng Anh </p>
-                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: Demo Street 123, Demo City 04312, NJ</li>
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: + 800 - 12 12 23 52</li>
-                                                        </ul>
+                                                <div class="card-body pt-0">
+                                                    <div class="row">
+                                                        <div class="col-4 text-center">
+                                                            <img src={userLogo} alt="" class="img-circle img-fluid"></img>
+                                                        </div>
+                                                        <div class="col-8">
+                                                            <h2 class="lead">Nguyễn Hùng Hậu</h2>
+                                                            <p class="text-muted text-sm"><b>Môn dạy: </b> Tiếng Anh</p>
+                                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Địa chỉ dạy: Bình Thạnh, TPHCM</li>
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Giáo viên trường: THCS Hòa Phú</li>
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Level: lớp 6 -8, luyện thi</li>
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Ngày mở lớp: 2020/05/13</li>
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Kinh nghiệm: 2 năm</li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <div class="text-right">
-                                                    <a href="#" class="btn btn-sm bg-teal">
-                                                        <i class="fas fa-comments"></i>
-                                                    </a>
-                                                    <a href="#" class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-user"></i> View Profile
+                                                <div class="card-footer">
+                                                    <div class="text-right">
+                                                        <a href="#" class="btn btn-sm bg-teal">
+                                                            <i class="fas fa-comments"></i> Chat
+                                                        </a>
+                                                        <a href="#" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-user"></i> View Profile
                                                 </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row d-flex align-items-stretch">
-                                    <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
-                                        <div class="card bg-light">
-                                            <div class="card-header text-muted border-bottom-0">
-                                                Digital Strategist
+                                    <div class="row d-flex align-items-stretch">
+                                        <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
+                                            <div class="card bg-light">
+                                                <div class="card-header text-muted border-bottom-0">
+                                                    Digital Strategist
                                         </div>
-                                            <div class="card-body pt-0">
-                                                <div class="row">
-                                                    <div class="col-7">
-                                                        <h2 class="lead"><b>Nicole Pearson</b></h2>
-                                                        <p class="text-muted text-sm"><b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover </p>
-                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: Demo Street 123, Demo City 04312, NJ</li>
-                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: + 800 - 12 12 23 52</li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-5 text-center">
-                                                        <img src="../../dist/img/user1-128x128.jpg" alt="" class="img-circle img-fluid"></img>
+                                                <div class="card-body pt-0">
+                                                    <div class="row">
+                                                        <div class="col-7">
+                                                            <h2 class="lead"><b>Nicole Pearson</b></h2>
+                                                            <p class="text-muted text-sm"><b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover </p>
+                                                            <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: Demo Street 123, Demo City 04312, NJ</li>
+                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: + 800 - 12 12 23 52</li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-5 text-center">
+                                                            <img src="../../dist/img/user1-128x128.jpg" alt="" class="img-circle img-fluid"></img>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-footer">
-                                                <div class="text-right">
-                                                    <a href="#" class="btn btn-sm bg-teal">
-                                                        <i class="fas fa-comments"></i>
-                                                    </a>
-                                                    <a href="#" class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-user"></i> View Profile
+                                                <div class="card-footer">
+                                                    <div class="text-right">
+                                                        <a href="#" class="btn btn-sm bg-teal">
+                                                            <i class="fas fa-comments"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-user"></i> View Profile
                                                 </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-footer">
-                                    <nav aria-label="Contacts Page Navigation">
-                                        <ul class="pagination justify-content-center m-0">
-                                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">8</a></li>
-                                        </ul>
-                                    </nav>
+                                    <div class="card-footer">
+                                        <nav aria-label="Contacts Page Navigation">
+                                            <ul class="pagination justify-content-center m-0">
+                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">7</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">8</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </section>
