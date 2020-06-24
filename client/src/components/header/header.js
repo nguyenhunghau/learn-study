@@ -1,19 +1,61 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Message from './message'
-import {Dropdown} from 'react-bootstrap'
+import { Dropdown } from 'react-bootstrap'
 import {
     Link
 } from "react-router-dom";
 
 import adminLTELogo from '../img/AdminLTELogo.png';
 import userLogo from '../img/user2-160x160.jpg';
+import { Navbar, Nav, Glyphicon, NavDropdown } from 'react-bootstrap';
+import {
+    MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdown,
+    MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon
+} from "mdbreact";
+
+import { removeCookie , readCookie} from '../component-function'
+
+import '../plugins/fontawesome-free/css/all.min.css';
+import '../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css';
+import '../plugins/icheck-bootstrap/icheck-bootstrap.min.css';
+import '../plugins/jqvmap/jqvmap.min.css';
+import '../css/adminlte.min.css';
+import './header.css';
 
 const Header = () => {
+
+    const [isLogin, setIsLogin] = useState(false);
+    let headerUser = <li class="nav-item d-none d-sm-inline-block">
+                <Link to="/login" class="nav-link">Đăng nhập</Link>
+            </li>;
+
+    useEffect(() => {
+        if(readCookie('token')) {
+            headerUser = <MDBNavItem>
+                <MDBDropdown>
+                    <MDBDropdownToggle nav caret>
+                        <MDBIcon icon="user" /> Nguyễn Hùng Hậu
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu className="dropdown-default">
+                        <MDBDropdownItem to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBDropdownItem>
+                        <MDBDropdownItem href="#!"><MDBIcon icon="key" /> Đổi mật khẩu</MDBDropdownItem>
+                        <MDBDropdownItem onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBDropdownItem>
+                    </MDBDropdownMenu>
+                </MDBDropdown>
+            </MDBNavItem>;
+        }
+    })
+
+    const logout = () => {
+        //remove cookie
+        removeCookie('token');
+        window.location.href = "login";
+    }
 
     return (
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <a>
-                <img src={adminLTELogo} style={{height: '50px'}}/>
+                <img src={adminLTELogo} style={{ height: '50px' }} />
             </a>
             <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
@@ -25,11 +67,11 @@ const Header = () => {
                     </div>
                 </div>
             </form>
-            
-            <ul class="navbar-nav">
-            
+
+            <ul class="navbar-nav menu" id="menu">
+
                 <li class="nav-item d-none d-sm-inline-block">
-                <Link to="/" class="nav-link">Home</Link>
+                    <Link to="/" class="nav-link">Home</Link>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <Link to="teaching" class="nav-link">Lớp hiện có</Link>
@@ -39,9 +81,9 @@ const Header = () => {
                 </li>
             </ul>
 
-
             <ul class="navbar-nav ml-auto">
-                <Dropdown>
+                {headerUser}
+                {/* <Dropdown>
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
                         <i class="far fa-comments"></i>
                         <span class="badge badge-danger navbar-badge">3</span>
@@ -53,8 +95,8 @@ const Header = () => {
                         </Dropdown.Item>
                         {/* <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
                         <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
-                    </Dropdown.Menu>
-                </Dropdown>
+                {/* </Dropdown.Menu>
+                </Dropdown> */}
 
                 {/* <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
@@ -96,7 +138,7 @@ const Header = () => {
                     </div>
                 </li> */}
 
-                <li class="nav-item dropdown">
+                {/* <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
                         <span class="badge badge-warning navbar-badge">15</span>
@@ -126,7 +168,7 @@ const Header = () => {
                     <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                         <i class="fas fa-th-large"></i>
                     </a>
-                </li>
+                </li> */}
             </ul>
         </nav>
     )

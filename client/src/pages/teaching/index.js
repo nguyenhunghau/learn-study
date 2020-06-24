@@ -5,7 +5,7 @@ import userLogo from '../../components/img/user2-160x160.jpg';
 export const TeachingClass = () => {
 
     useEffect(() => {
-        document.title = "Teaching";
+        document.title = "Teaching classes";
     }, []);
 
     return (

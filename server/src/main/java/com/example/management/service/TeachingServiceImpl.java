@@ -2,6 +2,7 @@ package com.example.management.service;
 
 import com.example.management.entity.TeachingClassEntity;
 import com.example.management.repository.TeachingRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,10 @@ public class TeachingServiceImpl implements TeachingService {
     public boolean deleteClass(int classId) {
         teachingRepository.deleteById(classId);
         return true;
+    }
+
+    @Override
+    public List<TeachingClassEntity> getAll() {
+        return (List<TeachingClassEntity>) teachingRepository.findAll();
     }
 }
