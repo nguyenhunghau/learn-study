@@ -49,4 +49,9 @@ public class AccountServiceImpl implements AccountService{
         }
         return false;
     }
+
+    @Override
+    public Optional<AccountEntity> findByUsername(String username) {
+        return accountRepository.findByUsername(username);
+    }
 }

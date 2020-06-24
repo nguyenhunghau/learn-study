@@ -7,13 +7,14 @@ package com.example.management.repository;
 
 import com.example.management.entity.AccountEntity;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author Admin
  */
-public interface AccountRepository extends CrudRepository<AccountEntity, Integer>{
+public interface AccountRepository extends JpaRepository<AccountEntity, Integer>{
 
     public AccountEntity findByUsernameAndPass(String username, String password);
 
