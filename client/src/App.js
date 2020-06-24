@@ -12,6 +12,7 @@ import {TeachingClass} from './pages/teaching/index'
 import {RegisterTeaching} from './pages/teaching/register';
 import {Login} from './pages/login/index2';
 import {Register} from './pages/register/index'
+import {Profile} from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 class App extends React.Component {
@@ -31,6 +32,7 @@ class App extends React.Component {
               <Route exact path="/teaching-register" component={RegisterTeaching} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
+              <Route exact path="/profile" component={Profile} />
             </Switch>
           </Router>
         </div>
