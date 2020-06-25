@@ -23,10 +23,11 @@ export const Login = () => {
             if (!response.ok) {
                 throw Error(response.statusText);
             }
-            return response;
+            return response.json();
         })
         .then(data => {
             createCookie('token', data.token, 1000);
+            localStorage['token'] =  data.token;
             window.location.href = "/";
         }).catch(function(error) {
             alert('Username or Password wrong');
@@ -45,10 +46,10 @@ export const Login = () => {
 
                         <form onSubmit={onSubmit} method="post">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Email" value={username} onChange={(e) => setUsername(e.target.value)} required/>
+                                <input type="text" class="form-control" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required/>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
-                                        <span class="fas fa-envelope"></span>
+                                        <span class="fas fa-user"></span>
                                     </div>
                                 </div>
                             </div>

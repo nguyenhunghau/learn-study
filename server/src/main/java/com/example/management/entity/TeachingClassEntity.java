@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.management.entity;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,6 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+//</editor-fold>
 
 /**
  *
@@ -45,6 +42,9 @@ public class TeachingClassEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    @Size(max = 60)
+    @Column(name = "TITLE")
+    private String title;
     @Size(max = 100)
     @Column(name = "SUBJECT_IDS")
     private String subjectIds;
@@ -151,6 +151,14 @@ public class TeachingClassEntity implements Serializable {
 
     public void setAccountEntity(AccountEntity accountEntity) {
         this.accountEntity = accountEntity;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void merge(TeachingClassEntity entity) {

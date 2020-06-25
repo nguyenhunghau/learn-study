@@ -7,7 +7,7 @@ export const createCookie = (name, value, hour) => {
         date.setTime(date.getTime() + (hour * 60 * 60 * 1000));
         expires = "; expires=" + date.toGMTString();
     }
-    document.cookie = name + "=" + value + expires + "; secure; path=/";
+    document.cookie = name + "=" + value + expires + ";path=/";
 }
 
 export const removeCookie = (name) => {

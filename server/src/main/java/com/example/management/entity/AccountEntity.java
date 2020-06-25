@@ -71,6 +71,13 @@ public class AccountEntity {
     @Column(name = "ADDRESS")
     private String address;
     
+    @Size(max = 250)
+    @Column(name = "SCHOOL")
+    private String school;
+    @Size(max = 250)
+    @Column(name = "EXPERIENCE")
+    private String experience;
+    
 //    @OneToMany
 //    @JoinColumn(name = "ROLE_ID")
 //    private List<RoleEntity> roleList;
@@ -164,6 +171,22 @@ public class AccountEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSchool() {
+        return school;
+    }
+
+    public void setSchool(String school) {
+        this.school = school;
+    }
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
     }
 
 //    public List<String> getRoleList() {
