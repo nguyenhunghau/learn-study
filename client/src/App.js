@@ -10,8 +10,8 @@ import Job  from './pages/job/index';
 import Company from './pages/job/company'
 import {TeachingClass} from './pages/teaching/index'
 import {RegisterTeaching} from './pages/teaching/register';
-import {Login} from './pages/login/index2';
-import {Register} from './pages/register/index'
+import Login from './pages/login/index';
+import Register from './pages/register/index'
 import {Profile} from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 

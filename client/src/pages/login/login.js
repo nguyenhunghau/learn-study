@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import Header from '../../components/header/header';
-import Footer from '../../components/footer';
+import {Link} from "react-router-dom";
 
 export const Login = () => {
     return (
         <div class="login-page">
             <div class="login-box">
-                <div class="login-logo">
-                    <a href="../../index2.html"><b>Admin</b>LTE</a>
-                </div>
                 <div class="card">
                     <div class="card-body login-card-body">
-                        <p class="login-box-msg">Sign in to start your session</p>
+                        <h2 class="login-box-msg">Đăng nhập</h2>
 
                         <form action="../../index3.html" method="post">
                             <div class="input-group mb-3">
@@ -46,7 +42,6 @@ export const Login = () => {
                         </form>
 
                         <div class="social-auth-links text-center mb-3">
-                            <p>- OR -</p>
                             <a href="#" class="btn btn-block btn-primary">
                                 <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
         </a>
@@ -56,10 +51,10 @@ export const Login = () => {
                         </div>
 
                         <p class="mb-1">
-                            <a href="forgot-password.html">I forgot my password</a>
+                            <Link to="forgot-password">Quên mật khẩu</Link>
                         </p>
                         <p class="mb-0">
-                            <a href="register.html" class="text-center">Register a new membership</a>
+                            <Link to="register" class="text-center">Đăng kí thành viên mới</Link>
                         </p>
                     </div>
                 </div>
