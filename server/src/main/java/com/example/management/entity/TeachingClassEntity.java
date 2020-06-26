@@ -2,6 +2,7 @@ package com.example.management.entity;
 
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 //</editor-fold>
@@ -69,6 +72,13 @@ public class TeachingClassEntity implements Serializable {
     @Size(max = 65535)
     @Column(name = "ADDRESS")
     private String address;
+    
+    @Column(name = "DATE_START")
+    @Temporal(TemporalType.DATE)
+    private Date dateStart;
+    @Column(name = "CREATED")
+    @Temporal(TemporalType.DATE)
+    private Date created;
     
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
@@ -159,6 +169,22 @@ public class TeachingClassEntity implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
     public void merge(TeachingClassEntity entity) {

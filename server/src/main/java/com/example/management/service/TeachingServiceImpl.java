@@ -40,6 +40,10 @@ public class TeachingServiceImpl implements TeachingService {
 
     @Override
     public List<TeachingClassEntity> getAll() {
-        return (List<TeachingClassEntity>) teachingRepository.findAll();
+        List<TeachingClassEntity> list = (List<TeachingClassEntity>) teachingRepository.findAll();
+        list.forEach(item -> {
+            
+        });
+        return list;
     }
 }

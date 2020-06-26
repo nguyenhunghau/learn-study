@@ -2,6 +2,7 @@ package com.example.management.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
+import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,7 +22,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-
+//    
+//    private Filter delegate;
+//    private RequestMatcher ignoredRequests;
+//
+//    public JwtTokenFilter(RequestMatcher matcher, Filter delegate)  {
+//        super();
+//        this.delegate = delegate;
+//        this.ignoredRequests = matcher;
+//    }
+//    
     @Autowired
     private CustomUserDetailsService jwtUserDetailsService;
 

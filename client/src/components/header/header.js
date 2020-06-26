@@ -25,26 +25,26 @@ import './header.css';
 const Header = () => {
 
     const [isLogin, setIsLogin] = useState(false);
-    let headerUser = <li class="nav-item d-none d-sm-inline-block">
+    const [headerUser, setHeaderUser]  = useState(<li class="nav-item d-none d-sm-inline-block">
                 <Link to="/login" class="nav-link">Đăng nhập</Link>
-            </li>;
+            </li>);
 
     useEffect(() => {
-        if(readCookie('token')) {
-            headerUser = <MDBNavItem>
+        if(localStorage['token']) {
+            setHeaderUser(<MDBNavItem>
                 <MDBDropdown>
                     <MDBDropdownToggle nav caret>
                         <MDBIcon icon="user" /> Nguyễn Hùng Hậu
                     </MDBDropdownToggle>
                     <MDBDropdownMenu className="dropdown-default">
-                        <MDBDropdownItem to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBDropdownItem>
+                        <MDBDropdownItem to={"profile"}><MDBIcon icon="user-circle" /> Trang cá nhân</MDBDropdownItem>
                         <MDBDropdownItem href="#!"><MDBIcon icon="key" /> Đổi mật khẩu</MDBDropdownItem>
                         <MDBDropdownItem onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBDropdownItem>
                     </MDBDropdownMenu>
                 </MDBDropdown>
-            </MDBNavItem>;
+            </MDBNavItem>);
         }
-    })
+    }, [])
 
     const logout = () => {
         //remove cookie

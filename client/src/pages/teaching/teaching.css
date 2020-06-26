@@ -1,0 +1,5 @@
+:local(.fluid){
+    width: 150px;
+    height: 150px;
+    float: left;
+}

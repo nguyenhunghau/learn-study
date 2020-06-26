@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "SubjectEntity.findAll", query = "SELECT s FROM SubjectEntity s")
     , @NamedQuery(name = "SubjectEntity.findById", query = "SELECT s FROM SubjectEntity s WHERE s.id = :id")
     , @NamedQuery(name = "SubjectEntity.findByName", query = "SELECT s FROM SubjectEntity s WHERE s.name = :name")
-    , @NamedQuery(name = "SubjectEntity.findAllActive", query = "SELECT s FROM SubjectEntity s WHERE s.isActive = :isActive")})
+    , @NamedQuery(name = "SubjectEntity.findAllActive", query = "SELECT s FROM SubjectEntity s")})
 public class SubjectEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

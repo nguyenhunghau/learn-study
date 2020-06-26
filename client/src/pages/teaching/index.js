@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
 import ClassItem from './class-item';
-import { URL_GET_CLASS_LIST } from '../../constants/path';
+import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST,  URL_GET_UNIT_LIST} from '../../constants/path';
 
 export const TeachingClass = () => {
 
     const [classList, setClassList] = useState([]);
+    const [subjectList, setSubjectList] = useState([]);
+    const [unitList, setUnitList] = useState([]);
+    let subjectData = [];
 
     useEffect(() => {
         document.title = "Danh sách các lớp dạy";
-        getListClass();
+        getListData(URL_GET_SUBJECT_LIST, getListClass);
+        getListData(URL_GET_UNIT_LIST, setUnitList);
     }, []);
 
-    const getListClass = () => {
-        const requestOptions = {
-            method: 'GET',
-            contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage['token'],
-            //     'Accept': 'application/json',
-            // 'Content-Type': 'application/x-www-form-urlencoded'
-                // 'X-FP-API-KEY': localStorage['token'], //it can be iPhone or your any other attribute
-                // 'Content-Type': 'application/json'
-            }
-        };
+    const requestOptions = {
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage['token']
+        }
+    };
 
-        fetch(URL_GET_CLASS_LIST, requestOptions)
+    const getListData = (url, callBack) => {
+        fetch(url, requestOptions)
             .then(response => {
                 if (!response.ok) {
                     throw Error(response.statusText);
@@ -33,10 +33,25 @@ export const TeachingClass = () => {
                 return response.json();
             })
             .then(data => {
-                setClassList(data);
+                callBack(data);
             }).catch(function (error) {
-                alert('Register fail');
+                alert('Get data from url fail ' + url );
             });
+    }
+
+    const handleDataClass = (data) => {
+        data.map(item => {
+            let subjectArray = item.subjectIds.split(',');
+            item.subjectName = subjectData.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
+            // item.level = subjectData.filter(unit => unitList.indexOf(subject.id + "") >= 0).map(unit => unit.name).join(', ');
+        });
+        setClassList(data);
+    }
+
+    const getListClass = (data) => {
+        setSubjectList(data);
+        subjectData = data
+        getListData(URL_GET_CLASS_LIST, handleDataClass);
     }
 
     return (
@@ -106,6 +121,11 @@ export const TeachingClass = () => {
                                         </div>
                                         <div class="input-group mb-3">
                                             <select class="form-control custom-select">
+                                                {
+                                                    subjectList.map(item =>
+                                                        <option value={item.id}>{item.name}</option>
+                                                    )
+                                                }
                                                 <option>Chọn Môn Học</option>
                                             </select>
                                             <div class="input-group-append">
@@ -117,6 +137,11 @@ export const TeachingClass = () => {
                                         <div class="input-group mb-3">
                                             <select class="form-control custom-select">
                                                 <option>Chọn Level</option>
+                                                {
+                                                    unitList.map(item =>
+                                                        <option value={item.id}>{item.name}</option>
+                                                    )
+                                                }
                                             </select>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
@@ -147,11 +172,11 @@ export const TeachingClass = () => {
                                 <div class="card-body pb-0">
                                     {
                                         classList.map(item =>
-                                            <ClassItem dataList={item} />
+                                            <ClassItem data={item} />
                                         )
                                     }
 
-                                    <div class="row d-flex align-items-stretch">
+                                    {/* <div class="row d-flex align-items-stretch">
                                         <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
                                             <div class="card bg-light">
                                                 <div class="card-header text-muted border-bottom-0">
@@ -184,7 +209,7 @@ export const TeachingClass = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div class="card-footer">
                                         <nav aria-label="Contacts Page Navigation">
                                             <ul class="pagination justify-content-center m-0">
