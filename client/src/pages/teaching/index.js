@@ -1,12 +1,58 @@
 import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
-import userLogo from '../../components/img/user2-160x160.jpg';
+import ClassItem from './class-item';
+import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST,  URL_GET_UNIT_LIST} from '../../constants/path';
 
 export const TeachingClass = () => {
 
+    const [classList, setClassList] = useState([]);
+    const [subjectList, setSubjectList] = useState([]);
+    const [unitList, setUnitList] = useState([]);
+    let subjectData = [];
+
     useEffect(() => {
-        document.title = "Teaching";
+        document.title = "Danh sách các lớp dạy";
+        getListData(URL_GET_SUBJECT_LIST, getListClass);
+        getListData(URL_GET_UNIT_LIST, setUnitList);
     }, []);
+
+    const requestOptions = {
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage['token']
+        }
+    };
+
+    const getListData = (url, callBack) => {
+        fetch(url, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                callBack(data);
+            }).catch(function (error) {
+                alert('Get data from url fail ' + url );
+            });
+    }
+
+    const handleDataClass = (data) => {
+        data.map(item => {
+            let subjectArray = item.subjectIds.split(',');
+            item.subjectName = subjectData.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
+            // item.level = subjectData.filter(unit => unitList.indexOf(subject.id + "") >= 0).map(unit => unit.name).join(', ');
+        });
+        setClassList(data);
+    }
+
+    const getListClass = (data) => {
+        setSubjectList(data);
+        subjectData = data
+        getListData(URL_GET_CLASS_LIST, handleDataClass);
+    }
 
     return (
         <div className={'wrapper'}>
@@ -75,6 +121,11 @@ export const TeachingClass = () => {
                                         </div>
                                         <div class="input-group mb-3">
                                             <select class="form-control custom-select">
+                                                {
+                                                    subjectList.map(item =>
+                                                        <option value={item.id}>{item.name}</option>
+                                                    )
+                                                }
                                                 <option>Chọn Môn Học</option>
                                             </select>
                                             <div class="input-group-append">
@@ -86,6 +137,11 @@ export const TeachingClass = () => {
                                         <div class="input-group mb-3">
                                             <select class="form-control custom-select">
                                                 <option>Chọn Level</option>
+                                                {
+                                                    unitList.map(item =>
+                                                        <option value={item.id}>{item.name}</option>
+                                                    )
+                                                }
                                             </select>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
@@ -114,44 +170,13 @@ export const TeachingClass = () => {
                         <div class="col-md-9">
                             <div class="card card-solid">
                                 <div class="card-body pb-0">
-                                    <div class="row d-flex align-items-stretch">
-                                        <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
-                                            <div class="card bg-light job-item">
-                                                <div class="card-header text-muted border-bottom-0">
-                                                    Title: cần mở lớp dạy gấp
-                                        </div>
-                                                <div class="card-body pt-0">
-                                                    <div class="row">
-                                                        <div class="col-4 text-center">
-                                                            <img src={userLogo} alt="" class="img-circle img-fluid"></img>
-                                                        </div>
-                                                        <div class="col-8">
-                                                            <h2 class="lead">Nguyễn Hùng Hậu</h2>
-                                                            <p class="text-muted text-sm"><b>Môn dạy: </b> Tiếng Anh</p>
-                                                            <ul class="ml-4 mb-0 fa-ul text-muted">
-                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Địa chỉ dạy: Bình Thạnh, TPHCM</li>
-                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Giáo viên trường: THCS Hòa Phú</li>
-                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Level: lớp 6 -8, luyện thi</li>
-                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Ngày mở lớp: 2020/05/13</li>
-                                                                <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Kinh nghiệm: 2 năm</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card-footer">
-                                                    <div class="text-right">
-                                                        <a href="#" class="btn btn-sm bg-teal">
-                                                            <i class="fas fa-comments"></i> Chat
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm btn-primary">
-                                                            <i class="fas fa-user"></i> View Profile
-                                                </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row d-flex align-items-stretch">
+                                    {
+                                        classList.map(item =>
+                                            <ClassItem data={item} />
+                                        )
+                                    }
+
+                                    {/* <div class="row d-flex align-items-stretch">
                                         <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
                                             <div class="card bg-light">
                                                 <div class="card-header text-muted border-bottom-0">
@@ -184,7 +209,7 @@ export const TeachingClass = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div class="card-footer">
                                         <nav aria-label="Contacts Page Navigation">
                                             <ul class="pagination justify-content-center m-0">

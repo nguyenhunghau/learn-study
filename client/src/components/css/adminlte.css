@@ -3100,6 +3100,8 @@ input[type="button"].btn-block {
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175);
+  right: 0 !important;
+  left: auto !important;
 }
 
 .dropdown-menu-left {
@@ -3108,8 +3110,8 @@ input[type="button"].btn-block {
 }
 
 .dropdown-menu-right {
-  right: 0;
-  left: auto;
+  right: 0 !important;
+  left: auto !important;
 }
 
 @media (min-width: 576px) {

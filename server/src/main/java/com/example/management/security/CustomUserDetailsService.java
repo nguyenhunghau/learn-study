@@ -1,5 +1,6 @@
 package com.example.management.security;
 
+import com.example.management.dto.UserDTO;
 import com.example.management.entity.AccountEntity;
 import com.example.management.repository.AccountRepository;
 import java.util.ArrayList;
@@ -35,10 +36,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
-    public AccountEntity save(String username, String password) {
+    public AccountEntity save(UserDTO user) {
+        if(!user.getPassword().equals(user.getPasswordConfirm())) {
+            return null;
+        }
         AccountEntity entity = new AccountEntity();
-        entity.setUsername(username);
-        entity.setPassword(bcryptEncoder.encode(password));
+        entity.setUsername(user.getUsername());
+        entity.setPassword(bcryptEncoder.encode(user.getPassword()));
+        entity.setName(user.getName());
+        entity.setEmail(user.getEmail());
         return accountRepository.save(entity);
     }
 }

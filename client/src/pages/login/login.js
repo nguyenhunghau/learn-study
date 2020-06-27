@@ -1,7 +1,40 @@
 import React, { useState, useEffect } from "react";
 import {Link} from "react-router-dom";
+import Header from '../../components/header/header';
+import Footer from '../../components/footer';
+import {URL_LOGIN} from '../../constants/path';
+
+import { createCookie} from '../../components/component-function';
 
 export const Login = () => {
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ "username": username, "password": password })
+        };
+
+        fetch(URL_LOGIN, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            createCookie('token', data.token, 1000);
+            localStorage['token'] =  data.token;
+            window.location.href = "/";
+        }).catch(function(error) {
+            alert('Username or Password wrong');
+        });
+    }
+
     return (
         <div class="login-page">
             <div class="login-box">
@@ -9,17 +42,17 @@ export const Login = () => {
                     <div class="card-body login-card-body">
                         <h2 class="login-box-msg">Đăng nhập</h2>
 
-                        <form action="../../index3.html" method="post">
+                        <form onSubmit={onSubmit} method="post">
                             <div class="input-group mb-3">
-                                <input type="email" class="form-control" placeholder="Email" />
+                                <input type="text" class="form-control" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required/>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
-                                        <span class="fas fa-envelope"></span>
+                                        <span class="fas fa-user"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="password" class="form-control" placeholder="Password" />
+                                <input type="password" class="form-control" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required/>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>
