@@ -98,7 +98,7 @@ export const Profile = () => {
                             </div>
                             <div class="col-md-9">
                                 <div class="card">
-                                    <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+                                    <Tabs defaultActiveKey="Profile" id="uncontrolled-tab-example">
                                         <Tab eventKey="Profile" title="Profile">
                                             <TabInformation />
                                         </Tab>
