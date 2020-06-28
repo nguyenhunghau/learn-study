@@ -4,3 +4,18 @@
 ul.nav-sidebar li {
     text-align: left;
 }
+.main-header.navbar-light, .content-wrapper {
+    margin-left: 50px !important;
+    margin-right: 50px !important;
+}
+#tab_profile .nav.nav-tabs {
+    background-color: #0062cc;
+    border-color: #005cbf;
+}
+#tab_profile .nav.nav-tabs a{
+
+    color: #fff;
+}
+#tab_profile .nav.nav-tabs a.active{
+    color: black;
+}

@@ -58,7 +58,7 @@ export const Register = () => {
                             </div>
                         </form>
 
-                        <Link to="login" class="text-center">I already have a membership</Link>
+                        <Link to="login" class="text-center">Tôi đã có tài khoản</Link>
                     </div>
                 </div>
             </div>

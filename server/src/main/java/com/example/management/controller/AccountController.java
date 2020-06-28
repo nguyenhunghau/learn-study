@@ -2,6 +2,7 @@ package com.example.management.controller;
 
 import com.example.management.dto.JwtResponseDTO;
 import com.example.management.dto.UserDTO;
+import com.example.management.entity.AccountEntity;
 import com.example.management.security.CustomUserDetailsService;
 import com.example.management.security.JwtTokenUtil;
 import com.example.management.service.AccountService;
@@ -64,6 +65,16 @@ public class AccountController {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+    
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+    public ResponseEntity<?> updateProfile(@RequestBody AccountEntity account) {
+        try {
+            return ResponseEntity.ok(accountService.update(account));
+        } catch (Exception ex) {
+            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            return ResponseEntity.badRequest().body(ex);
         }
     }
 }

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
 import Footer from '../../components/footer';
+import TabInformation from '../account/tab-information';
+import RegisterItem from './register-item';
 
 export const RegisterTeaching = () => {
     return (
@@ -35,33 +37,7 @@ export const RegisterTeaching = () => {
                                             <i class="fas fa-minus"></i></button>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="inputName">Project Name</label>
-                                        <input type="text" id="inputName" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputDescription">Project Description</label>
-                                        <textarea id="inputDescription" class="form-control" rows="4"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputStatus">Status</label>
-                                        <select class="form-control custom-select">
-                                            <option selected disabled>Select one</option>
-                                            <option>On Hold</option>
-                                            <option>Canceled</option>
-                                            <option>Success</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputClientCompany">Client Company</label>
-                                        <input type="text" id="inputClientCompany" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputProjectLeader">Project Leader</label>
-                                        <input type="text" id="inputProjectLeader" class="form-control" />
-                                    </div>
-                                </div>
+                                <TabInformation />
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -74,46 +50,7 @@ export const RegisterTeaching = () => {
                                             <i class="fas fa-minus"></i></button>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="inputEstimatedBudget">Môn dạy</label>
-                                        <select class="form-control custom-select" multiple>
-                                            <option selected>Toán</option>
-                                            <option>Văn</option>
-                                            <option>Tiếng Anh</option>
-                                            <option>TIn</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputSpentBudget">Lớp dạy</label>
-                                        <select class="form-control custom-select" multiple>
-                                            <option selected>Lớp 1</option>
-                                            <option>Lớp 2</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputEstimatedDuration">Địa chỉ dạy</label>
-                                        <input type="number" id="inputEstimatedDuration" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputEstimatedDuration">Thời gian dạy</label>
-                                        <input type="number" id="inputEstimatedDuration" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputEstimatedDuration">Học phí</label>
-                                        <input type="number" id="inputEstimatedDuration" class="form-control" />
-                                        <select class="form-control custom-select">
-                                            <option selected>Buổi</option>
-                                            <option>Giờ</option>
-                                            <option>Tháng</option>
-                                            <option>Năm</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="inputDescription">Mô tả thêm</label>
-                                        <textarea id="inputDescription" class="form-control" rows="4"></textarea>
-                                    </div>
-                                </div>
+                                <RegisterItem />
                             </div>
                         </div>
                     </div>

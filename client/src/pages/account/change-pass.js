@@ -4,7 +4,7 @@ import Footer from '../../components/footer';
 import { Register } from './register'
 import { URL_REGISTER } from '../../constants/path';
 
-export default function RegisterPage() {
+export default function changePassword() {
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
 
-    const registerAccount = (event) => {
+    const changePassword = (event) => {
         event.preventDefault();
         const requestOptions = {
             method: 'POST',

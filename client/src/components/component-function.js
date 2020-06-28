@@ -26,3 +26,26 @@ export const readCookie = (name)  => {
     }
     return null;
 }
+
+export const getListData = (url, callBack) => {
+    const requestOptions = {
+        method: 'GET',
+        contentType: 'application/json',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage['token']
+        }
+    };
+    
+    fetch(url, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw Error(response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            callBack(data);
+        }).catch(function (error) {
+            alert('Get data from url fail ' + url );
+        });
+}

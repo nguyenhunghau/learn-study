@@ -4,8 +4,10 @@ import TabInformation from './tab-information';
 import TabActivity from './tab-activity';
 import TabTimeline from './tab-timeline';
 import { Tab, Tabs } from "react-bootstrap";
+import userLogo from '../../components/img/avatar.png';
 
 export const Profile = () => {
+
     return (
         <div className={'wrapper'}>
             <Header />
@@ -39,19 +41,13 @@ export const Profile = () => {
                                                 alt="User profile picture" />
                                         </div>
 
-                                        <h3 class="profile-username text-center">Nina Mcintire</h3>
-
-                                        <p class="text-muted text-center">Software Engineer</p>
-
+                                        <h3 class="profile-username text-center">Nguyen Hung Hau</h3>
                                         <ul class="list-group list-group-unbordered mb-3">
                                             <li class="list-group-item">
-                                                <b>Followers</b> <a class="float-right">1,322</a>
+                                                <b>Số lớp đã tạo</b> <a class="float-right">1,322</a>
                                             </li>
                                             <li class="list-group-item">
-                                                <b>Following</b> <a class="float-right">543</a>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Friends</b> <a class="float-right">13,287</a>
+                                                <b>Đánh giá</b> <a class="float-right">543</a>
                                             </li>
                                         </ul>
 
@@ -97,7 +93,7 @@ export const Profile = () => {
                                 </div>
                             </div>
                             <div class="col-md-9">
-                                <div class="card">
+                                <div class="card" id="tab_profile">
                                     <Tabs defaultActiveKey="Profile" id="uncontrolled-tab-example">
                                         <Tab eventKey="Profile" title="Profile">
                                             <TabInformation />

@@ -2,15 +2,12 @@
     right: -35px !important;
     left: auto !important;
 }
-
-.main-header.navbar-light, .content-wrapper {
-    margin-left: 100px !important;
-    margin-right: 100px !important;
-}
 .main-header.navbar-light {
     background-color: #50bbc3;
 }
-#root .nav-link {
+#nav-main li a, .navbar-nav.mr-auto li div {
     color: white;
-    font-weight: bold;
+}
+#dropdown-account .dropdown-item a {
+    color: black
 }

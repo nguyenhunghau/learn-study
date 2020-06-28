@@ -1,6 +1,7 @@
 package com.example.management.service;
 
 import com.example.management.entity.TeachingClassEntity;
+import com.example.management.repository.AccountRepository;
 import com.example.management.repository.TeachingRepository;
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +17,13 @@ public class TeachingServiceImpl implements TeachingService {
 
     @Autowired
     private TeachingRepository teachingRepository;
+    
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Override
     public TeachingClassEntity addClass(TeachingClassEntity entity) {
+//        if(entity.getAccountEntity())
         return teachingRepository.save(entity);
     }
 

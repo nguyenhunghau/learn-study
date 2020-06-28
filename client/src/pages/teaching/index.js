@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
 import ClassItem from './class-item';
 import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST,  URL_GET_UNIT_LIST} from '../../constants/path';
+import {getListData} from '../../components/component-function'
 
 export const TeachingClass = () => {
 
@@ -15,29 +16,6 @@ export const TeachingClass = () => {
         getListData(URL_GET_SUBJECT_LIST, getListClass);
         getListData(URL_GET_UNIT_LIST, setUnitList);
     }, []);
-
-    const requestOptions = {
-        method: 'GET',
-        contentType: 'application/json',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage['token']
-        }
-    };
-
-    const getListData = (url, callBack) => {
-        fetch(url, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                callBack(data);
-            }).catch(function (error) {
-                alert('Get data from url fail ' + url );
-            });
-    }
 
     const handleDataClass = (data) => {
         data.map(item => {
