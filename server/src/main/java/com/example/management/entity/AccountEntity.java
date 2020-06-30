@@ -1,6 +1,7 @@
 package com.example.management.entity;
 
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -9,13 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.springframework.web.multipart.MultipartFile;
 //</editor-fold>
 
 /**
@@ -30,23 +35,22 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "AccountEntity.findById", query = "SELECT a FROM AccountEntity a WHERE a.id = :id")
     , @NamedQuery(name = "AccountEntity.findByUsername", query = "SELECT a FROM AccountEntity a WHERE a.username = :username")
     , @NamedQuery(name = "AccountEntity.findByUsernameAndPass", query = "SELECT a FROM AccountEntity a WHERE a.username = :username and a.password = :password")
-    , @NamedQuery(name = "AccountEntity.findByName", query = "SELECT a FROM AccountEntity a WHERE a.name = :name")
-    , @NamedQuery(name = "AccountEntity.findByEmail", query = "SELECT a FROM AccountEntity a WHERE a.email = :email")
-    , @NamedQuery(name = "AccountEntity.findByPhone", query = "SELECT a FROM AccountEntity a WHERE a.phone = :phone")
-    , @NamedQuery(name = "AccountEntity.findByBirthday", query = "SELECT a FROM AccountEntity a WHERE a.birthday = :birthday")
-    , @NamedQuery(name = "AccountEntity.findByPhoto", query = "SELECT a FROM AccountEntity a WHERE a.photo = :photo")
-    , @NamedQuery(name = "AccountEntity.findByAddress", query = "SELECT a FROM AccountEntity a WHERE a.address = :address")})
-public class AccountEntity {
+    , @NamedQuery(name = "AccountEntity.findByCode", query = "SELECT a FROM AccountEntity a WHERE a.code = :code")
+    , @NamedQuery(name = "AccountEntity.findByEmail", query = "SELECT a FROM AccountEntity a WHERE a.email = :email")})
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "AccountEntity.getProfile", query = "SELECT ID,NAME,EMAIL,PHONE,BIRTHDAY,PHOTO,ADDRESS_ID,DESCRIPTION,SCHOOL,ROLE_ID,GENDER,CERTIFICATE,PERSONAL_ID,MAJOR,CREATED,UPDATED,CODE FROM account where CODE=:code")
+})
+public class AccountEntity  implements Serializable {
+    
+    @Transient
+    MultipartFile file;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
     @Size(max = 250)
     @Column(name = "USERNAME")
     private String username;
+    @Size(max = 50)
+    @Column(name = "CODE")
+    private String code;
     @Size(max = 250)
     @Column(name = "PASSWORD")
     private String password;
@@ -61,32 +65,59 @@ public class AccountEntity {
     @Size(max = 20)
     @Column(name = "PHONE")
     private String phone;
-    @Column(name = "BIRTHDAY")
-    @Temporal(TemporalType.DATE)
-    private Date birthday;
-    @Size(max = 500)
+    @Size(max = 100)
     @Column(name = "PHOTO")
     private String photo;
-    @Size(max = 500)
-    @Column(name = "ADDRESS")
-    private String address;
-    
-    @Size(max = 250)
-    @Column(name = "SCHOOL")
-    private String school;
-    @Size(max = 250)
-    @Column(name = "EXPERIENCE")
-    private String experience;
-    
-//    @OneToMany
-//    @JoinColumn(name = "ROLE_ID")
-//    private List<RoleEntity> roleList;
+    @Column(name = "ADDRESS_ID")
+    private Integer addressId;
     @Lob
     @Size(max = 65535)
     @Column(name = "DESCRIPTION")
     private String description;
+    @Size(max = 250)
+    @Column(name = "SCHOOL")
+    private String school;
+    @Column(name = "ROLE_ID")
+    private Integer roleId;
+    @Size(max = 4)
+    @Column(name = "GENDER")
+    private String gender;
+    @Size(max = 100)
+    @Column(name = "CERTIFICATE")
+    private String certificate;
+    @Size(max = 45)
+    @Column(name = "PERSONAL_ID")
+    private String personalId;
+    @Size(max = 250)
+    @Column(name = "MAJOR")
+    private String major;
+    @Column(name = "CREATED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
+    @Column(name = "UPDATED")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updated;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private Integer id;
+    @Column(name = "BIRTHDAY")
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
+    
 
     public AccountEntity() {
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public AccountEntity(Integer id) {
@@ -99,6 +130,32 @@ public class AccountEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+    
+    public void merge(AccountEntity accountEntity) {
+        this.addressId = accountEntity.getAddressId();
+        this.birthday = accountEntity.getBirthday();
+        this.description = accountEntity.getDescription();
+        this.email = accountEntity.getEmail();
+        this.name = accountEntity.getName();
+        this.phone = accountEntity.getPhone();
+        this.photo = accountEntity.getPhoto();
     }
 
     public String getUsername() {
@@ -141,14 +198,6 @@ public class AccountEntity {
         this.phone = phone;
     }
 
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
     public String getPhoto() {
         return photo;
     }
@@ -157,12 +206,12 @@ public class AccountEntity {
         this.photo = photo;
     }
 
-    public String getAddress() {
-        return address;
+    public Integer getAddressId() {
+        return addressId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
     }
 
     public String getDescription() {
@@ -181,30 +230,60 @@ public class AccountEntity {
         this.school = school;
     }
 
-    public String getExperience() {
-        return experience;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setExperience(String experience) {
-        this.experience = experience;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-//    public List<String> getRoleList() {
-//        return roleList.stream().map(RoleEntity::getName).collect(toList());
-//    }
-//
-//    public void setRoleList(List<RoleEntity> roleList) {
-//        this.roleList = roleList;
-//    }
+    public String getGender() {
+        return gender;
+    }
 
-    public void merge(AccountEntity accountEntity) {
-        this.address = accountEntity.getAddress();
-        this.birthday = accountEntity.getBirthday();
-        this.description = accountEntity.getDescription();
-        this.email = accountEntity.getEmail();
-        this.name = accountEntity.getName();
-        this.phone = accountEntity.getPhone();
-        this.photo = accountEntity.getPhoto();
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCertificate() {
+        return certificate;
+    }
+
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
+
+    public String getPersonalId() {
+        return personalId;
+    }
+
+    public void setPersonalId(String personalId) {
+        this.personalId = personalId;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 
 }

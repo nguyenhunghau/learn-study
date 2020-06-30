@@ -20,4 +20,6 @@ public interface AccountService {
     public Boolean changePassword(String username, String oldPassword, String newPassord);
 
     public Optional<AccountEntity> findByUsername(String username);
+    
+    public AccountEntity getProfile(String code);
 }

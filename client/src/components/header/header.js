@@ -35,7 +35,7 @@ const Header = () => {
     };
 
     useEffect(() => {
-        if (!localStorage['token']) {
+        if (localStorage['token']) {
             setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
                 <MDBDropdown>
                     <MDBDropdownToggle nav caret>

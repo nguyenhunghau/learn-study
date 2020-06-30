@@ -9,15 +9,18 @@ import com.example.management.service.AccountService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -44,6 +47,11 @@ public class AccountController {
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(userDetailsService.save(user));
     }
+    
+    @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
+    public ResponseEntity<?> getAccount(@RequestParam("code") String accountCode) throws Exception {
+        return ResponseEntity.ok(accountService.getProfile(accountCode));
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody UserDTO user) {
@@ -68,9 +76,10 @@ public class AccountController {
         }
     }
     
-    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
-    public ResponseEntity<?> updateProfile(@RequestBody AccountEntity account) {
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateProfile(@ModelAttribute AccountEntity account) {
         try {
+            System.out.println(account.getFile().getOriginalFilename());
             return ResponseEntity.ok(accountService.update(account));
         } catch (Exception ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);

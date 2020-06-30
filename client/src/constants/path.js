@@ -9,6 +9,7 @@ export const URL_REGISTER = URL_DATA + 'account/register';
 export const URL_GET_CLASS_LIST = URL_DATA + 'teaching/getAll';
 export const URL_GET_SUBJECT_LIST = URL_DATA + 'subject/getList';
 export const URL_GET_UNIT_LIST = URL_DATA + 'unit/getList';
-export const URL_GET_ACCOUNT = URL_DATA + 'account/getByCode?code=';
+export const URL_GET_ACCOUNT = URL_DATA + 'account/getAccount?code=';
+export const UPDATE_ACCOUNT = URL_DATA + "account/updateProfile";
 
 export const URL_IMAGE = URL_DATA + 'image/data?link=';

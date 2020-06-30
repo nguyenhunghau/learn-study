@@ -54,4 +54,11 @@ public class AccountServiceImpl implements AccountService{
     public Optional<AccountEntity> findByUsername(String username) {
         return accountRepository.findByUsername(username);
     }
+
+    @Override
+    public AccountEntity getProfile(String code) {
+        AccountEntity entity = accountRepository.findByCode(code);
+        entity.setPassword(null);
+        return entity;
+    }
 }

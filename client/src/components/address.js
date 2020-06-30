@@ -5,18 +5,6 @@ import CityData from './quanhuyen.json'
 const Address = () => {
     const [city, setCity] = useState([]);
     const [district, setDistrict] = useState([]);
-    const options =
-        [
-            {
-                value: 'foo', label: 'Foo'
-            },
-            {
-                value: 'bar', label: 'Bar'
-            },
-            {
-                value: 'baz', label: 'Baz'
-            }
-        ];
 
     const handleChange = (cityId) => {
         //console.log(`Option selected:`, e.map(item => item.value).join())

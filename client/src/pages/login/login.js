@@ -29,6 +29,7 @@ export const Login = () => {
         .then(data => {
             createCookie('token', data.token, 1000);
             localStorage['token'] =  data.token;
+            localStorage['username'] =  username;
             window.location.href = "/";
         }).catch(function(error) {
             alert('Username or Password wrong');
