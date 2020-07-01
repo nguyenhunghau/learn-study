@@ -43,7 +43,9 @@ const ReigsterItem = () => {
             </div>
             <div class="form-group">
                 <label for="inputEstimatedDuration">Địa chỉ dạy</label>
-                <Address />
+                <div class="row">
+                    <Address />
+                </div>
             </div>
             <div class="form-group">
                 <label for="inputEstimatedDuration">Thời gian dạy</label>

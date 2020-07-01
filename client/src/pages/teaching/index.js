@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import Skeleton from 'react-loading-skeleton';
+
 import Header from '../../components/header/header';
 import ClassItem from './class-item';
-import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST,  URL_GET_UNIT_LIST} from '../../constants/path';
-import {getListData} from '../../components/component-function'
+import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST } from '../../constants/path';
+import { getListData } from '../../components/component-function'
+import Address from '../../components/address'
 
 export const TeachingClass = () => {
 
-    const [classList, setClassList] = useState([]);
+    const [classList, setClassList] = useState([{ accountEntity: {} }]);
     const [subjectList, setSubjectList] = useState([]);
     const [unitList, setUnitList] = useState([]);
     let subjectData = [];
@@ -54,9 +57,11 @@ export const TeachingClass = () => {
                 <section class="content">
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="card card-solid">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title" style={{'font-weight': 'bold', 'text-align': 'center', 'width': '100%'}}>Tìm kiếm</h3>
+                                </div>
                                 <div class="card-body pb-0">
-                                    <p class="login-box-msg">Search Class</p>
 
                                     <form action="../../index3.html" method="post">
                                         <div class="input-group mb-3">
@@ -68,14 +73,15 @@ export const TeachingClass = () => {
                                             </div>
                                         </div>
                                         <div class="input-group mb-3">
-                                            <select class="form-control custom-select">
+                                            <Address divClass={'form-group col-md-12'} />
+                                            {/* <select class="form-control custom-select">
                                                 <option>Chọn Tỉnh/ Thành Phố</option>
                                             </select>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <span class="fas fa-lock"></span>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                         <div class="input-group mb-3">
                                             <select class="form-control custom-select">
@@ -148,6 +154,7 @@ export const TeachingClass = () => {
                         <div class="col-md-9">
                             <div class="card card-solid">
                                 <div class="card-body pb-0">
+                                    {/* <Skeleton count={10} /> */}
                                     {
                                         classList.map(item =>
                                             <ClassItem data={item} />

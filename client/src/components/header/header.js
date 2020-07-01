@@ -13,7 +13,8 @@ import {
     MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon
 } from "mdbreact";
 
-import { removeCookie, readCookie } from '../component-function'
+import { removeCookie, readCookie, getListData } from '../component-function'
+import { URL_GET_ACCOUNT } from '../../constants/path'
 
 import '../plugins/fontawesome-free/css/all.min.css';
 import '../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css';
@@ -34,20 +35,26 @@ const Header = () => {
         flexDirection: "row"
     };
 
+    const checkPermission = (data) => {
+        //If check OK
+        setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
+            <MDBDropdown>
+                <MDBDropdownToggle nav caret>
+                    <MDBIcon icon="user" /> <div className="d-none d-md-inline">Nguyen Hung Hau</div>
+                </MDBDropdownToggle>
+                <MDBDropdownMenu right id="dropdown-account">
+                    <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBNavLink></MDBDropdownItem>
+                    <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="key" /> Đổi mật khẩu</MDBNavLink></MDBDropdownItem>
+                    <MDBDropdownItem><MDBNavLink to="profile" onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBNavLink></MDBDropdownItem>
+                </MDBDropdownMenu>
+            </MDBDropdown>
+        </MDBNavItem></MDBNavbarNav>);
+    }
+
     useEffect(() => {
-        if (localStorage['token']) {
-            setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
-                <MDBDropdown>
-                    <MDBDropdownToggle nav caret>
-                        <MDBIcon icon="user" /> <div className="d-none d-md-inline">Nguyen Hung Hau</div>
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu right id="dropdown-account">
-                        <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBNavLink></MDBDropdownItem>
-                        <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="key" /> Đổi mật khẩu</MDBNavLink></MDBDropdownItem>
-                        <MDBDropdownItem><MDBNavLink to="profile" onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBNavLink></MDBDropdownItem>
-                    </MDBDropdownMenu>
-                </MDBDropdown>
-            </MDBNavItem></MDBNavbarNav>);
+        if (localStorage['username']) {
+            getListData(URL_GET_ACCOUNT + localStorage['username'], checkPermission);
+
         }
     }, [])
 

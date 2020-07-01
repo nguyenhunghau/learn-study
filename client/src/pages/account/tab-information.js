@@ -57,9 +57,9 @@ export default function TabInformation() {
             return response.json();
         })
         .then(data => {
-            alert('Update profile success');
+            // alert('Update profile success');
         }).catch(function(error) {
-            alert('Username or Password wrong');
+            // alert('Username or Password wrong');
         });
     }
 
@@ -72,7 +72,6 @@ export default function TabInformation() {
 
     const changeAddess = (addressId) => {
         setAccount({...account, "addressId": addressId});
-        alert(addressId);
     }
 
     return (
@@ -139,7 +138,7 @@ export default function TabInformation() {
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Địa chỉ <span style={{'color':'red'}}>*</span></label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 row">
                             <Address value={account.addressId} onChange={changeAddess}/>
                             {/* <input type="text" class="form-control" placeholder="Địa chỉ" value={address} onChange={(e) => setAddress(e.target.value)} data="abc" /> */}
                         </div>

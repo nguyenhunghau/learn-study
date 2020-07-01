@@ -7,6 +7,7 @@ const Address = (props) => {
     const [district, setDistrict] = useState([]);
     const [cityValue, setCityValue] = useState({});
     const [districtValue, setDistrictValue] = useState({});
+    const divClass = props.divClass || 'form-group col-md-6';
 
     const handleChange = (cityId) => {
         //console.log(`Option selected:`, e.map(item => item.value).join())
@@ -62,27 +63,30 @@ const Address = (props) => {
     };
 
     const changeDistrict = (districtItem) => {
-        props.onChange(districtItem.value);
+        if (typeof props.onChange !== "undefined") { 
+            props.onChange(districtItem.value);
+        }
+        
         setDistrictValue(districtItem);
     }
 
     return (
-        <div class="row">
-            <div class="form-group col-md-6">
+        <>
+            <div className={divClass}>
             <Select placeholder="Chọn Tỉnh/ Thành Phố"
                                 value={cityValue}
                                 onChange={(cityItem) => getListDistrict(cityItem)}
                                 options={city}
                             />
             </div>
-            <div class="form-group col-md-6">
+            <div className={divClass}>
             <Select placeholder="Chọn Quận Huyện"
                                 value={districtValue}
                                 onChange={(districtItem) => changeDistrict(districtItem)}
                                 options={district}
                             />
             </div>
-        </div>
+        </>
     )
 }
 

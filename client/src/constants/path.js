@@ -11,5 +11,6 @@ export const URL_GET_SUBJECT_LIST = URL_DATA + 'subject/getList';
 export const URL_GET_UNIT_LIST = URL_DATA + 'unit/getList';
 export const URL_GET_ACCOUNT = URL_DATA + 'account/getAccount?code=';
 export const UPDATE_ACCOUNT = URL_DATA + "account/updateProfile";
+export const URL_CHECK_PERMISSION = URL_DATA + "account/checkPermission";
 
 export const URL_IMAGE = URL_DATA + 'image/data?link=';
