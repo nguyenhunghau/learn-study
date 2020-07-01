@@ -18,28 +18,33 @@ export default function TabInformation() {
     const [description, setDescription] = useState('');
     const [cmnd, setCMND] = useState('');
 
-    const [account, setAccount] = useState({});
+    const [account, setAccount] = useState({addressId: '35'});
     const [certificate, setCertificate] = useState();
     const [gender, setGender] = useState();
     const [photo, setPhoto] = useState();
+
+    var imageSource, certificateSource = null; 
 
     useEffect(() => {
         getListData(URL_GET_ACCOUNT + localStorage['username'], setAccount);
     }, []);
 
-    const handleChange = (e) => {
-        console.log(`Option selected:`, e.map(item => item.value).join())
-    }
+    // const handleChange = (e) => {
+    //     console.log(`Option selected:`, e.map(item => item.value).join())
+    // }
 
     const updateProfile = (event) => {
         event.preventDefault();
         const formData = new FormData();
-        formData.append('file', account.photo);
+        formData.append('file', imageSource);
+        formData.append('account', new Blob([JSON.stringify(account)], {
+            type: "application/json"
+        }));
 
         const requestOptions = {
             method: 'POST',
             headers: { 
-                'Content-Type': 'multipart/form-data;boundary=----WebKitFormBoundaryyrV7KO0BoCBuDbTL', //'application/json', 
+                // 'Content-Type': 'multipart/form-data;boundary=----WebKitFormBoundaryyrV7KO0BoCBuDbTL', //'application/json', 
                 'Authorization': 'Bearer ' + localStorage['token'] },
             body: formData//JSON.stringify(account)
         };
@@ -65,24 +70,29 @@ export default function TabInformation() {
         // console.log(account);
     }
 
+    const changeAddess = (addressId) => {
+        setAccount({...account, "addressId": addressId});
+        alert(addressId);
+    }
+
     return (
         <div class="card-body">
             <div class="chart tab-pane active" id="revenue-chart">
-                <form class="form-horizontal" onSubmit={updateProfile}>
+                <form class="form-horizontal" onSubmit={updateProfile} method="POST" enctype="multipart/form-data" id="fileUploadForm">
                     <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Tên <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputName" placeholder="Name" value={account.name} onChange={(e) => setAccount({... account, "name": e.target.value})} data="abc" />
+                            <input type="text" class="form-control" id="inputName" name="name" placeholder="Name" value={account.name} onChange={(e) => setAccount({... account, "name": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Giới Tính <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10 row" style={{"margin-top": "7px"}}>
                             <div class="col-sm-3">
-                                <input type="radio" checked={account.gender === 'NAM'}  value="NAM" name="gioitinh" onChange={handleChangeRadio} />Nam
+                                <input type="radio" checked={account.gender === 'NAM'}  value="NAM" name="gender" onChange={handleChangeRadio} />Nam
                         </div>
                             <div class="col-sm-3">
-                                <input type="radio" checked={account.gender === 'NU'} value="NU" name="gioitinh"  onChange={handleChangeRadio}/>Nữ
+                                <input type="radio" checked={account.gender === 'NU'} value="NU" name="gender"  onChange={handleChangeRadio}/>Nữ
                         </div>
                         </div>
                     </div>
@@ -101,69 +111,55 @@ export default function TabInformation() {
                     <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Ảnh thẻ <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="file" value={phone} onChange={(e) => setAccount({... account, "photo": e.target.files[0]})} data="abc" />
+                            <input type="file"  onChange={(e) => imageSource = e.target.files[0]} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Bằng cấp</label>
                         <div class="col-sm-10">
-                            <input type="file" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                            <input type="file" onChange={(e) => certificateSource = e.target.files[0]} />
                         </div>
                     </div>
-                    <div class="form-group row">
+                    {/* <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Môn dạy <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            {/* <select class="form-control custom-select" value={subjectRegisterList} onChange={(e) => setSubjectRegisterList(e.target.value)} data="abc">
-                                {
-                                    subjectList.map(item =>
-                                        <option value={item.id}>{item.name}</option>
-                                    )
-                                }
-                                <option>Chọn Môn Học</option>
-                            </select> */}
-                            <Select placeholder="Chọn Môn Dạy"
-                                isMulti={true}
-                                value={subjectIds}
-                                onChange={handleChange}
-                                // options={options}
-                            />
                         </div>
-                    </div>
+                    </div> */}
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Ngày sinh <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" placeholder="Ngày Sinh" value={birthday} onChange={(e) => setBirthday(e.target.value)} data="abc" />
+                            <input type="date" class="form-control" placeholder="Ngày Sinh" value={account.birthday}  onChange={(e) => setAccount({... account, "birthday": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">CMND <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" placeholder="241468211" value={cmnd} onChange={(e) => setCMND(e.target.value)} data="abc" />
+                            <input type="number" class="form-control" placeholder="241468211" value={account.personalId}  onChange={(e) => setAccount({... account, "personalId": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Địa chỉ <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <Address />
+                            <Address value={account.addressId} onChange={changeAddess}/>
                             {/* <input type="text" class="form-control" placeholder="Địa chỉ" value={address} onChange={(e) => setAddress(e.target.value)} data="abc" /> */}
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Học trường <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Đại Học Sư Phạm" value={school} onChange={(e) => setSchool(e.target.value)} data="abc" />
+                            <input type="text" class="form-control" placeholder="Đại Học Sư Phạm" value={account.school}  onChange={(e) => setAccount({... account, "school": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Chuyên nghành <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Giáo viên tiếng anh..." value={major} onChange={(e) => setMajor(e.target.value)} data="abc" />
+                            <input type="text" class="form-control" placeholder="Giáo viên tiếng anh..." value={account.major}  onChange={(e) => setAccount({... account, "major": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Mô tả</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="inputExperience" placeholder="Mô tả" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
+                            <textarea class="form-control" id="inputExperience" placeholder="Mô tả" value={account.description}  onChange={(e) => setAccount({... account, "description": e.target.value})}></textarea>
                         </div>
                     </div>
                     <div class="form-group row">

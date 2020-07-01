@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -77,9 +79,10 @@ public class AccountController {
     }
     
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateProfile(@ModelAttribute AccountEntity account) {
+    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, @RequestPart("file") MultipartFile file) {
         try {
-            System.out.println(account.getFile().getOriginalFilename());
+//            System.out.println(file.getName());
+//            System.out.println(account.getCode());
             return ResponseEntity.ok(accountService.update(account));
         } catch (Exception ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);

@@ -42,8 +42,8 @@ import org.springframework.web.multipart.MultipartFile;
 })
 public class AccountEntity  implements Serializable {
     
-    @Transient
-    MultipartFile file;
+//    @Transient
+//    MultipartFile file;
 
     @Size(max = 250)
     @Column(name = "USERNAME")
@@ -112,13 +112,13 @@ public class AccountEntity  implements Serializable {
     public AccountEntity() {
     }
 
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
+//    public MultipartFile getFile() {
+//        return file;
+//    }
+//
+//    public void setFile(MultipartFile file) {
+//        this.file = file;
+//    }
 
     public AccountEntity(Integer id) {
         this.id = id;

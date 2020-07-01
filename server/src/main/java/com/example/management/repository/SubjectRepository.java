@@ -10,6 +10,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface SubjectRepository extends CrudRepository<SubjectEntity, Integer>{
 
-    public List<SubjectEntity> findAllActive(boolean b);
+    public List<SubjectEntity> findAllActive(boolean bs);
     
 }
