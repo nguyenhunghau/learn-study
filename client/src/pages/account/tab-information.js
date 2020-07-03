@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Select from 'react-select';
-import { URL_GET_ACCOUNT, UPDATE_ACCOUNT } from '../../constants/path'
+import { URL_DOWNLOAD, UPDATE_ACCOUNT } from '../../constants/path'
 import Address from '../../components/address'
+import API from '../../components/api'
 
 export default function TabInformation(prop) {
 
@@ -9,8 +9,11 @@ export default function TabInformation(prop) {
     const [certificate, setCertificate] = useState();
     const [gender, setGender] = useState();
     const [photo, setPhoto] = useState();
-
-    var imageSource, certificateSource = null; 
+    // const [htmlInputPhoto, setHtmlInputPhoto] = useState();
+    const htmlInputPhoto = account.photo?
+         <input type="file"  onChange={(e) => imageSource = e.target.files[0]}/>
+         : <input type="file"  onChange={(e) => imageSource = e.target.files[0]} required/>;
+    var imageSource, certificateSource = null;
 
     const updateProfile = (event) => {
         event.preventDefault();
@@ -20,27 +23,28 @@ export default function TabInformation(prop) {
         formData.append('account', new Blob([JSON.stringify(account)], {
             type: "application/json"
         }));
+        API.post({ url: UPDATE_ACCOUNT, body: formData, callBack: (data) => prop.changeAccount(data)});
 
-        const requestOptions = {
-            method: 'POST',
-            headers: { 
-                'Authorization': 'Bearer ' + localStorage['token'] },
-            body: formData
-        };
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 
+        //         'Authorization': 'Bearer ' + localStorage['token'] },
+        //     body: formData
+        // };
 
-        fetch(UPDATE_ACCOUNT, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            prop.changeAccount(data);
-            // alert('Update profile success');
-        }).catch(function(error) {
-            // alert('Username or Password wrong');
-        });
+        // fetch(UPDATE_ACCOUNT, requestOptions)
+        // .then(response => {
+        //     if (!response.ok) {
+        //         throw Error(response.statusText);
+        //     }
+        //     return response.json();
+        // })
+        // .then(data => {
+        //     prop.changeAccount(data);
+        //     // alert('Update profile success');
+        // }).catch(function(error) {
+        //     // alert('Username or Password wrong');
+        // });
     }
 
     const handleChangeRadio = (event) => {
@@ -87,13 +91,15 @@ export default function TabInformation(prop) {
                     <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Ảnh thẻ <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="file"  onChange={(e) => imageSource = e.target.files[0]} required />
+                            {htmlInputPhoto}
+                            {account.photo? <a target="_blank" href={`${URL_DOWNLOAD}${account.photo}`}>{account.photo.substring(account.photo.lastIndexOf('/') + 1)}</a>: ''}
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Bằng cấp</label>
                         <div class="col-sm-10">
                             <input type="file" onChange={(e) => certificateSource = e.target.files[0]} />
+                            {account.certificate? <a target="_blank" href={`${URL_DOWNLOAD}${account.certificate}`}>Avatar</a>: ''}
                         </div>
                     </div>
                     {/* <div class="form-group row">

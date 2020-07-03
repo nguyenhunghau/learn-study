@@ -14,23 +14,26 @@ export const TeachingClass = () => {
 
     useEffect(() => {
         document.title = "Danh sách các lớp dạy";
-        API.get(URL_GET_SUBJECT_LIST, getListClass);
-        API.get(URL_GET_UNIT_LIST, setUnitList);
+        getListData();
     }, []);
 
     const handleDataClass = (data) => {
         data.map(item => {
             let subjectArray = item.subjectIds.split(',');
-            item.subjectName = subjectData.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
+            item.subjectName = subjectList.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
             // item.level = subjectData.filter(unit => unitList.indexOf(subject.id + "") >= 0).map(unit => unit.name).join(', ');
         });
         setClassList(data);
     }
 
-    const getListClass = (data) => {
-        setSubjectList(data);
-        subjectData = data
-        API.get(URL_GET_CLASS_LIST, handleDataClass);
+    async function getListData() {
+        const subjectData = API.get({ url: URL_GET_SUBJECT_LIST});
+        const unitData = API.get({ url: URL_GET_SUBJECT_LIST});
+        setSubjectList(await subjectData);
+        setUnitList(await unitData);
+        // subjectData = data
+        const classData = await API.get({ url: URL_GET_CLASS_LIST});
+        handleDataClass(classData);
     }
 
     return (
@@ -57,7 +60,7 @@ export const TeachingClass = () => {
                         <div class="col-md-3">
                             <div class="card card-primary">
                                 <div class="card-header">
-                                    <h3 class="card-title" style={{'font-weight': 'bold', 'text-align': 'center', 'width': '100%'}}>Tìm kiếm</h3>
+                                    <h3 class="card-title" style={{ 'font-weight': 'bold', 'text-align': 'center', 'width': '100%' }}>Tìm kiếm</h3>
                                 </div>
                                 <div class="card-body pb-0">
 

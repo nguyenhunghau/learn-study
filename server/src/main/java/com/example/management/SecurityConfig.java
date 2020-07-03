@@ -104,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers("/account/login")
                 .antMatchers("/account/register")
-                .antMatchers("/image/data");
+                .antMatchers("/image/**");
     }
 
 }

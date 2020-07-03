@@ -14,3 +14,4 @@ export const UPDATE_ACCOUNT = URL_DATA + "account/updateProfile";
 export const URL_CHECK_PERMISSION = URL_DATA + "account/checkPermission";
 
 export const URL_IMAGE = URL_DATA + 'image/data?link=';
+export const URL_DOWNLOAD = URL_DATA + 'image/download?link=';

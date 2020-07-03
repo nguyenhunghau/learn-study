@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {Link} from "react-router-dom";
-import Header from '../../components/header/header';
-import Footer from '../../components/footer';
-import {URL_LOGIN} from '../../constants/path';
+import { Link } from "react-router-dom";
+import API from '../../components/api'
+import { URL_LOGIN } from '../../constants/path';
 import { useHistory } from 'react-router-dom';
-import { createCookie} from '../../components/component-function';
+import { createCookie } from '../../components/component-function';
 
 export const Login = () => {
 
@@ -12,29 +11,36 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const history = useHistory();
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ "username": username, "password": password })
-        };
+    const loginSuccess = (data) => {
+        createCookie('token', data.token, 1000);
+        localStorage['token'] = data.token;
+        localStorage['username'] = username;
+        history.push("/");
+    }
 
-        fetch(URL_LOGIN, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            createCookie('token', data.token, 1000);
-            localStorage['token'] =  data.token;
-            localStorage['username'] =  username;
-            history.push("/");
-        }).catch(function(error) {
-            alert('Username or Password wrong');
-        });
+    async function onSubmit(event) {
+        event.preventDefault();
+        const data = await API.post({ url: URL_LOGIN, body: JSON.stringify({ "username": username, "password": password })});
+        loginSuccess(data);
+        //API.post({ url: URL_LOGIN, body: JSON.stringify({ "username": username, "password": password }), callBack: loginSuccess});
+        // const requestOptions = {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ "username": username, "password": password })
+        // };
+
+        // fetch(URL_LOGIN, requestOptions)
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw Error(response.statusText);
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(data => {
+
+        //     }).catch(function (error) {
+        //         alert('Username or Password wrong');
+        //     });
     }
 
     return (
@@ -46,7 +52,7 @@ export const Login = () => {
 
                         <form onSubmit={onSubmit} method="post">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required/>
+                                <input type="text" class="form-control" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-user"></span>
@@ -54,7 +60,7 @@ export const Login = () => {
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="password" class="form-control" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required/>
+                                <input type="password" class="form-control" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>

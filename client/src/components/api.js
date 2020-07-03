@@ -1,4 +1,3 @@
-import React from "react";
 import { store } from 'react-notifications-component';
 import axios from 'axios';
 import 'react-notifications-component/dist/theme.css';
@@ -16,32 +15,42 @@ var API = function() {
         }
     };
 
-    const requestOptions = {
-        contentType: 'application/json',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage['token']
+    async function get(props) {
+        const requestOptions = {
+            contentType: 'application/json',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage['token']
+            }
+        };
+        try {
+            const result = await axios.get(props.url, requestOptions);
+            return result.data;
+        } catch (error) {
+            store.addNotification({
+                ...notification,
+                title: 'Error',
+                type: 'danger',
+                message: 'Get data from url fail ' + props.url
+            })
         }
-    };
-
-    const get = (url, callBack) => {
-        axios.get(url, requestOptions)
-            .then(function (response) {
-                // store.addNotification({
-                //     ...notification,
-                //     title: 'Error',
-                //     type: 'success',
-                //     message: 'Get data ok'
-                // })
-                callBack(response.data);
-            }).catch(function (error) {
-                store.addNotification({
-                    ...notification,
-                    title: 'Error',
-                    type: 'danger',
-                    message: 'Get data from url fail ' + url
-                })
-            });
     }
-    return {get: get};
+
+    async function post(props){
+        const requestOptions = {
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage['token'] }
+        };
+        try {
+            const result = await axios.post(props.url, props.body, requestOptions);
+            return result.data;
+        } catch (error) {
+            store.addNotification({
+                ...notification,
+                title: 'Error',
+                type: 'danger',
+                message: 'Get data from url fail ' + props.url
+            })
+        }
+    }
+    return {get: get, post: post};
 }();
 export default API;

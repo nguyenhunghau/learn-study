@@ -7,7 +7,7 @@ import { Tab, Tabs } from "react-bootstrap";
 import userLogo from '../../components/img/avatar.png';
 import { URL_IMAGE } from '../../constants/path';
 import { URL_GET_ACCOUNT, UPDATE_ACCOUNT } from '../../constants/path'
-import { getListData } from '../../components/component-function'
+import API from '../../components/api'
 
 export const Profile = () => {
     const [logo, setLogo] = useState(userLogo);
@@ -18,7 +18,7 @@ export const Profile = () => {
     // }
 
     useEffect(() => {
-        getListData(URL_GET_ACCOUNT + localStorage['username'], setAccount);
+        API.get({ url: URL_GET_ACCOUNT + localStorage['username'], callBack: setAccount });
     }, []);
 
     return (
@@ -50,7 +50,7 @@ export const Profile = () => {
                                     <div class="card-body box-profile">
                                         <div class="text-center">
                                             <img class="profile-user-img img-fluid img-circle"
-                                                src={`${URL_IMAGE}${account.logo}`}
+                                                src={`${URL_IMAGE}${account.photo}`}
                                                 alt="User profile picture" />
                                         </div>
 
