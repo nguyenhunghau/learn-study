@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Skeleton from 'react-loading-skeleton';
-
 import Header from '../../components/header/header';
 import ClassItem from './class-item';
 import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST } from '../../constants/path';
-import { getListData } from '../../components/component-function'
+import API from '../../components/api'
 import Address from '../../components/address'
 
 export const TeachingClass = () => {
@@ -16,8 +14,8 @@ export const TeachingClass = () => {
 
     useEffect(() => {
         document.title = "Danh sách các lớp dạy";
-        getListData(URL_GET_SUBJECT_LIST, getListClass);
-        getListData(URL_GET_UNIT_LIST, setUnitList);
+        API.get(URL_GET_SUBJECT_LIST, getListClass);
+        API.get(URL_GET_UNIT_LIST, setUnitList);
     }, []);
 
     const handleDataClass = (data) => {
@@ -32,7 +30,7 @@ export const TeachingClass = () => {
     const getListClass = (data) => {
         setSubjectList(data);
         subjectData = data
-        getListData(URL_GET_CLASS_LIST, handleDataClass);
+        API.get(URL_GET_CLASS_LIST, handleDataClass);
     }
 
     return (
@@ -153,7 +151,7 @@ export const TeachingClass = () => {
                         </div>
                         <div class="col-md-9">
                             <div class="card card-solid">
-                                <div class="card-body pb-0">
+                                <div class="card-body pb-0" id="list-class">
                                     {/* <Skeleton count={10} /> */}
                                     {
                                         classList.map(item =>

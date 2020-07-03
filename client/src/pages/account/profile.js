@@ -5,8 +5,21 @@ import TabActivity from './tab-activity';
 import TabTimeline from './tab-timeline';
 import { Tab, Tabs } from "react-bootstrap";
 import userLogo from '../../components/img/avatar.png';
+import { URL_IMAGE } from '../../constants/path';
+import { URL_GET_ACCOUNT, UPDATE_ACCOUNT } from '../../constants/path'
+import { getListData } from '../../components/component-function'
 
 export const Profile = () => {
+    const [logo, setLogo] = useState(userLogo);
+    const [account, setAccount] = useState({addressId: '35'});
+
+    // const changeImage = (newLogo) => {
+    //     setLogo(`${URL_IMAGE}${newLogo}`);
+    // }
+
+    useEffect(() => {
+        getListData(URL_GET_ACCOUNT + localStorage['username'], setAccount);
+    }, []);
 
     return (
         <div className={'wrapper'}>
@@ -37,7 +50,7 @@ export const Profile = () => {
                                     <div class="card-body box-profile">
                                         <div class="text-center">
                                             <img class="profile-user-img img-fluid img-circle"
-                                                src={userLogo}
+                                                src={`${URL_IMAGE}${account.logo}`}
                                                 alt="User profile picture" />
                                         </div>
 
@@ -96,7 +109,7 @@ export const Profile = () => {
                                 <div class="card" id="tab_profile">
                                     <Tabs defaultActiveKey="Profile" id="uncontrolled-tab-example">
                                         <Tab eventKey="Profile" title="Profile">
-                                            <TabInformation />
+                                            {account.name? <TabInformation changeAccount={setAccount} account={account}/>: ''}
                                         </Tab>
                                         <Tab eventKey="Activity" title="Activity">
                                             <TabActivity />

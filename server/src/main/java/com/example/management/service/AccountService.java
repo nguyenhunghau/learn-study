@@ -3,6 +3,7 @@ package com.example.management.service;
 import com.example.management.entity.AccountEntity;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -15,7 +16,7 @@ public interface AccountService {
     
     public AccountEntity register(AccountEntity accountEntity);
     
-    public AccountEntity update(AccountEntity accountEntity);
+    public AccountEntity update(AccountEntity accountEntity, MultipartFile photo, MultipartFile certificate);
     
     public Boolean changePassword(String username, String oldPassword, String newPassord);
 

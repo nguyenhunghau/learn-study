@@ -17,10 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.springframework.web.multipart.MultipartFile;
 //</editor-fold>
 
 /**
@@ -29,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Entity
 @Table(name = "account")
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AccountEntity.findAll", query = "SELECT a FROM AccountEntity a")
     , @NamedQuery(name = "AccountEntity.findById", query = "SELECT a FROM AccountEntity a WHERE a.id = :id")
@@ -42,9 +38,6 @@ import org.springframework.web.multipart.MultipartFile;
 })
 public class AccountEntity  implements Serializable {
     
-//    @Transient
-//    MultipartFile file;
-
     @Size(max = 250)
     @Column(name = "USERNAME")
     private String username;
@@ -108,17 +101,8 @@ public class AccountEntity  implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date birthday;
     
-
     public AccountEntity() {
     }
-
-//    public MultipartFile getFile() {
-//        return file;
-//    }
-//
-//    public void setFile(MultipartFile file) {
-//        this.file = file;
-//    }
 
     public AccountEntity(Integer id) {
         this.id = id;
@@ -156,6 +140,11 @@ public class AccountEntity  implements Serializable {
         this.name = accountEntity.getName();
         this.phone = accountEntity.getPhone();
         this.photo = accountEntity.getPhoto();
+        this.certificate = accountEntity.getCertificate();
+        this.school = accountEntity.getSchool();
+        this.major = accountEntity.getMajor();
+        this.gender = accountEntity.getGender();
+        this.personalId = accountEntity.getPersonalId();
     }
 
     public String getUsername() {

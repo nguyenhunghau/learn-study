@@ -16,7 +16,7 @@ const Address = (props) => {
     useEffect(() => {
         getListCity();
         findCityByDistrictId();
-    }, []);
+    }, [props.value]);
 
     const getListCity = () => {
         const cityArray = [];

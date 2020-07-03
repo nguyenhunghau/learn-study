@@ -6,6 +6,7 @@ import com.example.management.entity.AccountEntity;
 import com.example.management.security.CustomUserDetailsService;
 import com.example.management.security.JwtTokenUtil;
 import com.example.management.service.AccountService;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,10 @@ public class AccountController {
     
     @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
     public ResponseEntity<?> getAccount(@RequestParam("code") String accountCode) throws Exception {
+        Optional<AccountEntity> accountEntity = accountService.findByUsername(accountCode);
+        if(accountEntity.isPresent()) {
+            return ResponseEntity.ok(accountEntity.get());
+        }
         return ResponseEntity.ok(accountService.getProfile(accountCode));
     }
 
@@ -79,11 +84,10 @@ public class AccountController {
     }
     
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, @RequestPart("file") MultipartFile file) {
+    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, @RequestPart(value = "photo") MultipartFile photo,
+            @RequestPart(value = "certificate", required = false) MultipartFile certificate) {
         try {
-//            System.out.println(file.getName());
-//            System.out.println(account.getCode());
-            return ResponseEntity.ok(accountService.update(account));
+            return ResponseEntity.ok(accountService.update(account, photo, certificate));
         } catch (Exception ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             return ResponseEntity.badRequest().body(ex);

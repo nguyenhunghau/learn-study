@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Component } from "react-bootstrap";
 import HomeTab from "./tab";
 import { DataTable } from "react-data-table-component";
-import MyComponent from "./table";
 import Header from '../../components/header/header';
 import MenuLeft from '../../components/menu/menu-left';
-import axios from 'axios';
 
 import './home.css';
 

@@ -1,42 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Select from 'react-select';
 import { URL_GET_ACCOUNT, UPDATE_ACCOUNT } from '../../constants/path'
-import { getListData } from '../../components/component-function'
 import Address from '../../components/address'
 
-export default function TabInformation() {
+export default function TabInformation(prop) {
 
-    const [subjectIds, setSubjectIds] = useState();
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [major, setMajor] = useState('');
-    const [school, setSchool] = useState('');
-    const [subjectRegisterList, setSubjectRegisterList] = useState('');
-    const [birthday, setBirthday] = useState('');
-    const [address, setAddress] = useState('');
-    const [description, setDescription] = useState('');
-    const [cmnd, setCMND] = useState('');
-
-    const [account, setAccount] = useState({addressId: '35'});
+    const [account, setAccount] = useState(prop.account);
     const [certificate, setCertificate] = useState();
     const [gender, setGender] = useState();
     const [photo, setPhoto] = useState();
 
     var imageSource, certificateSource = null; 
 
-    useEffect(() => {
-        getListData(URL_GET_ACCOUNT + localStorage['username'], setAccount);
-    }, []);
-
-    // const handleChange = (e) => {
-    //     console.log(`Option selected:`, e.map(item => item.value).join())
-    // }
-
     const updateProfile = (event) => {
         event.preventDefault();
         const formData = new FormData();
-        formData.append('file', imageSource);
+        formData.append('photo', imageSource);
+        formData.append('certificate', certificateSource);
         formData.append('account', new Blob([JSON.stringify(account)], {
             type: "application/json"
         }));
@@ -44,9 +24,8 @@ export default function TabInformation() {
         const requestOptions = {
             method: 'POST',
             headers: { 
-                // 'Content-Type': 'multipart/form-data;boundary=----WebKitFormBoundaryyrV7KO0BoCBuDbTL', //'application/json', 
                 'Authorization': 'Bearer ' + localStorage['token'] },
-            body: formData//JSON.stringify(account)
+            body: formData
         };
 
         fetch(UPDATE_ACCOUNT, requestOptions)
@@ -57,6 +36,7 @@ export default function TabInformation() {
             return response.json();
         })
         .then(data => {
+            prop.changeAccount(data);
             // alert('Update profile success');
         }).catch(function(error) {
             // alert('Username or Password wrong');
@@ -64,10 +44,7 @@ export default function TabInformation() {
     }
 
     const handleChangeRadio = (event) => {
-        // alert(event.target.value);
-        // account.gender = event.target.value;
-        // setAccount(account)
-        // console.log(account);
+        setAccount({...account, 'gender': event.target.value})
     }
 
     const changeAddess = (addressId) => {
@@ -110,7 +87,7 @@ export default function TabInformation() {
                     <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Ảnh thẻ <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="file"  onChange={(e) => imageSource = e.target.files[0]} data="abc" />
+                            <input type="file"  onChange={(e) => imageSource = e.target.files[0]} required />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -139,7 +116,7 @@ export default function TabInformation() {
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Địa chỉ <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10 row">
-                            <Address value={account.addressId} onChange={changeAddess}/>
+                            <Address value={account.addressId.toString()} onChange={changeAddess}/>
                             {/* <input type="text" class="form-control" placeholder="Địa chỉ" value={address} onChange={(e) => setAddress(e.target.value)} data="abc" /> */}
                         </div>
                     </div>

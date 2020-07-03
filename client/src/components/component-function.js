@@ -14,7 +14,7 @@ export const removeCookie = (name) => {
     createCookie(name, "", -1);
 }
 
-export const readCookie = (name)  => {
+export const readCookie = (name) => {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
@@ -27,25 +27,31 @@ export const readCookie = (name)  => {
     return null;
 }
 
+const notification = {
+    type: "success",
+    insert: "top",
+    container: "top-left",
+    animationIn: ["animated", "fadeIn"],
+    animationOut: ["animated", "fadeOut"],
+    dismiss: {
+        duration: 3000
+      }
+};
+
 export const getListData = (url, callBack) => {
-    const requestOptions = {
-        method: 'GET',
-        contentType: 'application/json',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage['token']
-        }
-    };
     
-    fetch(url, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw Error(response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            callBack(data);
-        }).catch(function (error) {
-            alert('Get data from url fail ' + url );
-        });
+
+    // fetch(url, requestOptions)
+    //     .then(response => {
+    //         if (!response.ok) {
+    //             throw Error(response.statusText);
+    //         }
+    //         return response.json();
+    //     })
+    //     .then(data => {
+    //         callBack(data);
+    //     }).catch(function (error) {
+    //         NotificationManager.error('Get data from url fail ' + url, 'Error!');
+    //     });
+    
 }

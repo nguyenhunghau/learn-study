@@ -12,6 +12,7 @@ import Login from './pages/login/index';
 import Register from './pages/register/index'
 import {Profile} from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import ReactNotifications from 'react-notifications-component';
 
 class App extends React.Component {
 
@@ -19,6 +20,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
+          <ReactNotifications />
           <Router>
             <Switch>
               <Route exact path="/" component={Home} />

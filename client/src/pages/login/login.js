@@ -3,13 +3,14 @@ import {Link} from "react-router-dom";
 import Header from '../../components/header/header';
 import Footer from '../../components/footer';
 import {URL_LOGIN} from '../../constants/path';
-
+import { useHistory } from 'react-router-dom';
 import { createCookie} from '../../components/component-function';
 
 export const Login = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const history = useHistory();
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -30,7 +31,7 @@ export const Login = () => {
             createCookie('token', data.token, 1000);
             localStorage['token'] =  data.token;
             localStorage['username'] =  username;
-            window.location.href = "/";
+            history.push("/");
         }).catch(function(error) {
             alert('Username or Password wrong');
         });

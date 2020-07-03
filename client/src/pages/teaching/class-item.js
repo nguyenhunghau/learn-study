@@ -1,6 +1,6 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
-import styles from './teaching.css';
+import './teaching.css';
 import { URL_IMAGE } from '../../constants/path';
 
 export default function ClassItem(props) {
@@ -17,7 +17,7 @@ export default function ClassItem(props) {
                         <div class="row">
                             <div class="col-3 text-center">
                                 {data.accountEntity.photo? 
-                                <img src={`${URL_IMAGE}${data.accountEntity.photo}`} alt="" className={styles.fluid}></img>:
+                                <img src={`${URL_IMAGE}${data.accountEntity.photo}`} alt="" className={'fluid'}></img>:
                                  <Skeleton height = {200} width = {200}/>}
                                 
                             </div>
@@ -29,7 +29,7 @@ export default function ClassItem(props) {
                                     <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {data.accountEntity.school ? `Giáo viên trường: ${data.accountEntity.school}` : <Skeleton />}</li>
                                     <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {data.level ? `Level: ${data.level}` : <Skeleton />}</li>
                                     <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {data.dateStart ? `Ngày mở lớp: ${data.dateStart}` : <Skeleton />}</li>
-                                    <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {data.accountEntity.experience ? `Kinh nghiệm: ${data.accountEntity.experience}` : <Skeleton />} năm</li>
+                                    {/* <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> {data.accountEntity.experience ? `Kinh nghiệm: ${data.accountEntity.experience}` : <Skeleton />} năm</li> */}
                                 </ul>
                             </div>
                             <div class="col-3">

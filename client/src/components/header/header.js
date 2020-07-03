@@ -40,7 +40,7 @@ const Header = () => {
         setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
             <MDBDropdown>
                 <MDBDropdownToggle nav caret>
-                    <MDBIcon icon="user" /> <div className="d-none d-md-inline">Nguyen Hung Hau</div>
+        <MDBIcon icon="user" /> <div className="d-none d-md-inline">{data.name}</div>
                 </MDBDropdownToggle>
                 <MDBDropdownMenu right id="dropdown-account">
                     <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBNavLink></MDBDropdownItem>
@@ -54,13 +54,13 @@ const Header = () => {
     useEffect(() => {
         if (localStorage['username']) {
             getListData(URL_GET_ACCOUNT + localStorage['username'], checkPermission);
-
         }
     }, [])
 
     const logout = () => {
         //remove cookie
         removeCookie('token');
+        localStorage.removeItem("username");
         window.location.href = "login";
     }
 
