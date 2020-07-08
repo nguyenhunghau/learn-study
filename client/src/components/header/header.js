@@ -50,6 +50,12 @@ const Header = () => {
             </MDBNavItem></MDBNavbarNav>);
         }
     }
+    const checkActiveMenu = (link) => {
+        if(window.location.pathname === link) {
+            return 'active';
+        }
+        return '';
+    }
 
     useEffect(() => {
         checkPermission();
@@ -66,7 +72,7 @@ const Header = () => {
         <MDBNavbar style={{ background: '#3f5c80' }} double expand="md" fixed="top" id="nav-main" className="fixed-sn light-blue-skin">
             <MDBCollapse isOpen={true} navbar>
                 <MDBNavbarNav left>
-                    <MDBNavItem active>
+                    <MDBNavItem>
                         <MDBNavLink to="#">
                             <img src={adminLTELogo} style={{ height: '30px' }} />
                         </MDBNavLink>
@@ -84,19 +90,19 @@ const Header = () => {
                         </form>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink to="#">
+                        <MDBNavLink activeClassName={checkActiveMenu('/')} to="#">
                             <MDBIcon icon="/" className="d-inline-inline" />{" "}
                             <div className="d-none d-md-inline">Trang chủ</div>
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink to="teaching">
+                        <MDBNavLink activeClassName={checkActiveMenu('/teaching')} to="teaching">
                             <MDBIcon icon="chalkboard-teacher" />{" "}
                             <div className="d-none d-md-inline">Lớp hiện có</div>
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink to="teaching-register">
+                        <MDBNavLink activeClassName={checkActiveMenu('/teaching-register')} to="teaching-register">
                             <MDBIcon icon="registered" />{" "}
                             <div className="d-none d-md-inline">Đăng kí lớp dạy</div>
                         </MDBNavLink>
