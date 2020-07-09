@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { URL_DOWNLOAD, UPDATE_ACCOUNT } from '../../constants/path'
 import Address from '../../components/address'
 import API from '../../components/api'
+import {getCode} from '../../components/component-function'
 
 export default function TabInformation(prop) {
 
@@ -14,8 +15,9 @@ export default function TabInformation(prop) {
          <input type="file"  onChange={(e) => imageSource = e.target.files[0]}/>
          : <input type="file"  onChange={(e) => imageSource = e.target.files[0]} required/>;
     var imageSource, certificateSource = null;
+    const classTextbox =  getCode() === account.code? 'form-control': 'none-border';
 
-    const updateProfile = (event) => {
+    const updateProfile = async (event) => {
         event.preventDefault();
         const formData = new FormData();
         formData.append('photo', imageSource);
@@ -23,28 +25,8 @@ export default function TabInformation(prop) {
         formData.append('account', new Blob([JSON.stringify(account)], {
             type: "application/json"
         }));
-        API.post({ url: UPDATE_ACCOUNT, body: formData, callBack: (data) => prop.changeAccount(data)});
-
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: { 
-        //         'Authorization': 'Bearer ' + localStorage['token'] },
-        //     body: formData
-        // };
-
-        // fetch(UPDATE_ACCOUNT, requestOptions)
-        // .then(response => {
-        //     if (!response.ok) {
-        //         throw Error(response.statusText);
-        //     }
-        //     return response.json();
-        // })
-        // .then(data => {
-        //     prop.changeAccount(data);
-        //     // alert('Update profile success');
-        // }).catch(function(error) {
-        //     // alert('Username or Password wrong');
-        // });
+        const data = await API.post({ url: UPDATE_ACCOUNT, body: formData});
+        prop.changeAccount(data);
     }
 
     const handleChangeRadio = (event) => {
@@ -60,9 +42,9 @@ export default function TabInformation(prop) {
             <div class="chart tab-pane active" id="revenue-chart">
                 <form class="form-horizontal" onSubmit={updateProfile} method="POST" enctype="multipart/form-data" id="fileUploadForm">
                     <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Tên <span style={{'color':'red'}}>*</span></label>
+                        <label for="inputName" className={'col-sm-2 col-form-label'}>Tên <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputName" name="name" placeholder="Name" value={account.name} onChange={(e) => setAccount({... account, "name": e.target.value})} data="abc" />
+                            <input type="text" className={classTextbox} id="inputName" name="name" placeholder="Name" value={account.name} onChange={(e) => setAccount({... account, "name": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -79,13 +61,13 @@ export default function TabInformation(prop) {
                     <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Email <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" value={account.email}  onChange={(e) => setAccount({... account, "email": e.target.value})} data="abc" />
+                            <input type="email" className={classTextbox} id="inputEmail" placeholder="Email" value={account.email}  onChange={(e) => setAccount({... account, "email": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Số điện thoại <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="inputName2" placeholder="012345678" value={account.phone}  onChange={(e) => setAccount({... account, "phone": e.target.value})} data="abc" />
+                            <input type="number" className={classTextbox} id="inputName2" placeholder="012345678" value={account.phone}  onChange={(e) => setAccount({... account, "phone": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -110,13 +92,13 @@ export default function TabInformation(prop) {
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Ngày sinh <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" placeholder="Ngày Sinh" value={account.birthday}  onChange={(e) => setAccount({... account, "birthday": e.target.value})} data="abc" />
+                            <input type="date" className={classTextbox} placeholder="Ngày Sinh" value={account.birthday}  onChange={(e) => setAccount({... account, "birthday": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">CMND <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" placeholder="241468211" value={account.personalId}  onChange={(e) => setAccount({... account, "personalId": e.target.value})} data="abc" />
+                            <input type="number" className={classTextbox} placeholder="241468211" value={account.personalId}  onChange={(e) => setAccount({... account, "personalId": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -129,19 +111,19 @@ export default function TabInformation(prop) {
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Học trường <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Đại Học Sư Phạm" value={account.school}  onChange={(e) => setAccount({... account, "school": e.target.value})} data="abc" />
+                            <input type="text" className={classTextbox} placeholder="Đại Học Sư Phạm" value={account.school}  onChange={(e) => setAccount({... account, "school": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Chuyên nghành <span style={{'color':'red'}}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="Giáo viên tiếng anh..." value={account.major}  onChange={(e) => setAccount({... account, "major": e.target.value})} data="abc" />
+                            <input type="text" className={classTextbox} placeholder="Giáo viên tiếng anh..." value={account.major}  onChange={(e) => setAccount({... account, "major": e.target.value})} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Mô tả</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" id="inputExperience" placeholder="Mô tả" value={account.description}  onChange={(e) => setAccount({... account, "description": e.target.value})}></textarea>
+                            <textarea className={classTextbox} id="inputExperience" placeholder="Mô tả" value={account.description}  onChange={(e) => setAccount({... account, "description": e.target.value})}></textarea>
                         </div>
                     </div>
                     <div class="form-group row">

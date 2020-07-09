@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import Header from '../../components/header/header';
 import TabInformation from './tab-information';
 import TabActivity from './tab-activity';
@@ -8,18 +9,30 @@ import userLogo from '../../components/img/avatar.png';
 import { URL_IMAGE } from '../../constants/path';
 import { URL_GET_ACCOUNT, UPDATE_ACCOUNT } from '../../constants/path'
 import API from '../../components/api'
+import { getCode } from '../../components/component-function'
+import Notification from '../../components/notifycation';
 
-export const Profile = () => {
-    const [logo, setLogo] = useState(userLogo);
-    const [account, setAccount] = useState({addressId: '35'});
+export const Profile = (props) => {
+    const [account, setAccount] = useState({ addressId: '35' });
+    const history = useHistory();
 
     // const changeImage = (newLogo) => {
     //     setLogo(`${URL_IMAGE}${newLogo}`);
     // }
 
     useEffect(() => {
-        API.get({ url: URL_GET_ACCOUNT + localStorage['username'], callBack: setAccount });
+        document.title = "Trang cá nhân";
+        // if (!getCode()) {
+        //     history.push('/');
+        //     return;
+        // }
+        getAccount();
     }, []);
+
+    const getAccount = async () => {
+        const data = await API.get({ url: URL_GET_ACCOUNT + (props.match.params.code || getCode()) });
+        setAccount(data);
+    }
 
     return (
         <div className={'wrapper'}>
@@ -109,7 +122,7 @@ export const Profile = () => {
                                 <div class="card" id="tab_profile">
                                     <Tabs defaultActiveKey="Profile" id="uncontrolled-tab-example">
                                         <Tab eventKey="Profile" title="Profile">
-                                            {account.name? <TabInformation changeAccount={setAccount} account={account}/>: ''}
+                                            {account.name ? <TabInformation changeAccount={setAccount} account={account} /> : ''}
                                         </Tab>
                                         <Tab eventKey="Activity" title="Activity">
                                             <TabActivity />

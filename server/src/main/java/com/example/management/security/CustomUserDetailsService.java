@@ -1,13 +1,11 @@
 package com.example.management.security;
 
 import com.example.management.dto.UserDTO;
+import com.example.management.dto.UserLoginDTO;
 import com.example.management.entity.AccountEntity;
 import com.example.management.repository.AccountRepository;
-import java.util.ArrayList;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,13 +25,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     private PasswordEncoder bcryptEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserLoginDTO loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<AccountEntity> entity = this.accountRepository.findByUsername(username);
         if (!entity.isPresent()) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new User(entity.get().getUsername(), entity.get().getPassword(),
-                new ArrayList<>());
+        return new UserLoginDTO(entity.get().getUsername(), entity.get().getCode(), entity.get().getPassword());
     }
 
     public AccountEntity save(UserDTO user) {

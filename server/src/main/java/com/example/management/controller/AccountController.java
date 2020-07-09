@@ -2,6 +2,7 @@ package com.example.management.controller;
 
 import com.example.management.dto.JwtResponseDTO;
 import com.example.management.dto.UserDTO;
+import com.example.management.dto.UserLoginDTO;
 import com.example.management.entity.AccountEntity;
 import com.example.management.security.CustomUserDetailsService;
 import com.example.management.security.JwtTokenUtil;
@@ -16,8 +17,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,9 +63,9 @@ public class AccountController {
     public ResponseEntity<?> login(@RequestBody UserDTO user) {
         try {
             authenticate(user.getUsername(), user.getPassword());
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-            final String token = jwtTokenUtil.generateToken(userDetails);
-            return ResponseEntity.ok(new JwtResponseDTO(token));
+            final UserLoginDTO userLoginDTO = userDetailsService.loadUserByUsername(user.getUsername());
+            final String token = jwtTokenUtil.generateToken(userLoginDTO);
+            return ResponseEntity.ok(new JwtResponseDTO(token, userLoginDTO.getCode()));
         } catch (Exception ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             return ResponseEntity.badRequest().body(ex);
@@ -84,7 +83,7 @@ public class AccountController {
     }
     
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, @RequestPart(value = "photo") MultipartFile photo,
+    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, @RequestPart(value = "photo", required = false) MultipartFile photo,
             @RequestPart(value = "certificate", required = false) MultipartFile certificate) {
         try {
             return ResponseEntity.ok(accountService.update(account, photo, certificate));

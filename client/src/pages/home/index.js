@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import HomeTab from "./tab";
 import { DataTable } from "react-data-table-component";
 import Header from '../../components/header/header';
-import MenuLeft from '../../components/menu/menu-left';
 
 import './home.css';
 

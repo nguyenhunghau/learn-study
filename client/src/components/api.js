@@ -1,19 +1,7 @@
-import { store } from 'react-notifications-component';
 import axios from 'axios';
-import 'react-notifications-component/dist/theme.css';
-import 'animate.css';
+import Notification from './notifycation';
 
-var API = function() {
-    const notification = {
-        type: "success",
-        insert: "top",
-        container: "top-left",
-        animationIn: ["animated", "fadeIn"],
-        animationOut: ["animated", "fadeOut"],
-        dismiss: {
-            duration: 3000
-        }
-    };
+var API = function () {
 
     async function get(props) {
         const requestOptions = {
@@ -26,16 +14,15 @@ var API = function() {
             const result = await axios.get(props.url, requestOptions);
             return result.data;
         } catch (error) {
-            store.addNotification({
-                ...notification,
+            Notification.show({
                 title: 'Error',
                 type: 'danger',
                 message: 'Get data from url fail ' + props.url
-            })
+            });
         }
     }
 
-    async function post(props){
+    async function post(props) {
         const requestOptions = {
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage['token'] }
         };
@@ -43,14 +30,14 @@ var API = function() {
             const result = await axios.post(props.url, props.body, requestOptions);
             return result.data;
         } catch (error) {
-            store.addNotification({
-                ...notification,
+            Notification.show({
                 title: 'Error',
                 type: 'danger',
                 message: 'Get data from url fail ' + props.url
-            })
+            });
+            throw error;
         }
     }
-    return {get: get, post: post};
+    return { get: get, post: post };
 }();
 export default API;

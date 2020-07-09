@@ -3,8 +3,20 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer';
 import TabInformation from '../account/tab-information';
 import RegisterItem from './register-item';
+import API from '../../components/api'
+import { getCode } from '../../components/component-function'
+import { URL_GET_ACCOUNT } from '../../constants/path'
 
-export const RegisterTeaching = () => {
+export const RegisterTeaching = (props) => {
+    const [account, setAccount] = useState({ addressId: '35' });
+    const getAccount = async () => {
+        const data = await API.get({ url: URL_GET_ACCOUNT + (props.match.params.code || getCode()) });
+        setAccount(data);
+    }
+
+    useEffect(() => {
+        getAccount();
+    })
     return (
         <div className={'wrapper'}>
             <Header />
@@ -37,7 +49,7 @@ export const RegisterTeaching = () => {
                                             <i class="fas fa-minus"></i></button>
                                     </div>
                                 </div>
-                                <TabInformation />
+                                <TabInformation  changeAccount={setAccount} account={account}/>
                             </div>
                         </div>
                         <div class="col-md-6">

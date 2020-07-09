@@ -9,7 +9,7 @@ import {
     MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBIcon
 } from "mdbreact";
 
-import { removeCookie, readCookie } from '../component-function'
+import { removeCookie, readCookie, getCode } from '../component-function'
 import { URL_GET_ACCOUNT } from '../../constants/path'
 import API from '../../components/api'
 
@@ -33,21 +33,25 @@ const Header = () => {
     };
 
     const checkPermission = async () => {
-        if (localStorage['username']) {
-            const data = await API.get({ url: URL_GET_ACCOUNT + localStorage['username'] });
-            //If check OK
-            setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
-                <MDBDropdown>
-                    <MDBDropdownToggle nav caret>
-                        <MDBIcon icon="user" /> <div className="d-none d-md-inline">{data.name}</div>
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu right id="dropdown-account">
-                        <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBNavLink></MDBDropdownItem>
-                        <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="key" /> Đổi mật khẩu</MDBNavLink></MDBDropdownItem>
-                        <MDBDropdownItem><MDBNavLink to="profile" onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBNavLink></MDBDropdownItem>
-                    </MDBDropdownMenu>
-                </MDBDropdown>
-            </MDBNavItem></MDBNavbarNav>);
+        if (getCode()) {
+            try {
+                const data = await API.get({ url: URL_GET_ACCOUNT + getCode()});
+                //If check OK
+                setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
+                    <MDBDropdown>
+                        <MDBDropdownToggle nav caret>
+                            <MDBIcon icon="user" /> <div className="d-none d-md-inline">{data.name}</div>
+                        </MDBDropdownToggle>
+                        <MDBDropdownMenu right id="dropdown-account">
+                            <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBNavLink></MDBDropdownItem>
+                            <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="key" /> Đổi mật khẩu</MDBNavLink></MDBDropdownItem>
+                            <MDBDropdownItem><MDBNavLink to="profile" onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBNavLink></MDBDropdownItem>
+                        </MDBDropdownMenu>
+                    </MDBDropdown>
+                </MDBNavItem></MDBNavbarNav>);
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 
@@ -84,19 +88,19 @@ const Header = () => {
                         </form>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink to="#">
+                        <MDBNavLink to="/">
                             <MDBIcon icon="/" className="d-inline-inline" />{" "}
                             <div className="d-none d-md-inline">Trang chủ</div>
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink to="teaching">
+                        <MDBNavLink to="/teaching">
                             <MDBIcon icon="chalkboard-teacher" />{" "}
                             <div className="d-none d-md-inline">Lớp hiện có</div>
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink to="teaching-register">
+                        <MDBNavLink to="/teaching-register">
                             <MDBIcon icon="registered" />{" "}
                             <div className="d-none d-md-inline">Đăng kí lớp dạy</div>
                         </MDBNavLink>

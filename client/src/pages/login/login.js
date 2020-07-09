@@ -4,6 +4,7 @@ import API from '../../components/api'
 import { URL_LOGIN } from '../../constants/path';
 import { useHistory } from 'react-router-dom';
 import { createCookie } from '../../components/component-function';
+import Notification from '../../components/notifycation';
 
 export const Login = () => {
 
@@ -15,32 +16,22 @@ export const Login = () => {
         createCookie('token', data.token, 1000);
         localStorage['token'] = data.token;
         localStorage['username'] = username;
+        localStorage['code'] = data.code;
         history.push("/");
     }
 
     async function onSubmit(event) {
         event.preventDefault();
-        const data = await API.post({ url: URL_LOGIN, body: JSON.stringify({ "username": username, "password": password })});
-        loginSuccess(data);
-        //API.post({ url: URL_LOGIN, body: JSON.stringify({ "username": username, "password": password }), callBack: loginSuccess});
-        // const requestOptions = {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ "username": username, "password": password })
-        // };
-
-        // fetch(URL_LOGIN, requestOptions)
-        //     .then(response => {
-        //         if (!response.ok) {
-        //             throw Error(response.statusText);
-        //         }
-        //         return response.json();
-        //     })
-        //     .then(data => {
-
-        //     }).catch(function (error) {
-        //         alert('Username or Password wrong');
-        //     });
+        try {
+            const data = await API.post({ url: URL_LOGIN, body: JSON.stringify({ "username": username, "password": password })});
+            loginSuccess(data);
+        } catch (error) {
+            Notification.show({
+                title: 'Error',
+                type: 'danger',
+                message: 'Username or password wrong'
+            })
+        }
     }
 
     return (

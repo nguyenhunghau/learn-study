@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Header from '../../components/header/header';
-import MenuLeft from '../../components/menu/menu-left';
 import { useForm } from 'react-hook-form'
 
 export default function Validation() {
@@ -18,7 +17,6 @@ export default function Validation() {
     return (
         <div className={collapsemenu ? 'sidebar-mini layout-fixed sidebar-collapse' : 'wrapper'}>
             <Header changeMenu={changeMenu} />
-            <MenuLeft />
             <div class="content-wrapper">
                 {/*  Content Header (Page header)  */}
                 <section class="content-header">

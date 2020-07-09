@@ -69,8 +69,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountEntity update(AccountEntity accountEntity, MultipartFile photo, MultipartFile certificate) {
         try {
-            UploadFile.uploadImage(accountEntity.getCode() + "/avatar", photo);
-            accountEntity.setPhoto(accountEntity.getCode() + "/avatar/" + photo.getOriginalFilename());
+            if (photo != null) {
+                UploadFile.uploadImage(accountEntity.getCode() + "/avatar", photo);
+                accountEntity.setPhoto(accountEntity.getCode() + "/avatar/" + photo.getOriginalFilename());
+            }
+
             if (certificate != null) {
                 UploadFile.uploadImage(accountEntity.getCode() + "/certificate", certificate);
                 accountEntity.setCertificate(accountEntity.getCode() + "/certificate/" + certificate.getOriginalFilename());

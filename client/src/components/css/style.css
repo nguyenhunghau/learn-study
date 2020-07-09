@@ -19,3 +19,6 @@ ul.nav-sidebar li {
 #tab_profile .nav.nav-tabs a.active{
     color: black;
 }
+#tab_profile .none-border {
+    border: none;
+}

@@ -3,7 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 
 import Home from './pages/home/index';
-import Widgets from './pages/widgets/index';
 import Validation from './pages/form/validation';
 import Table from './pages/form/table';
 import {TeachingClass} from './pages/teaching/index'
@@ -24,7 +23,6 @@ class App extends React.Component {
           <Router>
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/widgets" component={Widgets} />
               <Route exact path="/validation" component={Validation} />
               <Route exact path="/table" component={Table} />
               <Route exact path="/teaching" component={TeachingClass} />
@@ -32,6 +30,7 @@ class App extends React.Component {
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
+              <Route exact path="/profile/:code" component={Profile} />
             </Switch>
           </Router>
         </div>

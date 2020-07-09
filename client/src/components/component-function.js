@@ -55,3 +55,11 @@ export const getListData = (url, callBack) => {
     //     });
     
 }
+
+export const checkPermission = () => {
+    return localStorage[''];
+}
+
+export const getCode = () => {
+    return localStorage['code'];
+}
