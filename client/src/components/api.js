@@ -18,7 +18,8 @@ var API = function () {
                 title: 'Error',
                 type: 'danger',
                 message: 'Get data from url fail ' + props.url
-            });
+            })
+            throw error;
         }
     }
 

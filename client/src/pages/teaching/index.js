@@ -27,13 +27,17 @@ export const TeachingClass = () => {
     }
 
     async function getListData() {
-        const subjectData = API.get({ url: URL_GET_SUBJECT_LIST});
-        const unitData = API.get({ url: URL_GET_SUBJECT_LIST});
-        setSubjectList(await subjectData);
-        setUnitList(await unitData);
-        // subjectData = data
-        const classData = await API.get({ url: URL_GET_CLASS_LIST});
-        handleDataClass(classData);
+        try {
+            const subjectAPI = API.get({ url: URL_GET_SUBJECT_LIST});
+            const unitData = API.get({ url: URL_GET_UNIT_LIST});
+            const subjectData = await subjectAPI;
+            setSubjectList(subjectData);
+            setUnitList(await unitData);
+            const classData = await API.get({ url: URL_GET_CLASS_LIST});
+            handleDataClass(classData);
+        } catch(error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -73,37 +77,10 @@ export const TeachingClass = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="input-group mb-3">
-                                            <Address divClass={'form-group col-md-12'} />
-                                            {/* <select class="form-control custom-select">
-                                                <option>Chọn Tỉnh/ Thành Phố</option>
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div> */}
+                                        <div class="mb-3">
+                                            <Address divClass={'form-group address-item'} value={1002} />
                                         </div>
-                                        <div class="input-group mb-3">
-                                            <select class="form-control custom-select">
-                                                <option>Chọn Quận/ Huyện</option>
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <select class="form-control custom-select">
-                                                <option>Chọn Phường/ Xã</option>
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        
                                         <div class="input-group mb-3">
                                             <select class="form-control custom-select">
                                                 {
@@ -135,7 +112,7 @@ export const TeachingClass = () => {
                                             </div>
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="date" class="form-control" placeholder="Ngày mở lớp" />
+                                            <input type="date" onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <span class="fas fa-lock"></span>
@@ -146,7 +123,7 @@ export const TeachingClass = () => {
 
                                     <div class="social-auth-links text-center mb-3">
                                         <a href="#" class="btn btn-block btn-primary">
-                                            <i class="fab fa-facebook mr-2"></i> Tìm kiếm
+                                            <i class="fa fa-search mr-2"></i> Tìm kiếm
         </a>
                                     </div>
                                 </div>

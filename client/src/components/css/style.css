@@ -22,3 +22,14 @@ ul.nav-sidebar li {
 #tab_profile .none-border {
     border: none;
 }
+/* CUstom css */
+.css-tlfecz-indicatorContainer {
+    padding: 0px !important;
+    height: 100%;
+}
+.address-item {
+    width: 100%;
+}
+#nav-main .nav-link.active {
+    background-color: #39989a;
+}

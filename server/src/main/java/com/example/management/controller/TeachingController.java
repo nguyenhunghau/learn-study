@@ -1,5 +1,6 @@
 package com.example.management.controller;
 
+import com.example.management.dto.TeachingSearchDTO;
 import com.example.management.entity.TeachingClassEntity;
 import com.example.management.service.TeachingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class TeachingController {
     }
     
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public ResponseEntity getAll() {
-        return ok(teachingService.getAll());
+    public ResponseEntity getAll(@RequestBody TeachingSearchDTO teachingSearchDTO) {
+        return ok(teachingService.getAll(teachingSearchDTO));
     }
 }
