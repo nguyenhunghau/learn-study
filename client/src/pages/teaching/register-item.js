@@ -1,76 +1,170 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
-import Address from '../../components/address'
+import Address from '../../components/address';
+import API from '../../components/api';
+import { URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LEVEL_LIST } from '../../constants/path'
 
-const ReigsterItem = () => {
+const ReigsterItem = (props) => {
+    const [teaching, setTeaching] = useState(props.teaching);
+    const [subject, setSubject] = useState();
+    const [unit, setUnit] = useState([]);
+    const [level, setLevel] = useState();
+    const [numPeriod, setNumPeriod] = useState([]);
 
-    const options =
-        [
-            {
-                value: 'foo', label: 'Foo'
-            },
-            {
-                value: 'bar', label: 'Bar'
-            },
-            {
-                value: 'baz', label: 'Baz'
-            }
-        ];
+    const [subjectValue, setSubjectValue] = useState();
+    const [levelValue, setLevelValue] = useState();
+    const [periodValue, setPeriodValue] = useState();
+    const [unitValue, setUnitValue] = useState();
+    const didMountRef = useRef(false);
+    const [init, setInit] = useState(0);
 
     const handleChange = (e) => {
         console.log(`Option selected:`, e.map(item => item.value).join())
     }
 
+    const changeSubject = (subjectItem) => {
+        //setSubjectValue(subjectItem.value)
+    }
+
+    const getListData = async () => {
+        const subjectAPI = API.get({ url: URL_GET_SUBJECT_LIST });
+        const unitAPI = API.get({ url: URL_GET_UNIT_LIST });
+        const levelAPI = API.get({ url: URL_GET_LEVEL_LIST });
+
+        setSubject(createOptionSelect(await subjectAPI));
+        setLevel(createOptionSelect(await levelAPI));
+        const unitList = createOptionSelect(await unitAPI);
+        setUnit(unitList);
+        setUnitValue(unitList.filter(item => item.value === teaching.unitEntity.id)[0]);
+        setNumPeriod(makeNumPeriod());
+        //Make default value for teaching
+        makeDefaultTeaching();
+    }
+
+    const makeDefaultTeaching = () => {
+        const teachingNew = {...teaching};
+
+    }
+
+    const makeNumPeriod = () => {
+        var result = [];
+        for (var i = 1; i <= 6; i++) {
+            result.push(<option value={i}>{i + ' buổi'}</option>);
+            if (i === props.teaching.numPeriod) {
+                setPeriodValue({ value: i, label: i + ' buổi' });
+            }
+        }
+        return result;
+    }
+
+    const createOptionSelect = (data) => {
+        let result = [];
+        data.map(item => {
+            result.push({
+                value: item.id, label: item.name
+            });
+        })
+        return result;
+    }
+
+    useEffect(() => {
+        getListData();
+    }, []);
+
+    const changeTeaching = (e, attr) => {
+        if(!e) {
+            return false;
+        }
+        const newTeaching = { ...teaching };
+        if (Array.isArray(e)) {
+            newTeaching[attr] = e.map(item => item.value).join(',');
+            setTeaching(newTeaching);
+            props.changeTeaching(newTeaching);
+            return;
+        }
+        if (e.value) {
+            //This is select
+            newTeaching[attr] = { id: e.value };
+            setTeaching(newTeaching);
+            props.changeTeaching(newTeaching);
+            return;
+        }
+        newTeaching[attr] = e.target.value;
+        setTeaching(newTeaching);
+        props.changeTeaching(newTeaching);
+    }
+
+    // useEffect(() => {
+    //     if(didMountRef.current) {
+    //         props.changeTeaching(teaching);
+    //     } else {
+    //         getListData();
+    //         didMountRef.current = true;
+    //     }
+    // }, [init]);
+
     return (
         <div class="card-body">
-            <div class="form-group">
-                <label for="inputEstimatedBudget">Môn dạy</label>
-                <Select placeholder="Chọn Môn dạy"
-                    isMulti={true}
-                    // value={subjectIds}
-                    onChange={handleChange}
-                    options={options}
-                />
-            </div>
-            <div class="form-group">
-                <label for="inputSpentBudget">Lớp dạy</label>
-                <Select placeholder="Chọn Lớp"
-                    isMulti={true}
-                    // value={subjectIds}
-                    onChange={handleChange}
-                    options={options}
-                />
-            </div>
-            <div class="form-group">
-                <label for="inputEstimatedDuration">Địa chỉ dạy</label>
-                <div class="row">
-                    <Address />
+                <div class="form-group">
+                    <label for="inputEstimatedBudget">Tiêu đề</label>
+                    <input type="text" value={teaching.title} onChange={(e) => changeTeaching(e, 'title')} class="form-control" placeholder="Mở lớp dạy tiếng anh" required />
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputEstimatedDuration">Thời gian dạy</label>
-                <input type="number" id="inputEstimatedDuration" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="inputEstimatedDuration">Học phí</label>
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <input type="number" id="inputEstimatedDuration" class="form-control" />
-                    </div>
-                    <div class="form-group col-md-6">
-                        <select class="form-control custom-select col-md-6">
-                            <option selected>Buổi</option>
-                            <option>Giờ</option>
-                            <option>Tháng</option>
-                            <option>Năm</option>
-                        </select>
+                <div class="form-group">
+                    <label for="inputEstimatedBudget">Môn dạy</label>
+                    <Select placeholder="Chọn Môn dạy"
+                        value={subjectValue}
+                        onChange={(subjectItem) => { setSubjectValue(subjectItem); changeTeaching(subjectItem, 'subjectEntity'); }}
+                        options={subject}
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="inputSpentBudget">Lớp dạy</label>
+                    <Select placeholder="Chọn Lớp"
+                        isMulti
+                        value={levelValue}
+                        onChange={(levelItem) => { setLevelValue(levelItem); changeTeaching(levelItem, 'levelIds') }}
+                        options={level}
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="inputEstimatedDuration">Địa chỉ dạy</label>
+                    <div class="row">
+                        <Address changeAddress={(addressId) => changeTeaching({target:{value: addressId}}, 'addressId')}/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="inputEstimatedDuration">Số buổi</label>
+                    <select class="form-control" value={teaching.numPeriod} onChange={(e) => changeTeaching(e, 'numPeriod')}>
+                        {
+                            numPeriod.map(item =>
+                                item
+                            )
+                        }
+                    </select> / Tuần
             </div>
-            <div class="form-group">
-                <label for="inputDescription">Mô tả thêm</label>
-                <textarea id="inputDescription" class="form-control" rows="4"></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="inputEstimatedDuration">Thời gian dạy</label>
+                    <input type="text" value={teaching.timetable} onChange={(e) => changeTeaching(e, 'timetable')} class="form-control" placeholder="Ví dụ: T2 - T4 - T6; 17h - 19h" />
+                </div>
+                <div class="form-group">
+                    <label for="inputEstimatedDuration">Học phí</label>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <input type="number" class="form-control" value={teaching.cost} onChange={(e) => changeTeaching(e, 'cost')} />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <Select
+                                value={unitValue}
+                                onChange={(e) => { setUnitValue(e); changeTeaching(e, 'unitEntity') }}
+                                options={unit}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputDescription">Mô tả thêm</label>
+                    <textarea class="form-control" rows="4" value={teaching.description} onChange={(e) => changeTeaching(e, 'description')}></textarea>
+                </div>
         </div>
     )
 }

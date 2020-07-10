@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.management.controller;
 
-import com.example.management.service.UnitService;
+import com.example.management.service.LevelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import static org.springframework.http.ResponseEntity.ok;
@@ -18,14 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @author USER
  */
 @RestController
-@RequestMapping("/unit")
-public class UnitController {
-
+@RequestMapping("/level")
+public class LevelController {
     @Autowired
-    private UnitService unitService;
+    private LevelService levelService;
 
     @RequestMapping(value = "/getList", method = RequestMethod.GET)
     public ResponseEntity getList() {
-        return ok(unitService.findAllActive());
+        return ok(levelService.findAllActive());
     }
 }

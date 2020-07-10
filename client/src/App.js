@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-
+import './components/css/style.css';
 import Home from './pages/home/index';
 import Validation from './pages/form/validation';
 import Table from './pages/form/table';

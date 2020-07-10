@@ -12,6 +12,7 @@
     <class>com.example.management.entity.AccountEntity</class>
     <class>com.example.management.entity.SubjectEntity</class>
     <class>com.example.management.entity.RoleEntity</class>
+    <class>com.example.management.entity.LevelEntity</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/faber_extract"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

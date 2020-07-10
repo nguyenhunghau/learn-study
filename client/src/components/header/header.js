@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Link
+    Link, useHistory
 } from "react-router-dom";
 
 import adminLTELogo from '../img/AdminLTELogo.png';
@@ -23,6 +23,7 @@ import './header.css';
 const Header = () => {
 
     const [isLogin, setIsLogin] = useState(false);
+    const history = useHistory();
     const [headerUser, setHeaderUser] = useState(<li class="nav-item d-none d-sm-inline-block">
         <Link to="/login" class="nav-link">Đăng nhập</Link>
     </li>);
@@ -33,7 +34,7 @@ const Header = () => {
     };
 
     const checkPermission = async () => {
-        if (getCode()) {
+        if (window.location.pathname !== '/login' && getCode()) {
             try {
                 const data = await API.get({ url: URL_GET_ACCOUNT + getCode()});
                 //If check OK
@@ -51,8 +52,11 @@ const Header = () => {
                 </MDBNavItem></MDBNavbarNav>);
             } catch (error) {
                 console.log(error);
+                history.push('/login');
             }
+            return;
         }
+        history.push('/login');
     }
     const checkActiveMenu = (link) => {
         if(window.location.pathname === link) {

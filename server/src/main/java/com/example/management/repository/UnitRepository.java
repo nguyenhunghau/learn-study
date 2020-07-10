@@ -1,6 +1,5 @@
 package com.example.management.repository;
 
-import com.example.management.entity.SubjectEntity;
 import com.example.management.entity.UnitEntity;
 import java.util.List;
 import org.springframework.data.repository.CrudRepository;
@@ -11,6 +10,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface UnitRepository extends CrudRepository<UnitEntity, Integer>{
 
-    public List<SubjectEntity> findAllActive(boolean b);
+    public List<UnitEntity> findAllActive(boolean b);
     
 }

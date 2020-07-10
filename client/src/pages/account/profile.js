@@ -32,6 +32,7 @@ export const Profile = (props) => {
     const getAccount = async () => {
         const data = await API.get({ url: URL_GET_ACCOUNT + (props.match.params.code || getCode()) });
         setAccount(data);
+        console.log('Finish get data');
     }
 
     return (
@@ -122,7 +123,7 @@ export const Profile = (props) => {
                                 <div class="card" id="tab_profile">
                                     <Tabs defaultActiveKey="Profile" id="uncontrolled-tab-example">
                                         <Tab eventKey="Profile" title="Profile">
-                                            {account.name ? <TabInformation changeAccount={setAccount} account={account} /> : ''}
+                                            {account.name ? <TabInformation changeAccount={setAccount} account={account} profile={true}/> : ''}
                                         </Tab>
                                         <Tab eventKey="Activity" title="Activity">
                                             <TabActivity />

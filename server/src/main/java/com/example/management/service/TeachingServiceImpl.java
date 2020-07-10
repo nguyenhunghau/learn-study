@@ -5,6 +5,7 @@ import com.example.management.entity.TeachingClassEntity;
 import com.example.management.repository.AccountRepository;
 import com.example.management.repository.TeachingRepository;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,10 @@ public class TeachingServiceImpl implements TeachingService {
 
     @Override
     public TeachingClassEntity addClass(TeachingClassEntity entity) {
-//        if(entity.getAccountEntity())
+        if(entity.getAccountEntity() != null) {
+            entity.setAccountEntity(accountRepository.findByCode(entity.getAccountEntity().getCode()));
+        }
+        entity.setCreated(new Date());
         return teachingRepository.save(entity);
     }
 
@@ -48,12 +52,12 @@ public class TeachingServiceImpl implements TeachingService {
     @Override
     public List<TeachingClassEntity> getAll(TeachingSearchDTO teachingSearchDTO) {
         List<TeachingClassEntity> list = (List<TeachingClassEntity>) teachingRepository.findAll();
-        list.stream().filter(item -> {
-            //We need checkabout keyword, subject, level, addressId, fromdate and todate
-            return item.getTitle().contains(teachingSearchDTO.getKeyword())
-                    && validList(item.getSubjectIds(), teachingSearchDTO.getSubjectIds())
-                    && validList(item.getLevel(), teachingSearchDTO.getLevelIds());
-        });
+//        list.stream().filter(item -> {
+//            //We need checkabout keyword, subject, level, addressId, fromdate and todate
+//            return item.getTitle().contains(teachingSearchDTO.getKeyword())
+//                    && validList(item.getSubjectEntity()., teachingSearchDTO.getSubjectIds())
+//                    && validList(item.getLevel(), teachingSearchDTO.getLevelIds());
+//        });
         list.forEach(item -> {
             
         });

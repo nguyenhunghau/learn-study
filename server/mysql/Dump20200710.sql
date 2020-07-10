@@ -54,8 +54,33 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (4,'hunghau','$2a$10$cjtrr3BWxfVwCiWQFzcxY.D6iIlsCymDvie88AN.1URp3nV6KB8Uq','Nguyen Hung','nguyenhunghau.us@gmail.com','34353454',NULL,'link.jpg',NULL,NULL,'Hoa Phu',NULL,'NU',NULL,NULL,NULL,NULL,NULL,'abc'),(5,'sdsad','$2a$10$XKkcAJ2F4OsM7H/clu6V4..IyZ4MziZOzMa7opNBKjnWJuZlc4HEG','hungah','nguyenhunghau.us@gmail.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `account` VALUES (4,'hunghau','$2a$10$cjtrr3BWxfVwCiWQFzcxY.D6iIlsCymDvie88AN.1URp3nV6KB8Uq','Nguyen Hung Hau','nguyenhunghau.us@gmail.com','34353454','2020-07-18','abc/avatar/logo.jpg',149,'I\'m a senior developer','KHTN',NULL,'NAM','abc/certificate/chart.png','23453535','CNTT',NULL,NULL,'abc'),(5,'sdsad','$2a$10$XKkcAJ2F4OsM7H/clu6V4..IyZ4MziZOzMa7opNBKjnWJuZlc4HEG','hungah','nguyenhunghau.us@gmail.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(6,'hunghau1','$2a$10$cjtrr3BWxfVwCiWQFzcxY.D6iIlsCymDvie88AN.1URp3nV6KB8Uq','Nguyen Hung Hau','nguyenhunghau.us@gmail.com','34353454','2020-07-18','abc/avatar/logo.jpg',149,'I\'m a senior developer','KHTN',NULL,'NAM','abc/certificate/chart.png','23453535','CNTT',NULL,NULL,'123');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `level`
+--
+
+DROP TABLE IF EXISTS `level`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `level` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(250) DEFAULT NULL,
+  `IS_ACTIVE` bit(1) DEFAULT b'1',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `level`
+--
+
+LOCK TABLES `level` WRITE;
+/*!40000 ALTER TABLE `level` DISABLE KEYS */;
+INSERT INTO `level` VALUES (3,'Lớp 1',_binary ''),(4,'Lớp 2',_binary '');
+/*!40000 ALTER TABLE `level` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -117,18 +142,20 @@ DROP TABLE IF EXISTS `teaching_class`;
 CREATE TABLE `teaching_class` (
   `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `TITLE` varchar(60) DEFAULT NULL,
-  `SUBJECT_IDS` varchar(100) DEFAULT NULL,
-  `LEVEL` varchar(100) DEFAULT NULL,
+  `SUBJECT_ID` int(10) unsigned DEFAULT NULL,
+  `LEVEL_IDS` varchar(100) DEFAULT NULL,
   `TIMETABLE` text,
   `COST` int(10) unsigned DEFAULT NULL,
   `UNIT_ID` int(10) unsigned DEFAULT NULL,
+  `NUM_PERIOD` int(10) DEFAULT NULL,
+  `DESCRIPTION` longtext,
   `TYPE_TEACHING` varchar(100) DEFAULT NULL,
-  `ADDRESS` text,
+  `ADDRESS_ID` int(10) DEFAULT NULL,
   `ACCOUNT_ID` int(10) unsigned DEFAULT NULL,
   `DATE_START` date DEFAULT NULL,
   `CREATED` datetime DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +164,7 @@ CREATE TABLE `teaching_class` (
 
 LOCK TABLES `teaching_class` WRITE;
 /*!40000 ALTER TABLE `teaching_class` DISABLE KEYS */;
-INSERT INTO `teaching_class` VALUES (1,'Mở lớp mới','1,3','1','Thứ 3,5,7',300000,1,'Teach','Binh Thanh TPHCM',4,'2020-06-29',NULL);
+INSERT INTO `teaching_class` VALUES (1,'defdsfsf',NULL,NULL,'15:30 - 17:30',2324324,NULL,2,'vfdgdgf',NULL,NULL,NULL,NULL,NULL),(2,'Lớp mới',NULL,NULL,'15:30 - 17:30',300000,NULL,3,'Toi la giao vien',NULL,NULL,NULL,NULL,NULL),(3,'dgfdsfsfds',NULL,NULL,'15:30 - 17:30',343535,NULL,3,'vgfh',NULL,NULL,NULL,NULL,NULL),(4,'lop moi',1,'4','15:30 - 17:30, 15:00',2132342,NULL,3,'tyujtjghj',NULL,NULL,NULL,NULL,NULL),(5,'Mo lop',1,'3','12:30- 14:30',342424,1,4,'dsfsfdtg',NULL,NULL,4,NULL,NULL);
 /*!40000 ALTER TABLE `teaching_class` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +180,7 @@ CREATE TABLE `unit` (
   `NAME` varchar(250) DEFAULT NULL,
   `IS_ACTIVE` bit(1) DEFAULT b'1',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +189,7 @@ CREATE TABLE `unit` (
 
 LOCK TABLES `unit` WRITE;
 /*!40000 ALTER TABLE `unit` DISABLE KEYS */;
-INSERT INTO `unit` VALUES (1,'buổi',_binary '');
+INSERT INTO `unit` VALUES (1,'buổi',_binary ''),(2,'tháng',_binary '');
 /*!40000 ALTER TABLE `unit` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -175,4 +202,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-30 17:35:35
+-- Dump completed on 2020-07-10 17:55:53

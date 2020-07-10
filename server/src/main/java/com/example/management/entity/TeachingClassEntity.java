@@ -31,8 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TeachingClassEntity.findAll", query = "SELECT t FROM TeachingClassEntity t")
     , @NamedQuery(name = "TeachingClassEntity.findById", query = "SELECT t FROM TeachingClassEntity t WHERE t.id = :id")
-    , @NamedQuery(name = "TeachingClassEntity.findBySubjectIds", query = "SELECT t FROM TeachingClassEntity t WHERE t.subjectIds = :subjectIds")
-    , @NamedQuery(name = "TeachingClassEntity.findByLevel", query = "SELECT t FROM TeachingClassEntity t WHERE t.level = :level")
+//    , @NamedQuery(name = "TeachingClassEntity.findByLevelIds", query = "SELECT t FROM TeachingClassEntity t WHERE t.level = :level")
     , @NamedQuery(name = "TeachingClassEntity.findByCost", query = "SELECT t FROM TeachingClassEntity t WHERE t.cost = :cost")
     , @NamedQuery(name = "TeachingClassEntity.findByUnitId", query = "SELECT t FROM TeachingClassEntity t WHERE t.unitEntity.id = :unitId")
     , @NamedQuery(name = "TeachingClassEntity.findByTypeTeaching", query = "SELECT t FROM TeachingClassEntity t WHERE t.typeTeaching.id = :typeTeaching")
@@ -49,17 +48,22 @@ public class TeachingClassEntity implements Serializable {
     @Column(name = "TITLE")
     private String title;
     @Size(max = 100)
-    @Column(name = "SUBJECT_IDS")
-    private String subjectIds;
-    @Size(max = 100)
-    @Column(name = "LEVEL")
-    private String level;
+    @Column(name = "LEVEL_IDS")
+    private String levelIds;
     @Lob
     @Size(max = 65535)
     @Column(name = "TIMETABLE")
     private String timetable;
     @Column(name = "COST")
     private Integer cost;
+    @Column(name = "NUM_PERIOD")
+    private Integer numPeriod;
+    @Column(name = "DESCRIPTION")
+    private String description;
+    
+    @ManyToOne
+    @JoinColumn(name = "SUBJECT_ID")
+    private SubjectEntity subjectEntity;
     
     @ManyToOne
     @JoinColumn(name = "UNIT_ID")
@@ -68,10 +72,9 @@ public class TeachingClassEntity implements Serializable {
     @Size(max = 100)
     @Column(name = "TYPE_TEACHING")
     private String typeTeaching;
-    @Lob
-    @Size(max = 65535)
-    @Column(name = "ADDRESS")
-    private String address;
+   
+    @Column(name = "ADDRESS_ID")
+    private int addressId;
     
     @Column(name = "DATE_START")
     @Temporal(TemporalType.DATE)
@@ -99,20 +102,12 @@ public class TeachingClassEntity implements Serializable {
         this.id = id;
     }
 
-    public String getSubjectIds() {
-        return subjectIds;
+    public String getLevelIds() {
+        return levelIds;
     }
 
-    public void setSubjectIds(String subjectIds) {
-        this.subjectIds = subjectIds;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
+    public void setLevelIds(String level) {
+        this.levelIds = level;
     }
 
     public String getTimetable() {
@@ -139,12 +134,12 @@ public class TeachingClassEntity implements Serializable {
         this.typeTeaching = typeTeaching;
     }
 
-    public String getAddress() {
-        return address;
+    public int getAddressId() {
+        return addressId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddressId(int addressId) {
+        this.addressId = addressId;
     }
 
     public UnitEntity getUnitEntity() {
@@ -187,13 +182,39 @@ public class TeachingClassEntity implements Serializable {
         this.created = created;
     }
 
+    public Integer getNumPeriod() {
+        return numPeriod;
+    }
+
+    public void setNumPeriod(Integer numPeriod) {
+        this.numPeriod = numPeriod;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public SubjectEntity getSubjectEntity() {
+        return subjectEntity;
+    }
+
+    public void setSubjectEntity(SubjectEntity subjectEntity) {
+        this.subjectEntity = subjectEntity;
+    }
+
     public void merge(TeachingClassEntity entity) {
-        this.address = entity.getAddress();
+        this.addressId = entity.getAddressId();
         this.cost = entity.getCost();
-        this.level = entity.getLevel();
-        this.subjectIds = entity.getSubjectIds();
+        this.levelIds = entity.getLevelIds();
+        this.subjectEntity = entity.getSubjectEntity();
         this.timetable = entity.getTimetable();
         this.typeTeaching = entity.getTypeTeaching();
         this.unitEntity = entity.getUnitEntity();
+        this.numPeriod = entity.getNumPeriod();
+        this.description = entity.getDescription();
     }
 }

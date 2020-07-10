@@ -10,7 +10,7 @@ const Address = (props) => {
     const [wardValue, setWardValue] = useState({});
     const [wardAll, setWardAll] = useState({});
 
-    const divClass = props.divClass || 'form-group col-md-6';
+    const divClass = props.divClass || 'form-group col-md-4';
 
     const handleChange = (cityId) => {
         //console.log(`Option selected:`, e.map(item => item.value).join())
@@ -19,7 +19,9 @@ const Address = (props) => {
     useEffect(() => {
         getListCity();
         findLocationByWardId();
-        makeIconSelect();
+        if(props.setIcon) {
+            makeIconSelect();
+        }
     }, [props.value]);
 
     const getListCity = () => {
@@ -84,7 +86,7 @@ const Address = (props) => {
         CityData.map(item => {
             const districts = item.districts;
             districts.map(districtItem => {
-                const wardResult = districtItem.wards.filter(wardItem => wardItem.id == props.value.toString());
+                const wardResult = districtItem.wards.filter(wardItem => wardItem.id == (props.value || 134).toString());
                 if (wardResult.length > 0) {
                     const districtArray = [], wardArray = [];
                     districts.map(districtItem => {
@@ -121,8 +123,8 @@ const Address = (props) => {
         if (typeof props.onChange !== "undefined") {
             props.onChange(wardItem.value);
         }
-
         setWardValue(wardItem);
+        props.changeAddress(wardItem.value);
     }
 
     const makeIconSelect = () => {
