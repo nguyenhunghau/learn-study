@@ -7,13 +7,13 @@ package com.example.management.dto;
 public class TeachingSearchDTO {
     
     private String keyword;
-    private int addressId;
+    private Integer addressId;
     private String subjectIds;
     private String levelIds;
     private String dateFrom;
     private String dateTo;
 
-    public TeachingSearchDTO(String keyword, int addressId, String subjectIds, String levelIds, String dateFrom, String dateTo) {
+    public TeachingSearchDTO(String keyword, Integer addressId, String subjectIds, String levelIds, String dateFrom, String dateTo) {
         this.keyword = keyword;
         this.addressId = addressId;
         this.subjectIds = subjectIds;
@@ -26,7 +26,7 @@ public class TeachingSearchDTO {
         return keyword;
     }
 
-    public int getAddressId() {
+    public Integer getAddressId() {
         return addressId;
     }
 

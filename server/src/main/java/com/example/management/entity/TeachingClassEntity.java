@@ -74,7 +74,7 @@ public class TeachingClassEntity implements Serializable {
     private String typeTeaching;
    
     @Column(name = "ADDRESS_ID")
-    private int addressId;
+    private Integer addressId;
     
     @Column(name = "DATE_START")
     @Temporal(TemporalType.DATE)
@@ -134,11 +134,11 @@ public class TeachingClassEntity implements Serializable {
         this.typeTeaching = typeTeaching;
     }
 
-    public int getAddressId() {
+    public Integer getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(int addressId) {
+    public void setAddressId(Integer addressId) {
         this.addressId = addressId;
     }
 

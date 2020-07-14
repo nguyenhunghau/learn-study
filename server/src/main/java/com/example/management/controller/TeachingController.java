@@ -28,7 +28,7 @@ public class TeachingController {
     }
     
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public ResponseEntity getAll(@RequestBody TeachingSearchDTO teachingSearchDTO) {
+    public ResponseEntity getAll(TeachingSearchDTO teachingSearchDTO) {
         return ok(teachingService.getAll(teachingSearchDTO));
     }
 }

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
 import ClassItem from './class-item';
-import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST } from '../../constants/path';
+import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LEVEL_LIST } from '../../constants/path';
 import API from '../../components/api'
-import Address from '../../components/address'
+import Address, {findAddress} from '../../components/address'
 
 export const TeachingClass = () => {
 
     const [classList, setClassList] = useState([{ accountEntity: {} }]);
     const [subjectList, setSubjectList] = useState([]);
     const [unitList, setUnitList] = useState([]);
+    const [level, setLevel] = useState([]);
+    const [teachingSearch, setTeachingSearch] = useState({});
     let subjectData = [];
 
     useEffect(() => {
@@ -17,24 +19,36 @@ export const TeachingClass = () => {
         getListData();
     }, []);
 
-    const handleDataClass = (data) => {
-        data.map(item => {
-            let subjectArray = item.subjectIds.split(',');
-            item.subjectName = subjectList.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
-            // item.level = subjectData.filter(unit => unitList.indexOf(subject.id + "") >= 0).map(unit => unit.name).join(', ');
+    const handleDataClass = (classData, subjectData, levelData) => {
+        classData.map(item => {
+            let subjectArray = (item.subjectIds || '').split(',');
+            item.subjectName = subjectData.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
+            
+            let levelArray = (item.levelIds || '').split(',');
+            item.level = levelData.filter(levelItem => levelArray.indexOf(levelItem.id + "") >= 0).map(levelItem => levelItem.name).join(', ');
+            item.address = findAddress({addressId: item.addressId});
         });
-        setClassList(data);
+        console.log(classData);
+        setClassList(classData);
+    }
+
+    const changeTeaching = (value, field) => {
+        var teachingNew = {...teachingSearch};
+        teachingNew[field] = value;
     }
 
     async function getListData() {
         try {
             const subjectAPI = API.get({ url: URL_GET_SUBJECT_LIST});
             const unitData = API.get({ url: URL_GET_UNIT_LIST});
+            const levelAPI = API.get({ url: URL_GET_LEVEL_LIST });
             const subjectData = await subjectAPI;
+            const levelData = await levelAPI;
             setSubjectList(subjectData);
             setUnitList(await unitData);
+            setLevel(levelData);
             const classData = await API.get({ url: URL_GET_CLASS_LIST});
-            handleDataClass(classData);
+            handleDataClass(classData, subjectData, levelData);
         } catch(error) {
             console.log(error);
         }
@@ -78,7 +92,7 @@ export const TeachingClass = () => {
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <Address divClass={'form-group address-item'} value={1002} />
+                                            <Address changeAddress={(addressId) => changeTeaching(addressId, 'addressId')} divClass={'form-group address-item'} value={1002} />
                                         </div>
                                         
                                         <div class="input-group mb-3">
