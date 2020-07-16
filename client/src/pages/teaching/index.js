@@ -3,7 +3,8 @@ import Header from '../../components/header/header';
 import ClassItem from './class-item';
 import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LEVEL_LIST } from '../../constants/path';
 import API from '../../components/api'
-import Address, {findAddress} from '../../components/address'
+import Address, { findAddress } from '../../components/address'
+import Select from 'react-select';
 
 export const TeachingClass = () => {
 
@@ -12,6 +13,11 @@ export const TeachingClass = () => {
     const [unitList, setUnitList] = useState([]);
     const [level, setLevel] = useState([]);
     const [teachingSearch, setTeachingSearch] = useState({});
+
+    const [subjectValue, setSubjectValue] = useState();
+    const [subjectOptions, setSubjectOptions] = useState();
+    const [levelOptions, setLevelOptions] = useState(); 
+    const [levelValue, setLevelValue] = useState();
     let subjectData = [];
 
     useEffect(() => {
@@ -23,36 +29,60 @@ export const TeachingClass = () => {
         classData.map(item => {
             let subjectArray = (item.subjectIds || '').split(',');
             item.subjectName = subjectData.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
-            
+
             let levelArray = (item.levelIds || '').split(',');
             item.level = levelData.filter(levelItem => levelArray.indexOf(levelItem.id + "") >= 0).map(levelItem => levelItem.name).join(', ');
-            item.address = findAddress({addressId: item.addressId});
+            item.address = findAddress({ addressId: item.addressId });
         });
         console.log(classData);
         setClassList(classData);
     }
 
     const changeTeaching = (value, field) => {
-        var teachingNew = {...teachingSearch};
+        var teachingNew = { ...teachingSearch };
+        if (Array.isArray(value)) {
+            teachingNew[field] = value.map(item => item.value).join(',');
+            setTeachingSearch(teachingNew);
+            return;
+        }
+        
         teachingNew[field] = value;
+        setTeachingSearch(teachingNew);
     }
 
     async function getListData() {
         try {
-            const subjectAPI = API.get({ url: URL_GET_SUBJECT_LIST});
-            const unitData = API.get({ url: URL_GET_UNIT_LIST});
+            const subjectAPI = API.get({ url: URL_GET_SUBJECT_LIST });
+            const unitData = API.get({ url: URL_GET_UNIT_LIST });
             const levelAPI = API.get({ url: URL_GET_LEVEL_LIST });
             const subjectData = await subjectAPI;
             const levelData = await levelAPI;
             setSubjectList(subjectData);
             setUnitList(await unitData);
             setLevel(levelData);
-            const classData = await API.get({ url: URL_GET_CLASS_LIST});
+
+            setSubjectOptions(createOptionSelect(subjectData));
+            const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {}});
             handleDataClass(classData, subjectData, levelData);
-        } catch(error) {
+        } catch (error) {
             console.log(error);
         }
     }
+
+    const createOptionSelect = (data) => {
+        let result = [];
+        data.map(item => {
+            result.push({
+                value: item.id, label: item.name
+            });
+        })
+        return result;
+    }
+
+    const searchClass = async() => {
+        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: teachingSearch});
+        handleDataClass(classData, subjectList, level);
+    };
 
     return (
         <div className={'wrapper'}>
@@ -84,61 +114,38 @@ export const TeachingClass = () => {
 
                                     <form action="../../index3.html" method="post">
                                         <div class="input-group mb-3">
-                                            <input type="email" class="form-control" placeholder="Keyword" />
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-envelope"></span>
-                                                </div>
-                                            </div>
+                                            <input type="email" value={teachingSearch.keyword} onChange={(e) => { changeTeaching(e.target.value, 'keyword') }} class="form-control" placeholder="Keyword" />
                                         </div>
                                         <div class="mb-3">
                                             <Address changeAddress={(addressId) => changeTeaching(addressId, 'addressId')} divClass={'form-group address-item'} value={1002} />
                                         </div>
-                                        
-                                        <div class="input-group mb-3">
-                                            <select class="form-control custom-select">
-                                                {
-                                                    subjectList.map(item =>
-                                                        <option value={item.id}>{item.name}</option>
-                                                    )
-                                                }
-                                                <option>Chọn Môn Học</option>
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
+
+                                        <div class="input-group mb-3 search-teaching">
+                                            <Select placeholder="Chọn Môn Học"
+                                                isMulti
+                                                value={subjectValue}
+                                                onChange={(subjectItem) => { setSubjectValue(subjectItem); changeTeaching(subjectItem, 'subjectIds') }}
+                                                options={subjectOptions}
+                                            />
+                                        </div>
+                                        <div class="input-group mb-3 search-teaching">
+                                            <Select placeholder="Chọn lớp"
+                                                isMulti
+                                                value={levelValue}
+                                                onChange={(levelItem) => { setLevelValue(levelItem); changeTeaching(levelItem, 'levelIds') }}
+                                                options={levelOptions}
+                                            />
                                         </div>
                                         <div class="input-group mb-3">
-                                            <select class="form-control custom-select">
-                                                <option>Chọn Level</option>
-                                                {
-                                                    unitList.map(item =>
-                                                        <option value={item.id}>{item.name}</option>
-                                                    )
-                                                }
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="input-group mb-3">
-                                            <input type="date" onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
+                                            <input type="date" value={teachingSearch.dateFrom}  onChange={(e) => { changeTeaching(e.target.value, 'dateFrom') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
+                                            <input type="date" value={teachingSearch.dateTo}  onChange={(e) => { changeTeaching(e.target.value, 'dateTo') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
                                         </div>
                                     </form>
 
                                     <div class="social-auth-links text-center mb-3">
-                                        <a href="#" class="btn btn-block btn-primary">
+                                        <button class="btn btn-block btn-primary" onClick={searchClass}>
                                             <i class="fa fa-search mr-2"></i> Tìm kiếm
-        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>

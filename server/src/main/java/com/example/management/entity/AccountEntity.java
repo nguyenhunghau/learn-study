@@ -17,6 +17,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 //</editor-fold>
 
@@ -37,7 +40,8 @@ import javax.validation.constraints.Size;
     @NamedNativeQuery(name = "AccountEntity.getProfile", query = "SELECT ID,NAME,EMAIL,PHONE,BIRTHDAY,PHOTO,ADDRESS_ID,DESCRIPTION,SCHOOL,ROLE_ID,GENDER,CERTIFICATE,PERSONAL_ID,MAJOR,CREATED,UPDATED,CODE FROM account where CODE=:code")
 })
 public class AccountEntity  implements Serializable {
-    
+    @NotBlank
+    @NotNull
     @Size(max = 250)
     @Column(name = "USERNAME")
     private String username;
@@ -50,11 +54,10 @@ public class AccountEntity  implements Serializable {
     @Size(max = 250)
     @Column(name = "NAME")
     private String name;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+    @Email
     @Size(max = 250)
     @Column(name = "EMAIL")
     private String email;
-    // @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message="Invalid phone/fax format, should be as xxx-xxx-xxxx")//if the field contains phone or fax number consider using this annotation to enforce field validation
     @Size(max = 20)
     @Column(name = "PHONE")
     private String phone;

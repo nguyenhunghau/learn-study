@@ -10,6 +10,7 @@ import com.example.management.service.AccountService;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,18 +51,21 @@ public class AccountController {
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
         return ResponseEntity.ok(userDetailsService.save(user));
     }
-    
+
     @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
     public ResponseEntity<?> getAccount(@RequestParam("code") String accountCode) throws Exception {
         Optional<AccountEntity> accountEntity = accountService.findByUsername(accountCode);
-        if(accountEntity.isPresent()) {
+        if (accountEntity.isPresent()) {
             return ResponseEntity.ok(accountEntity.get());
         }
         return ResponseEntity.ok(accountService.getProfile(accountCode));
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody UserDTO user) {
+    public ResponseEntity<?> login(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body("Username or password empty");
+        }
         try {
             authenticate(user.getUsername(), user.getPassword());
             final UserLoginDTO userLoginDTO = userDetailsService.loadUserByUsername(user.getUsername());
@@ -81,7 +86,7 @@ public class AccountController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-    
+
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, @RequestPart(value = "photo", required = false) MultipartFile photo,
             @RequestPart(value = "certificate", required = false) MultipartFile certificate) {

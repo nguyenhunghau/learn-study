@@ -1,5 +1,7 @@
 package com.example.management.dto;
 
+import java.util.Date;
+
 /**
  *
  * @author Admin
@@ -10,10 +12,10 @@ public class TeachingSearchDTO {
     private Integer addressId;
     private String subjectIds;
     private String levelIds;
-    private String dateFrom;
-    private String dateTo;
+    private Date dateFrom;
+    private Date dateTo;
 
-    public TeachingSearchDTO(String keyword, Integer addressId, String subjectIds, String levelIds, String dateFrom, String dateTo) {
+    public TeachingSearchDTO(String keyword, Integer addressId, String subjectIds, String levelIds, Date dateFrom, Date dateTo) {
         this.keyword = keyword;
         this.addressId = addressId;
         this.subjectIds = subjectIds;
@@ -38,11 +40,11 @@ public class TeachingSearchDTO {
         return levelIds;
     }
 
-    public String getDateFrom() {
+    public Date getDateFrom() {
         return dateFrom;
     }
 
-    public String getDateTo() {
+    public Date getDateTo() {
         return dateTo;
     }
 }

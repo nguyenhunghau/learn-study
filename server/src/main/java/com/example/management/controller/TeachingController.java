@@ -27,8 +27,8 @@ public class TeachingController {
         return ok(teachingService.addClass(entity));
     }
     
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public ResponseEntity getAll(TeachingSearchDTO teachingSearchDTO) {
+    @RequestMapping(value = "/getAll", method = RequestMethod.POST)
+    public ResponseEntity getAll(@RequestBody TeachingSearchDTO teachingSearchDTO) {
         return ok(teachingService.getAll(teachingSearchDTO));
     }
 }
