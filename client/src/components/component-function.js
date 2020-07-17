@@ -63,3 +63,7 @@ export const checkPermission = () => {
 export const getCode = () => {
     return localStorage['code'];
 }
+
+export const getToken = () => {
+    return localStorage['token'];
+}

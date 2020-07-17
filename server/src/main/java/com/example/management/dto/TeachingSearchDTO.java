@@ -14,14 +14,18 @@ public class TeachingSearchDTO {
     private String levelIds;
     private Date dateFrom;
     private Date dateTo;
+    private int pageIndex;
+    private int numItem;
 
-    public TeachingSearchDTO(String keyword, Integer addressId, String subjectIds, String levelIds, Date dateFrom, Date dateTo) {
+    public TeachingSearchDTO(String keyword, Integer addressId, String subjectIds, String levelIds, Date dateFrom, Date dateTo, int pageIndex, int numItem) {
         this.keyword = keyword;
         this.addressId = addressId;
         this.subjectIds = subjectIds;
         this.levelIds = levelIds;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.pageIndex = pageIndex;
+        this.numItem = numItem;
     }
 
     public String getKeyword() {
@@ -46,5 +50,21 @@ public class TeachingSearchDTO {
 
     public Date getDateTo() {
         return dateTo;
+    }
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public int getNumItem() {
+        return numItem;
+    }
+
+    public void setNumItem(int numItem) {
+        this.numItem = numItem;
     }
 }

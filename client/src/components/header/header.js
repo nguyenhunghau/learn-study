@@ -37,7 +37,7 @@ const Header = () => {
         if (window.location.pathname !== '/login' && getCode()) {
             try {
                 const data = await API.get({ url: URL_GET_ACCOUNT + getCode()});
-                if(!data.code) {
+                if(!data.username) {
                     return;
                 }
                 setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
@@ -54,7 +54,7 @@ const Header = () => {
                 </MDBNavItem></MDBNavbarNav>);
             } catch (error) {
                 console.log(error);
-                history.push('/login');
+                // history.push('/login');
             }
             return;
         }

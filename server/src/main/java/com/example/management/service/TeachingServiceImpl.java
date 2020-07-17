@@ -56,9 +56,9 @@ public class TeachingServiceImpl implements TeachingService {
     public List<TeachingClassEntity> getAll(TeachingSearchDTO teachingSearchDTO) {
         List<TeachingClassEntity> list = (List<TeachingClassEntity>) teachingRepository.findAll();
         if(teachingSearchDTO == null || teachingSearchDTO.getKeyword() == null) {
-            return list;
+            return pageniationList(list, teachingSearchDTO);
         }
-        return list.stream().filter(item -> {
+        List<TeachingClassEntity> resultList = list.stream().filter(item -> {
             //We need checkabout keyword, subject, level, addressId, fromdate and todate
             return filterKeyword(item, teachingSearchDTO.getKeyword())
                     && (teachingSearchDTO.getAddressId() == null || Objects.equals(teachingSearchDTO.getAddressId(), item.getAddressId()))
@@ -66,10 +66,16 @@ public class TeachingServiceImpl implements TeachingService {
                     && validList(teachingSearchDTO.getLevelIds(), item.getLevelIds())
                     && filterDate(teachingSearchDTO.getDateFrom(), teachingSearchDTO.getDateTo(), item.getDateStart());
         }).collect(Collectors.toList());
-//        list.forEach(item -> {
-//            
-//        });
-//        return list;
+        return pageniationList(resultList, teachingSearchDTO);
+    }
+    
+    private List<TeachingClassEntity> pageniationList(List<TeachingClassEntity> resultList, TeachingSearchDTO teachingSearchDTO) {
+         if(resultList.size() < teachingSearchDTO.getNumItem()) {
+            return resultList;
+        }
+        int indexFrom = teachingSearchDTO.getPageIndex() * teachingSearchDTO.getNumItem();
+        int indexTo = indexFrom + teachingSearchDTO.getNumItem();
+        return resultList.subList(indexFrom, indexTo < resultList.size()? indexTo: resultList.size());
     }
     
     private boolean validList(String allValue, String checkValue) {

@@ -10,6 +10,7 @@ import com.example.management.service.AccountService;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -53,12 +54,11 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
-    public ResponseEntity<?> getAccount(@RequestParam("code") String accountCode) throws Exception {
-        Optional<AccountEntity> accountEntity = accountService.findByUsername(accountCode);
-        if (accountEntity.isPresent()) {
-            return ResponseEntity.ok(accountEntity.get());
-        }
-        return ResponseEntity.ok(accountService.getProfile(accountCode));
+    public ResponseEntity<?> getAccount(HttpServletRequest request, @RequestParam("code") String accountCode) throws Exception {
+//        if (accountEntity.isPresent()) {
+//            return ResponseEntity.ok(accountEntity.get());
+//        }
+        return ResponseEntity.ok(accountService.getProfile(accountCode, jwtTokenUtil.getTokenRequest(request)));
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

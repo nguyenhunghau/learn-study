@@ -19,11 +19,33 @@ export const TeachingClass = () => {
     const [levelOptions, setLevelOptions] = useState(); 
     const [levelValue, setLevelValue] = useState();
     let subjectData = [];
+    const [pageArray, setPageArray] = useState([]);
+
+    //Pagination
+    const NUM_ITEM = 2;
+    const [pageIndex, setPageIndex] = useState(0);
 
     useEffect(() => {
         document.title = "Danh sách các lớp dạy";
+        createPagination();
         getListData();
     }, []);
+
+    const createPagination = () => {
+        var array = [];
+        for(var i = 0; i < 5; i++) {
+            array.push(i);
+            // const activeClass = i == pageIndex? 'active': '';
+            // array.push(<li className={`page-item ${activeClass}`} onClick={() => changePage(i)}><a class="page-link" href="#">{i + 1}</a></li>);
+        }
+        setPageArray(array);
+    }
+
+    const changePage = async(pageIndex) => {
+        setPageIndex(pageIndex);
+        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {...teachingSearch, pageIndex: pageIndex, numItem: NUM_ITEM}});
+        handleDataClass(classData, subjectList, level);
+    }
 
     const handleDataClass = (classData, subjectData, levelData) => {
         classData.map(item => {
@@ -62,7 +84,7 @@ export const TeachingClass = () => {
             setLevel(levelData);
 
             setSubjectOptions(createOptionSelect(subjectData));
-            const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {}});
+            const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {pageIndex: pageIndex, numItem: NUM_ITEM}});
             handleDataClass(classData, subjectData, levelData);
         } catch (error) {
             console.log(error);
@@ -82,6 +104,7 @@ export const TeachingClass = () => {
     const searchClass = async() => {
         const classData = await API.post({ url: URL_GET_CLASS_LIST, body: teachingSearch});
         handleDataClass(classData, subjectList, level);
+        setPageIndex(0);
     };
 
     return (
@@ -197,14 +220,22 @@ export const TeachingClass = () => {
                                     <div class="card-footer">
                                         <nav aria-label="Contacts Page Navigation">
                                             <ul class="pagination justify-content-center m-0">
-                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                {
+                                                    pageArray.map((key, index) => 
+                                                        {
+                                                            const activeClass = index == pageIndex? 'active': '';
+                                                            return <li className={`page-item ${activeClass}`} onClick={() => changePage(index)}><a class="page-link">{index + 1}</a></li>;
+                                                        }
+                                                    )
+                                                }
+                                                {/* <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">2</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">4</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">5</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">6</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">8</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">8</a></li> */}
                                             </ul>
                                         </nav>
                                     </div>
