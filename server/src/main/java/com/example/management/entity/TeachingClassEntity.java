@@ -17,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 //</editor-fold>
@@ -44,16 +45,21 @@ public class TeachingClassEntity implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
+    @NotNull
     @Size(max = 60)
     @Column(name = "TITLE")
     private String title;
     @Size(max = 100)
+    @NotNull
     @Column(name = "LEVEL_IDS")
     private String levelIds;
     @Lob
     @Size(max = 65535)
+    @NotNull
     @Column(name = "TIMETABLE")
     private String timetable;
+    @NotNull
     @Column(name = "COST")
     private Integer cost;
     @Column(name = "NUM_PERIOD")
@@ -74,7 +80,7 @@ public class TeachingClassEntity implements Serializable {
     private String typeTeaching;
    
     @Column(name = "ADDRESS_ID")
-    private int addressId;
+    private Integer addressId;
     
     @Column(name = "DATE_START")
     @Temporal(TemporalType.DATE)
@@ -134,11 +140,11 @@ public class TeachingClassEntity implements Serializable {
         this.typeTeaching = typeTeaching;
     }
 
-    public int getAddressId() {
+    public Integer getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(int addressId) {
+    public void setAddressId(Integer addressId) {
         this.addressId = addressId;
     }
 

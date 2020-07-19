@@ -6,6 +6,7 @@
 package com.example.management.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,15 @@ public class JwtTokenUtil implements Serializable {
 
 //	@Value("${jwt.secret}")
     private String secret = "secret";
+    
+    public String getTokenRequest(HttpServletRequest request) {
+        final String requestTokenHeader = request.getHeader("Authorization");
+        
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            return requestTokenHeader.substring(7);
+        }
+        return null;
+    }
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {

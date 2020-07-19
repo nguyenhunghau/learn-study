@@ -22,5 +22,5 @@ public interface AccountService {
 
     public Optional<AccountEntity> findByUsername(String username);
     
-    public AccountEntity getProfile(String code);
+    public AccountEntity getProfile(String code, String token);
 }

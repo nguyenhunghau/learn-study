@@ -1,5 +1,7 @@
 package com.example.management.dto;
 
+import java.util.Date;
+
 /**
  *
  * @author Admin
@@ -7,26 +9,30 @@ package com.example.management.dto;
 public class TeachingSearchDTO {
     
     private String keyword;
-    private int addressId;
+    private Integer addressId;
     private String subjectIds;
     private String levelIds;
-    private String dateFrom;
-    private String dateTo;
+    private Date dateFrom;
+    private Date dateTo;
+    private int pageIndex;
+    private int numItem;
 
-    public TeachingSearchDTO(String keyword, int addressId, String subjectIds, String levelIds, String dateFrom, String dateTo) {
+    public TeachingSearchDTO(String keyword, Integer addressId, String subjectIds, String levelIds, Date dateFrom, Date dateTo, int pageIndex, int numItem) {
         this.keyword = keyword;
         this.addressId = addressId;
         this.subjectIds = subjectIds;
         this.levelIds = levelIds;
         this.dateFrom = dateFrom;
         this.dateTo = dateTo;
+        this.pageIndex = pageIndex;
+        this.numItem = numItem;
     }
 
     public String getKeyword() {
         return keyword;
     }
 
-    public int getAddressId() {
+    public Integer getAddressId() {
         return addressId;
     }
 
@@ -38,11 +44,27 @@ public class TeachingSearchDTO {
         return levelIds;
     }
 
-    public String getDateFrom() {
+    public Date getDateFrom() {
         return dateFrom;
     }
 
-    public String getDateTo() {
+    public Date getDateTo() {
         return dateTo;
+    }
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public int getNumItem() {
+        return numItem;
+    }
+
+    public void setNumItem(int numItem) {
+        this.numItem = numItem;
     }
 }

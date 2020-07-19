@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Notification from './notifycation';
+import {getToken} from './component-function';
 
 var API = function () {
 
@@ -7,7 +8,7 @@ var API = function () {
         const requestOptions = {
             contentType: 'application/json',
             headers: {
-                'Authorization': 'Bearer ' + localStorage['token']
+                'Authorization': 'Bearer ' + (getToken() || '')
             }
         };
         try {
@@ -25,7 +26,7 @@ var API = function () {
 
     async function post(props) {
         const requestOptions = {
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage['token'] }
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (getToken() || '') }
         };
         try {
             const result = await axios.post(props.url, props.body, requestOptions);

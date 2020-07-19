@@ -37,7 +37,9 @@ const Header = () => {
         if (window.location.pathname !== '/login' && getCode()) {
             try {
                 const data = await API.get({ url: URL_GET_ACCOUNT + getCode()});
-                //If check OK
+                if(!data.username) {
+                    return;
+                }
                 setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
                     <MDBDropdown>
                         <MDBDropdownToggle nav caret>

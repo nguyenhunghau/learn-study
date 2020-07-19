@@ -3,6 +3,8 @@ package com.example.management.service;
 import com.example.management.component.UploadFile;
 import com.example.management.entity.AccountEntity;
 import com.example.management.repository.AccountRepository;
+import com.example.management.security.JwtTokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -20,6 +22,9 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     public AccountEntity login(String username, String password) {
@@ -60,9 +65,24 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountEntity getProfile(String code) {
+    public AccountEntity getProfile(String code, String token) {
         AccountEntity entity = accountRepository.findByCode(code);
         entity.setPassword(null);
+        if(token == null) {
+            entity.setUsername(null);
+            return entity;
+        }
+        try {
+            String username = jwtTokenUtil.getUsernameFromToken(token);
+            if(username.equals(entity.getUsername())) {
+                return entity;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Unable to get JWT Token");
+        } catch (ExpiredJwtException e) {
+            System.out.println("JWT Token has expired");
+        }
+        entity.setUsername(null);
         return entity;
     }
 

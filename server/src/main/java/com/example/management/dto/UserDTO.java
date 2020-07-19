@@ -1,12 +1,16 @@
 package com.example.management.dto;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  *
  * @author USER
  */
 public class UserDTO {
     
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
     private String name;
     private String email;

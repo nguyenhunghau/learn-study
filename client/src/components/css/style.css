@@ -33,3 +33,10 @@ ul.nav-sidebar li {
 #nav-main .nav-link.active {
     background-color: #39989a;
 }
+body {
+    line-height: 1.7 !important;
+    font-size: 14px;
+}
+.mr--10 {
+    margin-right: 10px;
+}

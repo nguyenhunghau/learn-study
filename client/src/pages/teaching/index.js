@@ -1,44 +1,111 @@
 import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
 import ClassItem from './class-item';
-import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST } from '../../constants/path';
+import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LEVEL_LIST } from '../../constants/path';
 import API from '../../components/api'
-import Address from '../../components/address'
+import Address, { findAddress } from '../../components/address'
+import Select from 'react-select';
 
 export const TeachingClass = () => {
 
     const [classList, setClassList] = useState([{ accountEntity: {} }]);
     const [subjectList, setSubjectList] = useState([]);
     const [unitList, setUnitList] = useState([]);
+    const [level, setLevel] = useState([]);
+    const [teachingSearch, setTeachingSearch] = useState({});
+
+    const [subjectValue, setSubjectValue] = useState();
+    const [subjectOptions, setSubjectOptions] = useState();
+    const [levelOptions, setLevelOptions] = useState(); 
+    const [levelValue, setLevelValue] = useState();
     let subjectData = [];
+    const [pageArray, setPageArray] = useState([]);
+
+    //Pagination
+    const NUM_ITEM = 2;
+    const [pageIndex, setPageIndex] = useState(0);
 
     useEffect(() => {
         document.title = "Danh sách các lớp dạy";
+        createPagination();
         getListData();
     }, []);
 
-    const handleDataClass = (data) => {
-        data.map(item => {
-            let subjectArray = item.subjectIds.split(',');
-            item.subjectName = subjectList.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
-            // item.level = subjectData.filter(unit => unitList.indexOf(subject.id + "") >= 0).map(unit => unit.name).join(', ');
+    const createPagination = () => {
+        var array = [];
+        for(var i = 0; i < 5; i++) {
+            array.push(i);
+            // const activeClass = i == pageIndex? 'active': '';
+            // array.push(<li className={`page-item ${activeClass}`} onClick={() => changePage(i)}><a class="page-link" href="#">{i + 1}</a></li>);
+        }
+        setPageArray(array);
+    }
+
+    const changePage = async(pageIndex) => {
+        setPageIndex(pageIndex);
+        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {...teachingSearch, pageIndex: pageIndex, numItem: NUM_ITEM}});
+        handleDataClass(classData, subjectList, level);
+    }
+
+    const handleDataClass = (classData, subjectData, levelData) => {
+        classData.map(item => {
+            let subjectArray = (item.subjectIds || '').split(',');
+            item.subjectName = subjectData.filter(subject => subjectArray.indexOf(subject.id + "") >= 0).map(subject => subject.name).join(', ');
+
+            let levelArray = (item.levelIds || '').split(',');
+            item.level = levelData.filter(levelItem => levelArray.indexOf(levelItem.id + "") >= 0).map(levelItem => levelItem.name).join(', ');
+            item.address = findAddress({ addressId: item.addressId });
         });
-        setClassList(data);
+        console.log(classData);
+        setClassList(classData);
+    }
+
+    const changeTeaching = (value, field) => {
+        var teachingNew = { ...teachingSearch };
+        if (Array.isArray(value)) {
+            teachingNew[field] = value.map(item => item.value).join(',');
+            setTeachingSearch(teachingNew);
+            return;
+        }
+        
+        teachingNew[field] = value;
+        setTeachingSearch(teachingNew);
     }
 
     async function getListData() {
         try {
-            const subjectAPI = API.get({ url: URL_GET_SUBJECT_LIST});
-            const unitData = API.get({ url: URL_GET_UNIT_LIST});
+            const subjectAPI = API.get({ url: URL_GET_SUBJECT_LIST });
+            const unitData = API.get({ url: URL_GET_UNIT_LIST });
+            const levelAPI = API.get({ url: URL_GET_LEVEL_LIST });
             const subjectData = await subjectAPI;
+            const levelData = await levelAPI;
             setSubjectList(subjectData);
             setUnitList(await unitData);
-            const classData = await API.get({ url: URL_GET_CLASS_LIST});
-            handleDataClass(classData);
-        } catch(error) {
+            setLevel(levelData);
+
+            setSubjectOptions(createOptionSelect(subjectData));
+            const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {pageIndex: pageIndex, numItem: NUM_ITEM}});
+            handleDataClass(classData, subjectData, levelData);
+        } catch (error) {
             console.log(error);
         }
     }
+
+    const createOptionSelect = (data) => {
+        let result = [];
+        data.map(item => {
+            result.push({
+                value: item.id, label: item.name
+            });
+        })
+        return result;
+    }
+
+    const searchClass = async() => {
+        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: teachingSearch});
+        handleDataClass(classData, subjectList, level);
+        setPageIndex(0);
+    };
 
     return (
         <div className={'wrapper'}>
@@ -70,61 +137,38 @@ export const TeachingClass = () => {
 
                                     <form action="../../index3.html" method="post">
                                         <div class="input-group mb-3">
-                                            <input type="email" class="form-control" placeholder="Keyword" />
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-envelope"></span>
-                                                </div>
-                                            </div>
+                                            <input type="email" value={teachingSearch.keyword} onChange={(e) => { changeTeaching(e.target.value, 'keyword') }} class="form-control" placeholder="Keyword" />
                                         </div>
                                         <div class="mb-3">
-                                            <Address divClass={'form-group address-item'} value={1002} />
+                                            <Address changeAddress={(addressId) => changeTeaching(addressId, 'addressId')} divClass={'form-group address-item'} value={1002} />
                                         </div>
-                                        
-                                        <div class="input-group mb-3">
-                                            <select class="form-control custom-select">
-                                                {
-                                                    subjectList.map(item =>
-                                                        <option value={item.id}>{item.name}</option>
-                                                    )
-                                                }
-                                                <option>Chọn Môn Học</option>
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
+
+                                        <div class="input-group mb-3 search-teaching">
+                                            <Select placeholder="Chọn Môn Học"
+                                                isMulti
+                                                value={subjectValue}
+                                                onChange={(subjectItem) => { setSubjectValue(subjectItem); changeTeaching(subjectItem, 'subjectIds') }}
+                                                options={subjectOptions}
+                                            />
                                         </div>
-                                        <div class="input-group mb-3">
-                                            <select class="form-control custom-select">
-                                                <option>Chọn Level</option>
-                                                {
-                                                    unitList.map(item =>
-                                                        <option value={item.id}>{item.name}</option>
-                                                    )
-                                                }
-                                            </select>
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
+                                        <div class="input-group mb-3 search-teaching">
+                                            <Select placeholder="Chọn lớp"
+                                                isMulti
+                                                value={levelValue}
+                                                onChange={(levelItem) => { setLevelValue(levelItem); changeTeaching(levelItem, 'levelIds') }}
+                                                options={levelOptions}
+                                            />
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="date" onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-lock"></span>
-                                                </div>
-                                            </div>
+                                            <input type="date" value={teachingSearch.dateFrom}  onChange={(e) => { changeTeaching(e.target.value, 'dateFrom') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
+                                            <input type="date" value={teachingSearch.dateTo}  onChange={(e) => { changeTeaching(e.target.value, 'dateTo') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
                                         </div>
                                     </form>
 
                                     <div class="social-auth-links text-center mb-3">
-                                        <a href="#" class="btn btn-block btn-primary">
+                                        <button class="btn btn-block btn-primary" onClick={searchClass}>
                                             <i class="fa fa-search mr-2"></i> Tìm kiếm
-        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -176,14 +220,22 @@ export const TeachingClass = () => {
                                     <div class="card-footer">
                                         <nav aria-label="Contacts Page Navigation">
                                             <ul class="pagination justify-content-center m-0">
-                                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                {
+                                                    pageArray.map((key, index) => 
+                                                        {
+                                                            const activeClass = index == pageIndex? 'active': '';
+                                                            return <li className={`page-item ${activeClass}`} onClick={() => changePage(index)}><a class="page-link">{index + 1}</a></li>;
+                                                        }
+                                                    )
+                                                }
+                                                {/* <li class="page-item active"><a class="page-link" href="#">1</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">2</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">4</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">5</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">6</a></li>
                                                 <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                <li class="page-item"><a class="page-link" href="#">8</a></li>
+                                                <li class="page-item"><a class="page-link" href="#">8</a></li> */}
                                             </ul>
                                         </nav>
                                     </div>

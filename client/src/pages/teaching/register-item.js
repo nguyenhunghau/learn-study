@@ -42,7 +42,7 @@ const ReigsterItem = (props) => {
     }
 
     const makeDefaultTeaching = () => {
-        const teachingNew = {...teaching};
+        const teachingNew = { ...teaching };
 
     }
 
@@ -72,7 +72,7 @@ const ReigsterItem = (props) => {
     }, []);
 
     const changeTeaching = (e, attr) => {
-        if(!e) {
+        if (!e) {
             return false;
         }
         const newTeaching = { ...teaching };
@@ -105,66 +105,70 @@ const ReigsterItem = (props) => {
 
     return (
         <div class="card-body">
-                <div class="form-group">
-                    <label for="inputEstimatedBudget">Tiêu đề</label>
-                    <input type="text" value={teaching.title} onChange={(e) => changeTeaching(e, 'title')} class="form-control" placeholder="Mở lớp dạy tiếng anh" required />
-                </div>
-                <div class="form-group">
-                    <label for="inputEstimatedBudget">Môn dạy</label>
-                    <Select placeholder="Chọn Môn dạy"
-                        value={subjectValue}
-                        onChange={(subjectItem) => { setSubjectValue(subjectItem); changeTeaching(subjectItem, 'subjectEntity'); }}
-                        options={subject}
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="inputSpentBudget">Lớp dạy</label>
-                    <Select placeholder="Chọn Lớp"
-                        isMulti
-                        value={levelValue}
-                        onChange={(levelItem) => { setLevelValue(levelItem); changeTeaching(levelItem, 'levelIds') }}
-                        options={level}
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="inputEstimatedDuration">Địa chỉ dạy</label>
-                    <div class="row">
-                        <Address changeAddress={(addressId) => changeTeaching({target:{value: addressId}}, 'addressId')}/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputEstimatedDuration">Số buổi</label>
-                    <select class="form-control" value={teaching.numPeriod} onChange={(e) => changeTeaching(e, 'numPeriod')}>
-                        {
-                            numPeriod.map(item =>
-                                item
-                            )
-                        }
-                    </select> / Tuần
+            <div class="form-group">
+                <label for="inputEstimatedBudget">Tiêu đề</label>
+                <input type="text" value={teaching.title} onChange={(e) => changeTeaching(e, 'title')} class="form-control" placeholder="Mở lớp dạy tiếng anh" required />
             </div>
-                <div class="form-group">
-                    <label for="inputEstimatedDuration">Thời gian dạy</label>
-                    <input type="text" value={teaching.timetable} onChange={(e) => changeTeaching(e, 'timetable')} class="form-control" placeholder="Ví dụ: T2 - T4 - T6; 17h - 19h" />
+            <div class="form-group">
+                <label for="inputEstimatedBudget">Môn dạy</label>
+                <Select placeholder="Chọn Môn dạy"
+                    value={subjectValue}
+                    onChange={(subjectItem) => { setSubjectValue(subjectItem); changeTeaching(subjectItem, 'subjectEntity'); }}
+                    options={subject}
+                    isSearchable required />
+            </div>
+            <div class="form-group">
+                <label for="inputSpentBudget">Lớp dạy</label>
+                <Select placeholder="Chọn Lớp"
+                    isMulti
+                    value={levelValue}
+                    onChange={(levelItem) => { setLevelValue(levelItem); changeTeaching(levelItem, 'levelIds') }}
+                    options={level}
+                />
+            </div>
+            <div class="form-group">
+                <label for="inputEstimatedDuration">Địa chỉ dạy</label>
+                <div class="row">
+                    <Address changeAddress={(addressId) => changeTeaching({ target: { value: addressId } }, 'addressId')} />
                 </div>
-                <div class="form-group">
-                    <label for="inputEstimatedDuration">Học phí</label>
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                            <input type="number" class="form-control" value={teaching.cost} onChange={(e) => changeTeaching(e, 'cost')} />
-                        </div>
-                        <div class="form-group col-md-6">
-                            <Select
-                                value={unitValue}
-                                onChange={(e) => { setUnitValue(e); changeTeaching(e, 'unitEntity') }}
-                                options={unit}
-                            />
-                        </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEstimatedDuration">Số buổi</label>
+                <select class="form-control" value={teaching.numPeriod} onChange={(e) => changeTeaching(e, 'numPeriod')}>
+                    {
+                        numPeriod.map(item =>
+                            item
+                        )
+                    }
+                </select> / Tuần
+            </div>
+            <div class="form-group">
+                <label for="inputEstimatedDuration">Thời gian dạy</label>
+                <input type="text" value={teaching.timetable} onChange={(e) => changeTeaching(e, 'timetable')} class="form-control" placeholder="Ví dụ: T2 - T4 - T6; 17h - 19h" />
+            </div>
+            <div class="form-group">
+                <label >Ngày mở lớp</label>
+                <input type="date" value={teaching.dateStart} onChange={(e) => changeTeaching(e, 'dateStart')} class="form-control" required />
+            </div>
+            <div class="form-group">
+                <label for="inputEstimatedDuration">Học phí</label>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <input type="number" class="form-control" value={teaching.cost} onChange={(e) => changeTeaching(e, 'cost')} />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <Select
+                            value={unitValue}
+                            onChange={(e) => { setUnitValue(e); changeTeaching(e, 'unitEntity') }}
+                            options={unit}
+                        />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="inputDescription">Mô tả thêm</label>
-                    <textarea class="form-control" rows="4" value={teaching.description} onChange={(e) => changeTeaching(e, 'description')}></textarea>
-                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputDescription">Mô tả thêm</label>
+                <textarea class="form-control" rows="4" value={teaching.description} onChange={(e) => changeTeaching(e, 'description')}></textarea>
+            </div>
         </div>
     )
 }

@@ -2,6 +2,22 @@ import React, { useState, useEffect } from 'react'
 import Select from 'react-select';
 import CityData from './quanhuyen.json'
 
+export const findAddress = (props) => {
+    const resultArray = [];
+    CityData.map(item => {
+        item.districts.map(district => {
+            let ward = district.wards.filter(wardItem => wardItem.id == props.addressId.toString());
+            if(ward.length > 0) {
+                resultArray.push(ward[0].name);
+                resultArray.push(district.name);
+                resultArray.push(item.name);
+                return resultArray.join(', ');
+            }
+        })
+    });
+    return resultArray.join(', ');
+}
+
 const Address = (props) => {
     const [city, setCity] = useState([]);
     const [district, setDistrict] = useState([]);
