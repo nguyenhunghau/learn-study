@@ -12,6 +12,7 @@ import Register from './pages/register/index'
 import {Profile} from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import ReactNotifications from 'react-notifications-component';
+import ErrorBoundary from './pages/error/error-boundary'
 
 class App extends React.Component {
 
@@ -19,6 +20,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
+        <ErrorBoundary>
           <ReactNotifications />
           <Router>
             <Switch>
@@ -33,6 +35,7 @@ class App extends React.Component {
               <Route exact path="/profile/:code" component={Profile} />
             </Switch>
           </Router>
+          </ErrorBoundary>
         </div>
     );
   }

@@ -52,11 +52,11 @@ const Header = () => {
                 </MDBNavItem></MDBNavbarNav>);
             } catch (error) {
                 console.log(error);
-                history.push('/login');
+                // history.push('/login');
             }
             return;
         }
-        history.push('/login');
+        // history.push('/login');
     }
     const checkActiveMenu = (link) => {
         if(window.location.pathname === link) {
