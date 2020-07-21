@@ -21,6 +21,7 @@ class App extends React.Component {
     return (
       <CookiesProvider>
       <div className="App">
+        {/* <ErrorBoundary> */}
           <ReactNotifications />
           <Router>
             <Switch>

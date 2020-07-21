@@ -58,7 +58,7 @@ const Header = () => {
             }
             return;
         }
-        history.push('/login');
+        // history.push('/login');
     }
     const checkActiveMenu = (link) => {
         if(window.location.pathname === link) {
