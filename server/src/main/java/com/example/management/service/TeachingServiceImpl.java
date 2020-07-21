@@ -1,9 +1,15 @@
 package com.example.management.service;
 
 import com.example.management.dto.TeachingSearchDTO;
+import com.example.management.entity.AccountEntity;
+import com.example.management.entity.LevelEntity;
+import com.example.management.entity.SubjectEntity;
 import com.example.management.entity.TeachingClassEntity;
 import com.example.management.repository.AccountRepository;
+import com.example.management.repository.LevelRepository;
+import com.example.management.repository.SubjectRepository;
 import com.example.management.repository.TeachingRepository;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +32,12 @@ public class TeachingServiceImpl implements TeachingService {
     
     @Autowired
     private AccountRepository accountRepository;
+    
+    @Autowired
+    private SubjectRepository subjectRepository;
+    
+    @Autowired
+    private LevelRepository levelRepository;
 
     @Override
     public TeachingClassEntity addClass(TeachingClassEntity entity) {
@@ -102,4 +114,42 @@ public class TeachingServiceImpl implements TeachingService {
         }
         return (fromDate == null || classDate.compareTo(fromDate) >= 0) && (toDate == null || classDate.compareTo(toDate) <= 0);
     }
+
+    @Override
+    public List<TeachingClassResult> getByAccount(String accountCode) {
+        List<TeachingClassResult> resultList = new ArrayList<>();
+        AccountEntity account = accountRepository.findByCode(accountCode);
+        if(account == null) {
+            throw new IllegalArgumentException("Account code not valid");
+        }
+        List<TeachingClassEntity> list = (List<TeachingClassEntity>) teachingRepository.findByAccountId(account.getId());
+        List<SubjectEntity> subjectList = subjectRepository.findAllActive(true);
+        List<LevelEntity> levelList = levelRepository.findAllActive(true);
+        list.forEach(item -> {
+            String subjectName = subjectList.stream().filter(subject -> subject.getId() == item.getSubjectEntity().getId()).findFirst().orElse(new SubjectEntity()).getName();
+            List<String> levelIdList = Arrays.asList(item.getLevelIds().split(","));
+            String levelName = levelList.stream()
+                    .filter(level -> levelIdList.contains(level.getId().toString()))
+                    .map(level -> level.getName())
+                    .collect(Collectors.joining(","));
+            resultList.add(new TeachingClassResult(item, subjectName, levelName));
+        });
+        return resultList;
+    }
+    
+    //<editor-fold defaultstate="collapsed" desc="CUSTOM RESULT CLASS">
+    public class TeachingClassResult {
+        private TeachingClassEntity teaching;
+        private String subjectName;
+        private String levelName;
+
+        public TeachingClassResult(TeachingClassEntity teaching, String subjectName, String levelName) {
+            this.teaching = teaching;
+            this.subjectName = subjectName;
+            this.levelName = levelName;
+        }
+        
+        
+    }
+    //</editor-fold>
 }

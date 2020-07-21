@@ -5,7 +5,7 @@ import TabInformation from '../account/tab-information';
 import RegisterItem from './register-item';
 import API from '../../components/api'
 import { getCode } from '../../components/component-function'
-import { URL_GET_ACCOUNT, URL_ADD_TEACHING } from '../../constants/path'
+import { URL_GET_ACCOUNT, URL_ADD_TEACHING } from '../../constants/path';
 
 export const RegisterTeaching = (props) => {
     const [account, setAccount] = useState({ addressId: '35' });

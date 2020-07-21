@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,8 +28,14 @@ public class AccountServiceImpl implements AccountService {
     private JwtTokenUtil jwtTokenUtil;
 
     @Override
-    public AccountEntity login(String username, String password) {
-        return accountRepository.findByUsernameAndPass(username, password);
+    public AccountEntity login(String accessToken, String refreshToken) {
+//        Boolean accessTokenValid = jwtTokenUtil.validateToken(accessToken);
+//        Boolean refreshTokenValid = jwtTokenUtil.validateToken(refreshToken);
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        Token newAccessToken;
+//        Token newRefreshToken;
+        
+        return accountRepository.findByUsernameAndPass(accessToken, refreshToken);
     }
 
     @Override

@@ -5,6 +5,7 @@ import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LE
 import API from '../../components/api'
 import Address, { findAddress } from '../../components/address'
 import Select from 'react-select';
+import './teaching.module.css';
 
 export const TeachingClass = () => {
 
@@ -22,7 +23,7 @@ export const TeachingClass = () => {
     const [pageArray, setPageArray] = useState([]);
 
     //Pagination
-    const NUM_ITEM = 2;
+    const NUM_ITEM = 10;
     const [pageIndex, setPageIndex] = useState(0);
 
     useEffect(() => {
@@ -143,7 +144,7 @@ export const TeachingClass = () => {
                                             <Address changeAddress={(addressId) => changeTeaching(addressId, 'addressId')} divClass={'form-group address-item'} value={1002} />
                                         </div>
 
-                                        <div class="input-group mb-3 search-teaching">
+                                        <div className={`input-group mb-3 ${'search_teaching'}`}>
                                             <Select placeholder="Chọn Môn Học"
                                                 isMulti
                                                 value={subjectValue}

@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public interface AccountService {
     
-    public AccountEntity login(String username, String password);
+    public AccountEntity login(String accessToken, String refreshToken);
     
     public AccountEntity register(AccountEntity accountEntity);
     

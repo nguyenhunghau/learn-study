@@ -1,6 +1,6 @@
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
-import './teaching.css';
+import styles from './teaching.module.css';
 import { URL_IMAGE } from '../../constants/path';
 import { Link } from "react-router-dom";
 
@@ -11,14 +11,14 @@ export default function ClassItem(props) {
         <div class="row d-flex align-items-stretch">
             <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
                 <div class="card bg-light job-item">
-                    <div class="card-header text-muted border-bottom-0 title-teaching">
+                    <div className={`card-header text-muted border-bottom-0 ${styles.title_teaching}`}>
                         <a href={"detail?id=" + data.id}>{data.title || <Skeleton />}</a>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col-2 text-center">
                                 {data.accountEntity.photo? 
-                                <img src={`${URL_IMAGE}${data.accountEntity.photo}`} alt="" className={'fluid'}></img>:
+                                <img src={`${URL_IMAGE}${data.accountEntity.photo}`} alt="" className={styles.fluid}></img>:
                                  <Skeleton height = {200} width = {200}/>}
                                 
                             </div>

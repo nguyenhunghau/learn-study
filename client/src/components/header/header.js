@@ -17,7 +17,7 @@ import '../plugins/fontawesome-free/css/all.min.css';
 import '../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css';
 import '../plugins/icheck-bootstrap/icheck-bootstrap.min.css';
 import '../plugins/jqvmap/jqvmap.min.css';
-import '../css/adminlte.min.css';
+import '../css/adminlte.css';
 import './header.css';
 
 const Header = () => {
