@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -83,10 +84,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
-        httpSecurity.csrf().disable().cors().and()
+        httpSecurity.csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and().cors().and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/account/login", "/account/register", 
-                        "/image/data", "/teaching/getAll", "/subject/**", "/unit/**", "/level/**", "/account/getAccount").permitAll()
+                        "/image/data", "/teaching/getAll", "/teaching/getByAccount",  "/subject/**", "/unit/**", "/level/**", "/account/getAccount").permitAll()
                 .antMatchers("/teaching/**").authenticated()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and().

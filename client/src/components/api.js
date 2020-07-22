@@ -1,18 +1,32 @@
 import axios from 'axios';
 import Notification from './notifycation';
-import {getToken} from './component-function';
+import { getToken } from './component-function';
+import { useCookies } from 'react-cookie';
+
+
+axios.interceptors.request.use(
+    function (config) {
+        
+        // const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+        // if (getToken()) {
+        //     config.headers["Authorization"] = "Bearer " + getToken();
+        // }
+        config.headers["Content-Type"] = 'application/json';
+        // if(cookies.get('XSRF-TOKEN')) {
+        //     config.headers["X-XSRF-TOKEN"] = cookies.get('XSRF-TOKEN');
+        // }   
+        return config;
+    },
+    function (err) {
+        return Promise.reject(err);
+    }
+);
 
 var API = function () {
 
     async function get(props) {
-        const requestOptions = {
-            contentType: 'application/json',
-            headers: {
-                'Authorization': 'Bearer ' + (getToken() || '')
-            }
-        };
         try {
-            const result = await axios.get(props.url, requestOptions);
+            const result = await axios.get(props.url);
             return result.data;
         } catch (error) {
             Notification.show({
@@ -25,11 +39,8 @@ var API = function () {
     }
 
     async function post(props) {
-        const requestOptions = {
-            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (getToken() || '') }
-        };
         try {
-            const result = await axios.post(props.url, props.body, requestOptions);
+            const result = await axios.post(props.url, props.body);
             return result.data;
         } catch (error) {
             Notification.show({

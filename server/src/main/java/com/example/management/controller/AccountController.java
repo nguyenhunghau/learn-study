@@ -1,5 +1,6 @@
 package com.example.management.controller;
 
+import com.example.management.constant.MyConstant;
 import com.example.management.dto.JwtResponseDTO;
 import com.example.management.dto.UserDTO;
 import com.example.management.dto.UserLoginDTO;
@@ -12,13 +13,16 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,15 +65,25 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@Valid @RequestBody UserDTO user, BindingResult bindingResult) {
+    public ResponseEntity<?> login(@Valid @RequestBody UserDTO user, 
+//            @CookieValue(name = "accessToken", required = false) String accessToken, 
+//            @CookieValue(name = "refreshToken", required = false) String refreshToken, 
+            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body("Username or password empty");
         }
         try {
             authenticate(user.getUsername(), user.getPassword());
             final UserLoginDTO userLoginDTO = userDetailsService.loadUserByUsername(user.getUsername());
+            HttpHeaders responseHeaders = new HttpHeaders();
             final String token = jwtTokenUtil.generateToken(userLoginDTO);
-            return ResponseEntity.ok(new JwtResponseDTO(token, userLoginDTO.getCode()));
+            responseHeaders.add(HttpHeaders.SET_COOKIE, ResponseCookie.from(MyConstant.ACCESS_TOKEN, token)
+                .maxAge(3000)
+                .httpOnly(true)
+                .path("/")
+                .build().toString());
+            
+            return ResponseEntity.ok().headers(responseHeaders).body(new JwtResponseDTO(token, userLoginDTO.getCode()));
         } catch (Exception ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             return ResponseEntity.badRequest().body(ex);

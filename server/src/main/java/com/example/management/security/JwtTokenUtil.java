@@ -5,6 +5,7 @@
  */
 package com.example.management.security;
 
+import com.example.management.constant.MyConstant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -29,10 +31,26 @@ public class JwtTokenUtil implements Serializable {
     private String secret = "secret";
     
     public String getTokenRequest(HttpServletRequest request) {
-        final String requestTokenHeader = request.getHeader("Authorization");
-        
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            return requestTokenHeader.substring(7);
+//        final String requestTokenHeader = request.getHeader("Authorization");
+//        
+//        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+//            return requestTokenHeader.substring(7);
+//        }
+        return getTokenFromCookie(request);
+    }
+    
+    private String getTokenFromCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null) {
+            return null;
+        }
+        for (Cookie cookie : cookies) {
+            if (MyConstant.ACCESS_TOKEN.equals(cookie.getName())) {
+                String accessToken = cookie.getValue();
+                if (accessToken == null) return null;
+
+                return accessToken;//SecurityCipher.decrypt(accessToken);
+            }
         }
         return null;
     }

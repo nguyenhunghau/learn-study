@@ -5,23 +5,25 @@ import './components/css/style.css';
 import Home from './pages/home/index';
 import Validation from './pages/form/validation';
 import Table from './pages/form/table';
-import {TeachingClass} from './pages/teaching/index'
-import {RegisterTeaching} from './pages/teaching/register';
+import { TeachingClass } from './pages/teaching/index'
+import { RegisterTeaching } from './pages/teaching/register';
 import Login from './pages/login/index';
 import Register from './pages/register/index'
 import {Profile} from './pages/account/profile'
 import ChangePassword from './pages/account/change-pass'
+import { Profile } from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import ReactNotifications from 'react-notifications-component';
-import ErrorBoundary from './pages/error/error-boundary'
+import { CookiesProvider } from 'react-cookie';
 
 class App extends React.Component {
 
   render() {
 
     return (
+      <CookiesProvider>
       <div className="App">
-        <ErrorBoundary>
+        {/* <ErrorBoundary> */}
           <ReactNotifications />
           <Router>
             <Switch>
@@ -37,8 +39,8 @@ class App extends React.Component {
               <Route exact path="/profile/:code" component={Profile} />
             </Switch>
           </Router>
-          </ErrorBoundary>
-        </div>
+      </div>
+        </CookiesProvider>
     );
   }
 }

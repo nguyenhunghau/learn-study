@@ -5,25 +5,26 @@ import { URL_LOGIN } from '../../constants/path';
 import { useHistory } from 'react-router-dom';
 import { createCookie } from '../../components/component-function';
 import Notification from '../../components/notifycation';
+import { useCookies } from 'react-cookie';
 
 export const Login = () => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    // const [cookies, setCookie] = useCookies(['token']);
     const history = useHistory();
 
     const loginSuccess = (data) => {
-        createCookie('token', data.token, 1000);
-        localStorage['token'] = data.token;
-        localStorage['username'] = username;
-        localStorage['code'] = data.code;
+        // localStorage['token'] = data.token;
+        // localStorage['username'] = username;
+        // localStorage['code'] = data.code;
         history.push("/");
     }
 
     async function onSubmit(event) {
         event.preventDefault();
         try {
-            const data = await API.post({ url: URL_LOGIN, body: JSON.stringify({ "username": username, "password": password })});
+            const data = await API.post({ url: URL_LOGIN, body: JSON.stringify({ "username": username, "password": password }) });
             loginSuccess(data);
         } catch (error) {
             Notification.show({

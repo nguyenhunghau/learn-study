@@ -4,6 +4,7 @@ import Header from '../../components/header/header';
 import TabInformation from './tab-information';
 import TabActivity from './tab-activity';
 import TabTimeline from './tab-timeline';
+import TabTeaching from './tab-teaching';
 import { Tab, Tabs } from "react-bootstrap";
 import userLogo from '../../components/img/avatar.png';
 import { URL_IMAGE } from '../../constants/path';
@@ -126,7 +127,7 @@ export const Profile = (props) => {
                                             {account.name ? <TabInformation changeAccount={setAccount} account={account} profile={true}/> : ''}
                                         </Tab>
                                         <Tab eventKey="Activity" title="Activity">
-                                            <TabActivity />
+                                            <TabTeaching code={props.match.params.code || getCode()}/>
                                         </Tab>
                                         <Tab eventKey="Timeline" title="Timeline">
                                             <TabTimeline />
