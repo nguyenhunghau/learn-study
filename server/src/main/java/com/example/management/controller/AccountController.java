@@ -7,7 +7,6 @@ import com.example.management.entity.AccountEntity;
 import com.example.management.security.CustomUserDetailsService;
 import com.example.management.security.JwtTokenUtil;
 import com.example.management.service.AccountService;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -92,6 +91,17 @@ public class AccountController {
             @RequestPart(value = "certificate", required = false) MultipartFile certificate) {
         try {
             return ResponseEntity.ok(accountService.update(account, photo, certificate));
+        } catch (Exception ex) {
+            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            return ResponseEntity.badRequest().body(ex);
+        }
+    }
+    
+    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
+    public ResponseEntity<?> changePassword(HttpServletRequest request, @RequestBody UserDTO userDTO) {
+        try {
+            String token = jwtTokenUtil.getTokenRequest(request);
+            return ResponseEntity.ok(accountService.changePassword(userDTO, token));
         } catch (Exception ex) {
             Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
             return ResponseEntity.badRequest().body(ex);

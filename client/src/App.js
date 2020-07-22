@@ -10,6 +10,7 @@ import {RegisterTeaching} from './pages/teaching/register';
 import Login from './pages/login/index';
 import Register from './pages/register/index'
 import {Profile} from './pages/account/profile'
+import ChangePassword from './pages/account/change-pass'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import ReactNotifications from 'react-notifications-component';
 import ErrorBoundary from './pages/error/error-boundary'
@@ -30,6 +31,7 @@ class App extends React.Component {
               <Route exact path="/teaching" component={TeachingClass} />
               <Route exact path="/teaching-register" component={RegisterTeaching} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/change-password" component={ChangePassword} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/profile/:code" component={Profile} />
