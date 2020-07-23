@@ -23,7 +23,7 @@ export const TeachingClass = () => {
     const [pageArray, setPageArray] = useState([]);
 
     //Pagination
-    const NUM_ITEM = 10;
+    const NUM_ITEM = 4;
     const [pageIndex, setPageIndex] = useState(0);
 
     useEffect(() => {

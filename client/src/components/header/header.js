@@ -18,7 +18,7 @@ import '../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.c
 import '../plugins/icheck-bootstrap/icheck-bootstrap.min.css';
 import '../plugins/jqvmap/jqvmap.min.css';
 import '../css/adminlte.css';
-import './header.css';
+import styles from './header.module.css';
 
 const Header = () => {
 
@@ -41,7 +41,7 @@ const Header = () => {
                     return;
                 }
                 setHeaderUser(<MDBNavbarNav right style={specialCaseNavbarStyles}><MDBNavItem>
-                    <MDBDropdown>
+                    <MDBDropdown className={styles.user}>
                         <MDBDropdownToggle nav caret>
                             <MDBIcon icon="user" /> <div className="d-none d-md-inline">{data.name}</div>
                         </MDBDropdownToggle>
@@ -79,9 +79,9 @@ const Header = () => {
     }
 
     return (
-        <MDBNavbar style={{ background: '#3f5c80' }} double expand="md" fixed="top" id="nav-main" className="fixed-sn light-blue-skin">
+        <MDBNavbar style={{ background: '#3f5c80' }} double expand="md" fixed="top" className="fixed-sn light-blue-skin">
             <MDBCollapse isOpen={true} navbar>
-                <MDBNavbarNav left>
+                <MDBNavbarNav id="nav-main" left>
                     <MDBNavItem>
                         <MDBNavLink to="#">
                             <img src={adminLTELogo} style={{ height: '30px' }} />
@@ -100,19 +100,19 @@ const Header = () => {
                         </form>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink activeClassName={checkActiveMenu('/')} to="/">
+                        <MDBNavLink activeClassName={checkActiveMenu('/')} className={styles.user} to="/">
                             <MDBIcon icon="/" className="d-inline-inline" />{" "}
                             <div className="d-none d-md-inline">Trang chủ</div>
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink activeClassName={checkActiveMenu('/teaching')} to="/teaching">
+                        <MDBNavLink activeClassName={checkActiveMenu('/teaching')} className={styles.user} to="/teaching">
                             <MDBIcon icon="chalkboard-teacher" />{" "}
                             <div className="d-none d-md-inline">Lớp hiện có</div>
                         </MDBNavLink>
                     </MDBNavItem>
                     <MDBNavItem>
-                        <MDBNavLink activeClassName={checkActiveMenu('/teaching-register')} to="/teaching-register">
+                        <MDBNavLink activeClassName={checkActiveMenu('/teaching-register')} className={styles.user} to="/teaching-register">
                             <MDBIcon icon="registered" />{" "}
                             <div className="d-none d-md-inline">Đăng kí lớp dạy</div>
                         </MDBNavLink>

@@ -2,6 +2,8 @@ package com.example.management.controller;
 
 import com.example.management.dto.TeachingSearchDTO;
 import com.example.management.entity.TeachingClassEntity;
+import com.example.management.exception.NotFoundException;
+import com.example.management.security.JwtTokenUtil;
 import com.example.management.service.TeachingService;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import static org.springframework.http.ResponseEntity.ok;
@@ -28,6 +31,9 @@ public class TeachingController {
 
     @Autowired
     private TeachingService teachingService;
+    
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @RequestMapping(value = "/addClass", method = RequestMethod.POST)
     public ResponseEntity<TeachingClassEntity> addClass(@RequestBody TeachingClassEntity entity) {
@@ -46,6 +52,15 @@ public class TeachingController {
         try {
             return ok(objectMapper.writeValueAsString(teachingService.getByAccount(accountCode)));
         } catch (JsonProcessingException ex) {
+            return ResponseEntity.badRequest().body(ex);
+        }
+    }
+    
+    @RequestMapping(value = "/getByCode", method = RequestMethod.GET)
+    public ResponseEntity getByCode(HttpServletRequest request, @RequestParam("code") String code) {
+        try {
+            return ok(teachingService.getByCode(code, jwtTokenUtil.getTokenRequest(request)));
+        } catch (NotFoundException ex) {
             return ResponseEntity.badRequest().body(ex);
         }
     }

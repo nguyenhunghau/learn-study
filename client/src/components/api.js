@@ -27,13 +27,16 @@ var API = function () {
     async function get(props) {
         try {
             const result = await axios.get(props.url);
+            if(result.data.error) {
+                throw new Error("Error when get data from server");
+            }
             return result.data;
         } catch (error) {
-            Notification.show({
-                title: 'Error',
-                type: 'danger',
-                message: 'Get data from url fail ' + props.url
-            })
+            // Notification.show({
+            //     title: 'Error',
+            //     type: 'danger',
+            //     message: 'Get data from url fail ' + props.url
+            // })
             throw error;
         }
     }

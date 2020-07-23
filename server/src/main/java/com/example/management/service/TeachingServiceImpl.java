@@ -5,10 +5,12 @@ import com.example.management.entity.AccountEntity;
 import com.example.management.entity.LevelEntity;
 import com.example.management.entity.SubjectEntity;
 import com.example.management.entity.TeachingClassEntity;
+import com.example.management.exception.NotFoundException;
 import com.example.management.repository.AccountRepository;
 import com.example.management.repository.LevelRepository;
 import com.example.management.repository.SubjectRepository;
 import com.example.management.repository.TeachingRepository;
+import com.example.management.security.JwtTokenUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -38,6 +40,9 @@ public class TeachingServiceImpl implements TeachingService {
     
     @Autowired
     private LevelRepository levelRepository;
+    
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     public TeachingClassEntity addClass(TeachingClassEntity entity) {
@@ -135,6 +140,17 @@ public class TeachingServiceImpl implements TeachingService {
             resultList.add(new TeachingClassResult(item, subjectName, levelName));
         });
         return resultList;
+    }
+
+    @Override
+    public TeachingClassEntity getByCode(String code, String token) throws NotFoundException {
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        String idClass = code.substring(code.lastIndexOf("-") + 1);
+        Optional<TeachingClassEntity> teaching = teachingRepository.findById(Integer.parseInt(idClass));
+        if(!teaching.isPresent() || !teaching.get().getAccountEntity().getUsername().equals(username)) {
+            throw new NotFoundException("Not found class");
+        }
+        return teaching.get();
     }
     
     //<editor-fold defaultstate="collapsed" desc="CUSTOM RESULT CLASS">

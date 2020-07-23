@@ -29,8 +29,12 @@ public class ImageService {
 
     public byte[] getImage(String link) throws UnsupportedEncodingException, IOException {
         link = URLDecoder.decode(link, "UTF-8");
-        final InputStream in = new FileInputStream(new File(MyConstant.IMAGE_FOLDER + link));
-        return IOUtils.toByteArray(in);
+        try {
+            final InputStream in = new FileInputStream(new File(MyConstant.IMAGE_FOLDER + link));
+            return IOUtils.toByteArray(in);
+        } catch (Exception ex) {
+            return new byte[0];
+        }
     }
 
     public ResponseEntity<?> download(String link) throws FileNotFoundException {

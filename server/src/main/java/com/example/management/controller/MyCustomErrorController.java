@@ -16,7 +16,7 @@ public class MyCustomErrorController  implements ErrorController {
     
     @GetMapping(value=PATH)
     public ResponseEntity error() {
-        return ResponseEntity.ok("Error haven");
+        return ResponseEntity.ok("{\"error\": \"Error haven\"}");
     }
     
     @Override

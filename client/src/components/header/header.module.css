@@ -5,7 +5,10 @@
 .main-header.navbar-light {
     background-color: #50bbc3;
 }
-#nav-main li a, .navbar-nav.mr-auto li div {
+.user {
+    color: white;
+}
+.user a{
     color: white;
 }
 #dropdown-account .dropdown-item a {

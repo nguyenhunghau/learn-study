@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import styles from './teaching.module.css';
 import { URL_IMAGE } from '../../constants/path';
 import { Link } from "react-router-dom";
+import { makeClassCode } from '../../components/component-function'
+import { URL_GET_ACCOUNT } from '../../constants/path'
+import API from '../../components/api';
 
 export default function ClassItem(props) {
 
     const data = props.data;
+    const [edit, setEdit] = useState(<a href="#" class="btn btn-sm bg-teal mr--10">
+        <i class="fas fa-comments"></i>Trò chuyện
+                                    </a>);
+    useEffect(() => {
+        if (data.accountEntity && data.accountEntity.code) {
+            checkPermission();
+        }
+    }, [data]);
+
+    const checkPermission = async () => {
+        try {
+            const account = await API.get({ url: URL_GET_ACCOUNT + data.accountEntity.code });
+            if (!account.username) {
+                return;
+            }
+            setEdit(<Link to={"/teaching-register?code=" + makeClassCode(data.id, data.title)} class="btn btn-sm bg-teal mr--10">
+                        <i class="fas fa-edit"></i>Chỉnh sửa
+                    </Link>);
+        } catch (error) {
+            console.log(error);
+        }
+        return;
+    };
+
     return (
         <div class="row d-flex align-items-stretch">
             <div class="col-12 col-sm-12 col-md-12 d-flex align-items-stretch">
@@ -17,10 +44,10 @@ export default function ClassItem(props) {
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col-2 text-center">
-                                {data.accountEntity.photo? 
-                                <img src={`${URL_IMAGE}${data.accountEntity.photo}`} alt="" className={styles.fluid}></img>:
-                                 <Skeleton height = {200} width = {200}/>}
-                                
+                                {data.accountEntity && data.accountEntity.photo ?
+                                    <img src={`${URL_IMAGE}${data.accountEntity.photo}`} alt="" className={styles.fluid}></img> :
+                                    <Skeleton height={200} width={200} />}
+
                             </div>
                             <div class="col-6">
                                 <h2 class="lead name-teaching">{data.accountEntity.name || <Skeleton />}</h2>
@@ -35,9 +62,7 @@ export default function ClassItem(props) {
                             </div>
                             <div class="col-3">
                                 <div class="text-right">
-                                    <a href="#" class="btn btn-sm bg-teal mr--10">
-                                        <i class="fas fa-comments"></i> Trò chuyện
-                                                        </a>
+                                    {edit}
                                     <Link to={`/profile/${data.accountEntity.code}`} class="btn btn-sm btn-primary">
                                         <i class="fas fa-user"></i> Xem trang cá nhân
                                                 </Link>

@@ -35,11 +35,11 @@ const notification = {
     animationOut: ["animated", "fadeOut"],
     dismiss: {
         duration: 3000
-      }
+    }
 };
 
 export const getListData = (url, callBack) => {
-    
+
 
     // fetch(url, requestOptions)
     //     .then(response => {
@@ -53,7 +53,7 @@ export const getListData = (url, callBack) => {
     //     }).catch(function (error) {
     //         NotificationManager.error('Get data from url fail ' + url, 'Error!');
     //     });
-    
+
 }
 
 export const checkPermission = () => {
@@ -66,4 +66,14 @@ export const getCode = () => {
 
 export const getToken = () => {
     return localStorage['token'];
+}
+
+const replaceAccents = (str) => {
+    return str.normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd').replace(/Đ/g, 'D').replace(/ /g, '-');
+}
+
+export const makeClassCode = (id, title) => {
+    return replaceAccents(title) + '-' + id;
 }

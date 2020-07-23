@@ -40,3 +40,10 @@ body {
 .mr--10 {
     margin-right: 10px;
 }
+
+#dropdown-account .dropdown-item a {
+    color: black
+}
+.css-g1d714-ValueContainer{
+    height: 36px !important;
+}

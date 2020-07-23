@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().cors().and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/account/login", "/account/register", 
-                        "/image/data", "/teaching/getAll", "/teaching/getByAccount",  "/subject/**", "/unit/**", "/level/**", "/account/getAccount").permitAll()
+                        "/image/data", "/teaching/getAll", "/teaching/**",  "/subject/**", "/unit/**", "/level/**", "/account/getAccount").permitAll()
                 .antMatchers("/teaching/**").authenticated()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and().

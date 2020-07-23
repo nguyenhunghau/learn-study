@@ -4,12 +4,17 @@ import Footer from '../../components/footer';
 import TabInformation from '../account/tab-information';
 import RegisterItem from './register-item';
 import API from '../../components/api'
-import { getCode } from '../../components/component-function'
-import { URL_GET_ACCOUNT, URL_ADD_TEACHING } from '../../constants/path';
+import { getCode, makeClassCode } from '../../components/component-function'
+import { URL_GET_ACCOUNT, URL_ADD_TEACHING, URL_GET_TEACHING } from '../../constants/path';
+import queryString from 'query-string';
+import Notification from '../../components/notifycation';
+import { useHistory } from 'react-router-dom';
 
 export const RegisterTeaching = (props) => {
     const [account, setAccount] = useState({ addressId: '35' });
-    const [teaching, setTeaching] = useState({ numPeriod: 3, addressId: '35', unitEntity: { id: 1 } });
+    const [teaching, setTeaching] = useState({ numPeriod: 3, addressId: '35', unitEntity: { id: 1 }, subjectEntity: {id: 1} });
+    const [isUpdate, setIsUpdate] = useState(false);
+    const history = useHistory();
     const info = useRef(null);
 
     const changeTeaching = async (data) => {
@@ -17,13 +22,20 @@ export const RegisterTeaching = (props) => {
         console.log(data)
     }
 
-    const addTeaching = async () => {
+    const addTeaching = async (event) => {
         try {
+            event.preventDefault();
             if (getCode()) {
                 teaching['accountEntity'] = { code: getCode() };
             }
             console.log(teaching);
             const data = await API.post({ url: URL_ADD_TEACHING, body: JSON.stringify(teaching) });
+            history.push(`/teaching-register?code=${makeClassCode(data.id, data.title)}`);
+            Notification.show({
+                title: 'Thông báo',
+                type: 'success',
+                message: 'Cập nhật lớp thành công'
+            })
         } catch (error) {
             console.log(error);
         }
@@ -31,8 +43,30 @@ export const RegisterTeaching = (props) => {
 
     useEffect(() => {
         document.title = "Đăng kí lớp dạy";
-        getAccount();
+        const parsed = queryString.parse(window.location.search);
+        if (parsed.code) {
+            getTeachingClass(parsed.code);
+            setIsUpdate(true);
+        } else {
+            getAccount();
+        }
+
     }, []);
+
+    const getTeachingClass = async (code) => {
+        try {
+            const data = await API.get({ url: URL_GET_TEACHING + "?code=" + code });
+            setAccount(data.accountEntity);
+            setTeaching(data);
+        } catch (error) {
+            Notification.show({
+                title: 'Error',
+                type: 'danger',
+                message: error.message
+            })
+        }
+    }
+
     const getAccount = async () => {
         const data = await API.get({ url: URL_GET_ACCOUNT + (props.match.params.code || getCode()) });
         setAccount(data);
@@ -41,7 +75,7 @@ export const RegisterTeaching = (props) => {
     return (
         <div className={'wrapper'}>
             <Header />
-            <div class="content-wrapper">
+            <div class="content-wrapper" style={{'margin-bottom': '30px'}}>
                 <section class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
@@ -90,7 +124,8 @@ export const RegisterTeaching = (props) => {
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <input type="submit" value="Tạo lớp mới" class="btn btn-success float-right" />
+                                {isUpdate? <input type="submit" value="Cập nhật lớp" class="btn btn-success float-right"/>:
+                                <input type="submit" value="Tạo lớp mới" class="btn btn-success float-right"/>}
                             </div>
                         </div>
                     </form>

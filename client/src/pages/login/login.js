@@ -15,9 +15,7 @@ export const Login = () => {
     const history = useHistory();
 
     const loginSuccess = (data) => {
-        // localStorage['token'] = data.token;
-        // localStorage['username'] = username;
-        // localStorage['code'] = data.code;
+        localStorage['code'] = data.code;
         history.push("/");
     }
 

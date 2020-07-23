@@ -2,20 +2,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import Select from 'react-select';
 import Address from '../../components/address';
 import API from '../../components/api';
-import { URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LEVEL_LIST } from '../../constants/path'
+import { URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LEVEL_LIST } from '../../constants/path';
 
 const ReigsterItem = (props) => {
-    const [teaching, setTeaching] = useState(props.teaching);
+    const [teaching, setTeaching] = useState(() => props.teaching);
     const [subject, setSubject] = useState();
     const [unit, setUnit] = useState([]);
-    const [level, setLevel] = useState();
+    const [level, setLevel] = useState([]);
     const [numPeriod, setNumPeriod] = useState([]);
 
     const [subjectValue, setSubjectValue] = useState();
     const [levelValue, setLevelValue] = useState();
     const [periodValue, setPeriodValue] = useState();
     const [unitValue, setUnitValue] = useState();
-    const didMountRef = useRef(false);
+    const levelRef = useRef();
+    levelRef.current = teaching;
     const [init, setInit] = useState(0);
 
     const handleChange = (e) => {
@@ -32,7 +33,9 @@ const ReigsterItem = (props) => {
         const levelAPI = API.get({ url: URL_GET_LEVEL_LIST });
 
         setSubject(createOptionSelect(await subjectAPI));
-        setLevel(createOptionSelect(await levelAPI));
+        const levelOption = createOptionSelect(await levelAPI);
+        setLevel(levelOption);
+        setLevelValue(createLevelValue(levelRef.current.levelIds, levelOption));
         const unitList = createOptionSelect(await unitAPI);
         setUnit(unitList);
         setUnitValue(unitList.filter(item => item.value === teaching.unitEntity.id)[0]);
@@ -43,7 +46,6 @@ const ReigsterItem = (props) => {
 
     const makeDefaultTeaching = () => {
         const teachingNew = { ...teaching };
-
     }
 
     const makeNumPeriod = () => {
@@ -68,8 +70,28 @@ const ReigsterItem = (props) => {
     }
 
     useEffect(() => {
-        getListData();
-    }, []);
+        if (props.teaching.id) {
+            getListData();
+        }
+
+        setTeaching(props.teaching);
+        console.log(props.teaching);
+        setSubjectValue({ value: props.teaching.subjectEntity.id, label: props.teaching.subjectEntity.name });
+    }, [props.teaching.id]);
+
+    const createLevelValue = (levelIds, levelOption) => {
+        let result = [];
+        if (!levelIds) {
+            return result;
+        }
+        let levelArray = levelIds.split(',');
+        levelOption.map(item => {
+            if (levelArray.indexOf(item.value.toString()) >= 0) {
+                result.push(item);
+            }
+        });
+        return result;
+    }
 
     const changeTeaching = (e, attr) => {
         if (!e) {
@@ -94,28 +116,31 @@ const ReigsterItem = (props) => {
         props.changeTeaching(newTeaching);
     }
 
-    // useEffect(() => {
-    //     if(didMountRef.current) {
-    //         props.changeTeaching(teaching);
-    //     } else {
-    //         getListData();
-    //         didMountRef.current = true;
-    //     }
-    // }, [init]);
-
     return (
         <div class="card-body">
             <div class="form-group">
                 <label for="inputEstimatedBudget">Tiêu đề</label>
                 <input type="text" value={teaching.title} onChange={(e) => changeTeaching(e, 'title')} class="form-control" placeholder="Mở lớp dạy tiếng anh" required />
             </div>
-            <div class="form-group">
-                <label for="inputEstimatedBudget">Môn dạy</label>
-                <Select placeholder="Chọn Môn dạy"
-                    value={subjectValue}
-                    onChange={(subjectItem) => { setSubjectValue(subjectItem); changeTeaching(subjectItem, 'subjectEntity'); }}
-                    options={subject}
-                    isSearchable required />
+            <div class="form-group row">
+                <div class="col-6">
+                    <label for="inputEstimatedBudget">Môn dạy</label>
+                    <Select placeholder="Chọn Môn dạy"
+                        value={subjectValue}
+                        onChange={(subjectItem) => { setSubjectValue(subjectItem); changeTeaching(subjectItem, 'subjectEntity'); }}
+                        options={subject}
+                        isSearchable required />
+                    </div>
+                <div class="col-6">
+                <label for="inputEstimatedDuration">Số buổi (/ tuần)</label>
+                    <select class="form-control" value={teaching.numPeriod} onChange={(e) => changeTeaching(e, 'numPeriod')}>
+                        {
+                            numPeriod.map(item =>
+                                item
+                            )
+                        }
+                    </select>
+                </div>
             </div>
             <div class="form-group">
                 <label for="inputSpentBudget">Lớp dạy</label>
@@ -129,18 +154,8 @@ const ReigsterItem = (props) => {
             <div class="form-group">
                 <label for="inputEstimatedDuration">Địa chỉ dạy</label>
                 <div class="row">
-                    <Address changeAddress={(addressId) => changeTeaching({ target: { value: addressId } }, 'addressId')} />
+                    <Address value={props.teaching.addressId} changeAddress={(addressId) => changeTeaching({ target: { value: addressId } }, 'addressId')} />
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputEstimatedDuration">Số buổi</label>
-                <select class="form-control" value={teaching.numPeriod} onChange={(e) => changeTeaching(e, 'numPeriod')}>
-                    {
-                        numPeriod.map(item =>
-                            item
-                        )
-                    }
-                </select> / Tuần
             </div>
             <div class="form-group">
                 <label for="inputEstimatedDuration">Thời gian dạy</label>
@@ -156,7 +171,8 @@ const ReigsterItem = (props) => {
                     <div class="form-group col-md-6">
                         <input type="number" class="form-control" value={teaching.cost} onChange={(e) => changeTeaching(e, 'cost')} />
                     </div>
-                    <div class="form-group col-md-6">
+                    /
+                    <div class="form-group col-md-5">
                         <Select
                             value={unitValue}
                             onChange={(e) => { setUnitValue(e); changeTeaching(e, 'unitEntity') }}
