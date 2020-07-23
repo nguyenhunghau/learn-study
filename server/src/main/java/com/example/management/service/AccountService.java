@@ -17,6 +17,8 @@ public interface AccountService {
     
     public AccountEntity register(AccountEntity accountEntity);
     
+    public boolean activeAccount(String code);
+    
     public AccountEntity update(AccountEntity accountEntity, MultipartFile photo, MultipartFile certificate);
     
     public Boolean changePassword(String username, String oldPassword, String newPassord);

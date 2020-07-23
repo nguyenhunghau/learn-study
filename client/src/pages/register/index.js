@@ -14,6 +14,25 @@ export default function RegisterPage() {
 
     const registerAccount = (event) => {
         event.preventDefault();
+        const re = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/g);
+        const isOk = re.test(password);
+        if(!isOk) {
+            Notification.show({
+                title: 'Error',
+                type: 'danger',
+                message: 'Mật khẩu phải bao gồm kí tự thường, kí tự hoa và số'
+            })
+            return;
+        }
+        if(password !== passwordConfirm) {
+            Notification.show({
+                title: 'Error',
+                type: 'danger',
+                message: 'Mật khẩu xác nhận không khớp'
+            })
+            return;
+        }
+
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

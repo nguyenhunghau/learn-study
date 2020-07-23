@@ -31,9 +31,9 @@ import javax.validation.constraints.Size;
 @Table(name = "account")
 @NamedQueries({
     @NamedQuery(name = "AccountEntity.findAll", query = "SELECT a FROM AccountEntity a")
-    , @NamedQuery(name = "AccountEntity.findById", query = "SELECT a FROM AccountEntity a WHERE a.id = :id")
+    , @NamedQuery(name = "AccountEntity.findById", query = "SELECT a FROM AccountEntity a WHERE a.id = :id and a.isActive = true")
     , @NamedQuery(name = "AccountEntity.findByUsername", query = "SELECT a FROM AccountEntity a WHERE a.username = :username")
-    , @NamedQuery(name = "AccountEntity.findByUsernameAndPass", query = "SELECT a FROM AccountEntity a WHERE a.username = :username and a.password = :password")
+    , @NamedQuery(name = "AccountEntity.findByUsernameAndPass", query = "SELECT a FROM AccountEntity a WHERE a.username = :username and a.password = :password and a.isActive = true")
     , @NamedQuery(name = "AccountEntity.findByCode", query = "SELECT a FROM AccountEntity a WHERE a.code = :code")
     , @NamedQuery(name = "AccountEntity.findByEmail", query = "SELECT a FROM AccountEntity a WHERE a.email = :email")})
 @NamedNativeQueries({
@@ -87,6 +87,8 @@ public class AccountEntity  implements Serializable {
     @Size(max = 250)
     @Column(name = "MAJOR")
     private String major;
+    @Column(name = "IS_ACTIVE")
+    private boolean isActive;
     @Column(name = "CREATED")
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
@@ -276,6 +278,14 @@ public class AccountEntity  implements Serializable {
 
     public void setUpdated(Date updated) {
         this.updated = updated;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.management.component;
 
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
+import com.example.management.constant.MyConstant;
+import com.example.management.entity.AccountEntity;
 import com.sendgrid.Content;
 import com.sendgrid.Email;
 import com.sendgrid.Mail;
@@ -10,6 +12,7 @@ import com.sendgrid.Request;
 import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +45,9 @@ public class EmailUtils {
    private static final Logger logger = LoggerFactory.getLogger(EmailUtils.class);
    
    //<editor-fold defaultstate="collapsed" desc="SEND MAIL AFTER FINISH ANALYTIS JOB">
-   public void sendMailInfoAnalystJob(String subject, String content, List<String> sendToEmails, List<String> ccEmails, List<String> bccEmails) {
+   public boolean sendMailInfoAnalystJob(String subject, String content, List<String> sendToEmails, List<String> ccEmails, List<String> bccEmails) {
        Mail mail = buildMailToSend(subject, content, sendToEmails, ccEmails, bccEmails);
-       send(mail);
+       return send(mail);
    }
 //</editor-fold>
 
@@ -52,8 +55,19 @@ public class EmailUtils {
        Mail mail = buildMailToSend(subject, content, sendToEmails, ccEmails, bccEmails);
        send(mail);
    }
+   
+   public boolean sendMailRegister(AccountEntity account) {
+        String subject = "Xác nhận tài khoản";
+        String link = MyConstant.DOMAIN + "account/active?code=" + account.getCode();
+        String bodyMail = "Bạn đã đăng kí tài khoản thành công<br>"
+                + "Mới bạn nhấn vào link bên dưới để active tài khoản<br>" + link;
+        List<String> sendToEmails = new ArrayList<>();
+        sendToEmails.add(account.getEmail());
+        Mail mail = buildMailToSend(subject, bodyMail, sendToEmails, new ArrayList<String>(), new ArrayList<String>());
+        return send(mail);
+    }
 
-   private void send(Mail mail) {
+   private boolean send(Mail mail) {
        SendGrid sg = new SendGrid(sendGridApiKey);
        sg.addRequestHeader(KEY_X_MOCK, "400");
 
@@ -64,8 +78,10 @@ public class EmailUtils {
            request.setBody(mail.build());
            Response response = sg.api(request);
            System.out.println(response.getStatusCode());
+           return true;
        } catch (IOException ex) {
            logger.error("Error sent mail with subject " + mail.getSubject(), ex);
+           return false;
        }
    }
 

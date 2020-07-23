@@ -41,7 +41,13 @@ class ChangePassword extends React.Component {
         try {
             const data = await API.post({ url: URL_CHANGE_PASSWORD, body: 
                 JSON.stringify({password: this.state.oldPass, passwordConfirm: this.state.newPass}) });
-            alert(data);
+            if(data) {
+                Notification.show({
+                    title: 'Thông báo',
+                    type: 'danger',
+                    message: 'Đổi mật khẩu thành công'
+                })
+            }
         } catch (error) {
 
         }

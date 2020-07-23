@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from '../../components/header/header';
+import Footer from '../../components/footer';
 import ClassItem from './class-item';
 import { URL_GET_CLASS_LIST, URL_GET_SUBJECT_LIST, URL_GET_UNIT_LIST, URL_GET_LEVEL_LIST } from '../../constants/path';
 import API from '../../components/api'
@@ -17,7 +18,7 @@ export const TeachingClass = () => {
 
     const [subjectValue, setSubjectValue] = useState();
     const [subjectOptions, setSubjectOptions] = useState();
-    const [levelOptions, setLevelOptions] = useState(); 
+    const [levelOptions, setLevelOptions] = useState();
     const [levelValue, setLevelValue] = useState();
     let subjectData = [];
     const [pageArray, setPageArray] = useState([]);
@@ -34,7 +35,7 @@ export const TeachingClass = () => {
 
     const createPagination = () => {
         var array = [];
-        for(var i = 0; i < 5; i++) {
+        for (var i = 0; i < 5; i++) {
             array.push(i);
             // const activeClass = i == pageIndex? 'active': '';
             // array.push(<li className={`page-item ${activeClass}`} onClick={() => changePage(i)}><a class="page-link" href="#">{i + 1}</a></li>);
@@ -42,9 +43,9 @@ export const TeachingClass = () => {
         setPageArray(array);
     }
 
-    const changePage = async(pageIndex) => {
+    const changePage = async (pageIndex) => {
         setPageIndex(pageIndex);
-        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {...teachingSearch, pageIndex: pageIndex, numItem: NUM_ITEM}});
+        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: { ...teachingSearch, pageIndex: pageIndex, numItem: NUM_ITEM } });
         handleDataClass(classData, subjectList, level);
     }
 
@@ -68,7 +69,7 @@ export const TeachingClass = () => {
             setTeachingSearch(teachingNew);
             return;
         }
-        
+
         teachingNew[field] = value;
         setTeachingSearch(teachingNew);
     }
@@ -85,7 +86,7 @@ export const TeachingClass = () => {
             setLevel(levelData);
 
             setSubjectOptions(createOptionSelect(subjectData));
-            const classData = await API.post({ url: URL_GET_CLASS_LIST, body: {pageIndex: pageIndex, numItem: NUM_ITEM}});
+            const classData = await API.post({ url: URL_GET_CLASS_LIST, body: { pageIndex: pageIndex, numItem: NUM_ITEM } });
             handleDataClass(classData, subjectData, levelData);
         } catch (error) {
             console.log(error);
@@ -102,8 +103,8 @@ export const TeachingClass = () => {
         return result;
     }
 
-    const searchClass = async() => {
-        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: teachingSearch});
+    const searchClass = async () => {
+        const classData = await API.post({ url: URL_GET_CLASS_LIST, body: teachingSearch });
         handleDataClass(classData, subjectList, level);
         setPageIndex(0);
     };
@@ -161,8 +162,8 @@ export const TeachingClass = () => {
                                             />
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="date" value={teachingSearch.dateFrom}  onChange={(e) => { changeTeaching(e.target.value, 'dateFrom') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
-                                            <input type="date" value={teachingSearch.dateTo}  onChange={(e) => { changeTeaching(e.target.value, 'dateTo') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
+                                            <input type="date" value={teachingSearch.dateFrom} onChange={(e) => { changeTeaching(e.target.value, 'dateFrom') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
+                                            <input type="date" value={teachingSearch.dateTo} onChange={(e) => { changeTeaching(e.target.value, 'dateTo') }} onfocus="(this.type='date')" class="form-control" placeholder="Ngày mở lớp" />
                                         </div>
                                     </form>
 
@@ -222,11 +223,10 @@ export const TeachingClass = () => {
                                         <nav aria-label="Contacts Page Navigation">
                                             <ul class="pagination justify-content-center m-0">
                                                 {
-                                                    pageArray.map((key, index) => 
-                                                        {
-                                                            const activeClass = index == pageIndex? 'active': '';
-                                                            return <li className={`page-item ${activeClass}`} onClick={() => changePage(index)}><a class="page-link">{index + 1}</a></li>;
-                                                        }
+                                                    pageArray.map((key, index) => {
+                                                        const activeClass = index == pageIndex ? 'active' : '';
+                                                        return <li className={`page-item ${activeClass}`} onClick={() => changePage(index)}><a class="page-link">{index + 1}</a></li>;
+                                                    }
                                                     )
                                                 }
                                                 {/* <li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -246,6 +246,7 @@ export const TeachingClass = () => {
                     </div>
                 </section>
             </div>
+            <Footer />
         </div>
     );
 }

@@ -5,6 +5,7 @@ import TabInformation from './tab-information';
 import TabActivity from './tab-activity';
 import TabTimeline from './tab-timeline';
 import TabTeaching from './tab-teaching';
+import ChangePassword from './change-pass';
 import { Tab, Tabs } from "react-bootstrap";
 import userLogo from '../../components/img/avatar.png';
 import { URL_IMAGE } from '../../constants/path';
@@ -31,9 +32,18 @@ export const Profile = (props) => {
     }, []);
 
     const getAccount = async () => {
-        const data = await API.get({ url: URL_GET_ACCOUNT + (props.match.params.code || getCode()) });
-        setAccount(data);
-        console.log('Finish get data');
+        try{
+            const data = await API.get({ url: URL_GET_ACCOUNT + (props.match.params.code || getCode()) });
+            setAccount(data);
+            console.log('Finish get data');
+        } catch (error) {
+            Notification.show({
+                title: 'Error',
+                type: 'danger',
+                message: error.message
+            })
+            return;
+        }
     }
 
     return (
@@ -123,15 +133,18 @@ export const Profile = (props) => {
                             <div class="col-md-9">
                                 <div class="card" id="tab_profile">
                                     <Tabs defaultActiveKey="Profile" id="uncontrolled-tab-example">
-                                        <Tab eventKey="Profile" title="Profile">
+                                        <Tab eventKey="Profile" title="Thông tin cá nhân">
                                             {account.name ? <TabInformation changeAccount={setAccount} account={account} profile={true}/> : ''}
                                         </Tab>
-                                        <Tab eventKey="Activity" title="Activity">
+                                        <Tab eventKey="Timeline" title="Đổi mật khẩu">
+                                            <ChangePassword />
+                                        </Tab>
+                                        <Tab eventKey="Activity" title="Tin đã đăng">
                                             <TabTeaching code={props.match.params.code || getCode()}/>
                                         </Tab>
-                                        <Tab eventKey="Timeline" title="Timeline">
+                                        {/* <Tab eventKey="Timeline" title="Timeline">
                                             <TabTimeline />
-                                        </Tab>
+                                        </Tab> */}
                                     </Tabs>
                                 </div>
                             </div>

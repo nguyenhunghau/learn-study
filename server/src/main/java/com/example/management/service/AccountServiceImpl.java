@@ -1,6 +1,7 @@
 package com.example.management.service;
 
 import com.example.management.component.EmailUtils;
+import com.example.management.component.GeneratedIDUtils;
 import com.example.management.component.UploadFile;
 import com.example.management.dto.UserDTO;
 import com.example.management.entity.AccountEntity;
@@ -8,6 +9,7 @@ import com.example.management.repository.AccountRepository;
 import com.example.management.security.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -32,8 +34,12 @@ public class AccountServiceImpl implements AccountService {
     private JwtTokenUtil jwtTokenUtil;
     
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
+    
     @Autowired
     private PasswordEncoder bcryptEncoder;
+    
+    @Autowired
+    private GeneratedIDUtils generatedIDUtils;
 
     @Override
     public AccountEntity login(String accessToken, String refreshToken) {
@@ -133,5 +139,22 @@ public class AccountServiceImpl implements AccountService {
              return true;
          }
          return false;
+    }
+
+    @Override
+    public boolean activeAccount(String code) {
+        AccountEntity account = accountRepository.findByCode(code);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.MINUTE, -15);
+        if(account.getCreated().compareTo(cal.getTime()) < 0) {
+            return false;
+        }
+        String newCode = generatedIDUtils.gemeratedID();
+        account.setCode(newCode);
+        account.setIsActive(true);
+        account.setUpdated(new Date());
+        accountRepository.save(account);
+        return true;
     }
 }

@@ -52,7 +52,12 @@ public class AccountController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-        return ResponseEntity.ok(userDetailsService.save(user));
+        return ResponseEntity.ok(userDetailsService.save(user).toString());
+    }
+    
+    @RequestMapping(value = "/active", method = RequestMethod.GET)
+    public ResponseEntity<?> activeAccount(@RequestParam("code") String code) throws Exception {
+        return ResponseEntity.ok(accountService.activeAccount(code));
     }
 
     @RequestMapping(value = "/getAccount", method = RequestMethod.GET)

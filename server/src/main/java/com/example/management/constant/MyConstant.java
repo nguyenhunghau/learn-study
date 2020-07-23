@@ -11,6 +11,7 @@ package com.example.management.constant;
  */
 public class MyConstant {
     
+    public static final String DOMAIN = "http://localhost:8088/";
     public static final String IMAGE_FOLDER = "D:/study/image/";
     public static final String ACCESS_TOKEN = "access-token";
     public static final String REFRESH_TOKEN = "refresh-token";

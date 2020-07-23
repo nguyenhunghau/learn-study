@@ -10,7 +10,7 @@ import API from '../../components/api';
 export default function ClassItem(props) {
 
     const data = props.data;
-    const [edit, setEdit] = useState(<a href="#" class="btn btn-sm bg-teal mr--10">
+    const [edit, setEdit] = useState(<a href="#" className={`btn bg-teal mr--10 ${styles.btn_action}`}>
         <i class="fas fa-comments"></i>Trò chuyện
                                     </a>);
     useEffect(() => {
@@ -63,8 +63,8 @@ export default function ClassItem(props) {
                             <div class="col-3">
                                 <div class="text-right">
                                     {edit}
-                                    <Link to={`/profile/${data.accountEntity.code}`} class="btn btn-sm btn-primary">
-                                        <i class="fas fa-user"></i> Xem trang cá nhân
+                                    <Link to={`/profile/${data.accountEntity.code}`} class="btn btn-primary">
+                                        <i class="fas fa-user"></i> Trang cá nhân
                                                 </Link>
                                 </div>
                             </div>

@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
 import API from '../../components/api'
 import { URL_REGISTER } from '../../constants/path';
+import Notification from '../../components/notifycation';
 
 export const Register = () => {
 
@@ -10,13 +11,28 @@ export const Register = () => {
     const [password, setPassword] = useState();
     const [passwordConfirm, setPasswordConfirm] = useState();
     const [email, setEmail] = useState();
+    const [message, setMessage] = useState({}); 
 
     const register = async(event) => {
         event.preventDefault();
+        const re = new RegExp(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/g);
+        const isOk = re.test(password);
+        if(!isOk) {
+            setMessage({...message, password: 'Mật khẩu phải bao gồm kí tự thường, kí tự hoa và số'});
+            return;
+        }
+        if(password !== passwordConfirm) {
+            setMessage({...message, passwordConfirm: 'Mật khẩu xác nhận không khớp'});
+            return;
+        }
         try {
             const data = await API.post({ url: URL_REGISTER, 
                 body: JSON.stringify({"name": name, "email": email, 
                 "username": username, "passwordConfirm": passwordConfirm, "password": password }) });
+                if(data.error) {
+                    setMessage(data.error);
+                    return;
+                }
                 Notification.show({
                     title: 'Success',
                     type: 'success',
@@ -49,6 +65,7 @@ export const Register = () => {
                                     </div>
                                 </div>
                             </div>
+                            {message.email? <span>{message.email}</span>: ''}
                             <div class="input-group mb-3">
                                 <input type="email" class="form-control" placeholder="Email"  value={email} onChange={(e) => setEmail(e.target.value)} required/>
                                 <div class="input-group-append">
@@ -57,6 +74,7 @@ export const Register = () => {
                                     </div>
                                 </div>
                             </div>
+                            {message.username? <span>{message.username}</span>: ''}
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="Username"  value={username} onChange={(e) => setUsername(e.target.value)} required/>
                                 <div class="input-group-append">
@@ -65,6 +83,7 @@ export const Register = () => {
                                     </div>
                                 </div>
                             </div>
+                            {message.password? <span>{message.password}</span>: ''}
                             <div class="input-group mb-3">
                                 <input type="password" class="form-control" placeholder="Password"  value={password} onChange={(e) => setPassword(e.target.value)} required/>
                                 <div class="input-group-append">
@@ -73,6 +92,7 @@ export const Register = () => {
                                     </div>
                                 </div>
                             </div>
+                            {message.passwordConfirm? <span>{message.passwordConfirm}</span>: ''}
                             <div class="input-group mb-3">
                                 <input type="password" class="form-control" placeholder="Retype password"  value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} required/>
                                 <div class="input-group-append">

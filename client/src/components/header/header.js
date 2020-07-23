@@ -46,9 +46,9 @@ const Header = () => {
                             <MDBIcon icon="user" /> <div className="d-none d-md-inline">{data.name}</div>
                         </MDBDropdownToggle>
                         <MDBDropdownMenu right id="dropdown-account">
-                            <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBNavLink></MDBDropdownItem>
-                            <MDBDropdownItem><MDBNavLink to="profile"><MDBIcon icon="key" /> Đổi mật khẩu</MDBNavLink></MDBDropdownItem>
-                            <MDBDropdownItem><MDBNavLink to="profile" onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBNavLink></MDBDropdownItem>
+                            <MDBDropdownItem><MDBNavLink to="/profile"><MDBIcon icon="user-circle" /> Trang cá nhân</MDBNavLink></MDBDropdownItem>
+                            <MDBDropdownItem><MDBNavLink to="/change-password"><MDBIcon icon="key" /> Đổi mật khẩu</MDBNavLink></MDBDropdownItem>
+                            <MDBDropdownItem><MDBNavLink to="#" onClick={logout}><MDBIcon icon="sign-out-alt" /> Đăng xuất</MDBNavLink></MDBDropdownItem>
                         </MDBDropdownMenu>
                     </MDBDropdown>
                 </MDBNavItem></MDBNavbarNav>);
