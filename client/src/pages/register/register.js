@@ -1,7 +1,37 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link} from "react-router-dom";
+import API from '../../components/api'
+import { URL_REGISTER } from '../../constants/path';
 
 export const Register = () => {
+
+    const [name, setName] = useState();
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+    const [passwordConfirm, setPasswordConfirm] = useState();
+    const [email, setEmail] = useState();
+
+    const register = async(event) => {
+        event.preventDefault();
+        try {
+            const data = await API.post({ url: URL_REGISTER, 
+                body: JSON.stringify({"name": name, "email": email, 
+                "username": username, "passwordConfirm": passwordConfirm, "password": password }) });
+                Notification.show({
+                    title: 'Success',
+                    type: 'success',
+                    message: 'PLease check email to active account'
+                })
+            // loginSuccess(data);
+        } catch (error) {
+            Notification.show({
+                title: 'Error',
+                type: 'danger',
+                message: 'Username or password wrong'
+            })
+        }
+    }
+
     return (
         <div class="hold-transition register-page">
             <div class="register-box">
@@ -10,9 +40,9 @@ export const Register = () => {
                     <div class="card-body register-card-body">
                         <h2 class="login-box-msg">Đăng kí thành viên mới</h2>
 
-                        <form action="../../index.html" method="post">
+                        <form onSubmit={register}>
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Full name" />
+                                <input type="text" class="form-control" placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} required />
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-user"></span>
@@ -20,7 +50,7 @@ export const Register = () => {
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="email" class="form-control" placeholder="Email" />
+                                <input type="email" class="form-control" placeholder="Email"  value={email} onChange={(e) => setEmail(e.target.value)} required/>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-envelope"></span>
@@ -28,7 +58,15 @@ export const Register = () => {
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="password" class="form-control" placeholder="Password" />
+                                <input type="text" class="form-control" placeholder="Username"  value={username} onChange={(e) => setUsername(e.target.value)} required/>
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-envelope"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control" placeholder="Password"  value={password} onChange={(e) => setPassword(e.target.value)} required/>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>
@@ -36,7 +74,7 @@ export const Register = () => {
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="password" class="form-control" placeholder="Retype password" />
+                                <input type="password" class="form-control" placeholder="Retype password"  value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} required/>
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>

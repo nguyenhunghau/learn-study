@@ -9,7 +9,6 @@ import { TeachingClass } from './pages/teaching/index'
 import { RegisterTeaching } from './pages/teaching/register';
 import Login from './pages/login/index';
 import Register from './pages/register/index'
-import {Profile} from './pages/account/profile'
 import ChangePassword from './pages/account/change-pass'
 import { Profile } from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
