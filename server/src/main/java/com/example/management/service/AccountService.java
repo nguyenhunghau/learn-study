@@ -1,5 +1,6 @@
 package com.example.management.service;
 
+import com.example.management.dto.UserDTO;
 import com.example.management.entity.AccountEntity;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
@@ -23,4 +24,6 @@ public interface AccountService {
     public Optional<AccountEntity> findByUsername(String username);
     
     public AccountEntity getProfile(String code, String token);
+    
+    public boolean changePassword(UserDTO userDTO, String token);
 }

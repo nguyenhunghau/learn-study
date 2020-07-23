@@ -102,6 +102,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    
+
     @Override
     public void configure(WebSecurity web) throws Exception {
 //        web.ignoring().requestMatchers(SECURITY_EXCLUSION_MATCHER);

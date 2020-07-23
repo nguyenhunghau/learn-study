@@ -109,4 +109,15 @@ public class AccountController {
             return ResponseEntity.badRequest().body(ex);
         }
     }
+    
+    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
+    public ResponseEntity<?> changePassword(HttpServletRequest request, @RequestBody UserDTO userDTO) {
+        try {
+            String token = jwtTokenUtil.getTokenRequest(request);
+            return ResponseEntity.ok(accountService.changePassword(userDTO, token));
+        } catch (Exception ex) {
+            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            return ResponseEntity.badRequest().body(ex);
+        }
+    }
 }
