@@ -32,7 +32,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "AccountEntity.findAll", query = "SELECT a FROM AccountEntity a")
     , @NamedQuery(name = "AccountEntity.findById", query = "SELECT a FROM AccountEntity a WHERE a.id = :id and a.isActive = true")
-    , @NamedQuery(name = "AccountEntity.findByUsername", query = "SELECT a FROM AccountEntity a WHERE a.username = :username")
+    , @NamedQuery(name = "AccountEntity.findByUsername", query = "SELECT a FROM AccountEntity a WHERE a.username = :username and a.isActive = :isActive")
     , @NamedQuery(name = "AccountEntity.findByUsernameAndPass", query = "SELECT a FROM AccountEntity a WHERE a.username = :username and a.password = :password and a.isActive = true")
     , @NamedQuery(name = "AccountEntity.findByCode", query = "SELECT a FROM AccountEntity a WHERE a.code = :code")
     , @NamedQuery(name = "AccountEntity.findByEmail", query = "SELECT a FROM AccountEntity a WHERE a.email = :email")})

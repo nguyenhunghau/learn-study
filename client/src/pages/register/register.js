@@ -33,6 +33,7 @@ export const Register = () => {
                     setMessage(data.error);
                     return;
                 }
+                setMessage({});
                 Notification.show({
                     title: 'Success',
                     type: 'success',

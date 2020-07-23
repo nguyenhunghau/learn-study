@@ -18,7 +18,7 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Integer>
 
     public AccountEntity findByUsernameAndPass(String username, String password);
 
-    public Optional<AccountEntity> findByUsername(String username);
+    public Optional<AccountEntity> findByUsername(String username, boolean isActive);
 
     public AccountEntity findByCode(@Param("code") String code);
 

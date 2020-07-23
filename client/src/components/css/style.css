@@ -31,7 +31,11 @@ ul.nav-sidebar li {
     width: 100%;
 }
 #nav-main .nav-link.active {
-    background-color: #39989a;
+    /* background-color: #39989a; */
+    font-weight: 700;
+}
+.nav-link:hover {
+    color: white;
 }
 body {
     line-height: 1.7 !important;

@@ -37,7 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserLoginDTO loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AccountEntity> entity = this.accountRepository.findByUsername(username);
+        Optional<AccountEntity> entity = this.accountRepository.findByUsername(username, true);
         if (!entity.isPresent()) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -58,7 +58,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             result.add("error", message);
             return result;
         }
-        if(accountRepository.findByUsername(user.getUsername()).isPresent()) {
+        if(accountRepository.findByUsername(user.getUsername(), true).isPresent()) {
             message.addProperty("username", "Tên đăng nhập đã tồn tại");
             result.add("error", message);
             return result;

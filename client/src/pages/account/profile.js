@@ -34,6 +34,9 @@ export const Profile = (props) => {
     const getAccount = async () => {
         try{
             const data = await API.get({ url: URL_GET_ACCOUNT + (props.match.params.code || getCode()) });
+            if(!data.addressId) {
+                data.addressId = -1;
+            }
             setAccount(data);
             console.log('Finish get data');
         } catch (error) {
@@ -74,9 +77,12 @@ export const Profile = (props) => {
                                 <div class="card card-primary card-outline">
                                     <div class="card-body box-profile">
                                         <div class="text-center">
+                                            {account.photo? 
                                             <img class="profile-user-img img-fluid img-circle"
                                                 src={`${URL_IMAGE}${account.photo}`}
                                                 alt="User profile picture" />
+                                                : <span>Chưa có hình ảnh</span>
+                                            }
                                         </div>
 
                                         <h3 class="profile-username text-center">Nguyen Hung Hau</h3>

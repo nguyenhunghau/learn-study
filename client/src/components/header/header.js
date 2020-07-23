@@ -25,7 +25,7 @@ const Header = () => {
     const [isLogin, setIsLogin] = useState(false);
     const history = useHistory();
     const [headerUser, setHeaderUser] = useState(<li class="nav-item d-none d-sm-inline-block">
-        <Link to="/login" class="nav-link">Đăng nhập</Link>
+        <Link to="/login" className={`nav-link ${styles.user}`}>Đăng nhập</Link>
     </li>);
 
     const specialCaseNavbarStyles = {

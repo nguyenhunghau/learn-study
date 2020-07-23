@@ -58,7 +58,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public AccountEntity update(AccountEntity accountEntity) {
-        Optional<AccountEntity> existed = accountRepository.findByUsername(accountEntity.getUsername());
+        Optional<AccountEntity> existed = accountRepository.findByUsername(accountEntity.getUsername(), true);
         if (existed.isPresent()) {
             existed.get().merge(accountEntity);
             return accountRepository.save(existed.get());
@@ -68,7 +68,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Boolean changePassword(String username, String oldPassword, String newPassord) {
-        Optional<AccountEntity> existed = accountRepository.findByUsername(username);
+        Optional<AccountEntity> existed = accountRepository.findByUsername(username, true);
         if (!existed.isPresent()) {
             return false;
         }
@@ -82,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Optional<AccountEntity> findByUsername(String username) {
-        return accountRepository.findByUsername(username);
+        return accountRepository.findByUsername(username, true);
     }
 
     @Override
@@ -131,7 +131,7 @@ public class AccountServiceImpl implements AccountService {
     public boolean changePassword(UserDTO userDTO, String token) {
          String username = jwtTokenUtil.getUsernameFromToken(token);
          System.out.println(username + "\n" + bcryptEncoder.encode(userDTO.getPassword()));
-         AccountEntity account = accountRepository.findByUsername(username).get();
+         AccountEntity account = accountRepository.findByUsername(username, true).get();
          if(account != null && bcryptEncoder.matches(userDTO.getPassword(), account.getPassword())) {
              account.setPassword(bcryptEncoder.encode(userDTO.getPasswordConfirm()));
              account.setUpdated(new Date());
