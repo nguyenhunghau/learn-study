@@ -2,7 +2,7 @@ package com.example.management.dto;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 public class JwtResponseDTO {
 

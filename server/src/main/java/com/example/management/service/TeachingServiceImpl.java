@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @Service
 public class TeachingServiceImpl implements TeachingService {

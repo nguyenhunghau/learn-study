@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
- * @author Admin
+ * @author Nguyen Hung Hau
  */
 @Service
 public interface AccountService {

@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @Entity
 @Table(name = "WEB_ANALYTIC")

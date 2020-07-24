@@ -3,12 +3,11 @@ package com.example.management.component;
 import com.example.management.constant.MyConstant;
 import java.io.File;
 import java.io.IOException;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 public class UploadFile {
     

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 public class UserLoginDTO implements UserDetails{
     

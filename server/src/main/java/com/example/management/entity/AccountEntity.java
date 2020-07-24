@@ -25,7 +25,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @Entity
 @Table(name = "account")
@@ -39,7 +39,8 @@ import javax.validation.constraints.Size;
 @NamedNativeQueries({
     @NamedNativeQuery(name = "AccountEntity.getProfile", query = "SELECT ID,NAME,EMAIL,PHONE,BIRTHDAY,PHOTO,ADDRESS_ID,DESCRIPTION,SCHOOL,ROLE_ID,GENDER,CERTIFICATE,PERSONAL_ID,MAJOR,CREATED,UPDATED,CODE FROM account where CODE=:code")
 })
-public class AccountEntity  implements Serializable {
+public class AccountEntity implements Serializable {
+
     @NotBlank
     @NotNull
     @Size(max = 250)
@@ -105,7 +106,23 @@ public class AccountEntity  implements Serializable {
     @Column(name = "BIRTHDAY")
     @Temporal(TemporalType.DATE)
     private Date birthday;
-    
+
+    public void merge(AccountEntity accountEntity) {
+        this.addressId = accountEntity.getAddressId();
+        this.birthday = accountEntity.getBirthday();
+        this.description = accountEntity.getDescription();
+        this.email = accountEntity.getEmail();
+        this.name = accountEntity.getName();
+        this.phone = accountEntity.getPhone();
+        this.photo = accountEntity.getPhoto();
+        this.certificate = accountEntity.getCertificate();
+        this.school = accountEntity.getSchool();
+        this.major = accountEntity.getMajor();
+        this.gender = accountEntity.getGender();
+        this.personalId = accountEntity.getPersonalId();
+    }
+
+
     public AccountEntity() {
     }
 
@@ -137,21 +154,6 @@ public class AccountEntity  implements Serializable {
         this.birthday = birthday;
     }
     
-    public void merge(AccountEntity accountEntity) {
-        this.addressId = accountEntity.getAddressId();
-        this.birthday = accountEntity.getBirthday();
-        this.description = accountEntity.getDescription();
-        this.email = accountEntity.getEmail();
-        this.name = accountEntity.getName();
-        this.phone = accountEntity.getPhone();
-        this.photo = accountEntity.getPhoto();
-        this.certificate = accountEntity.getCertificate();
-        this.school = accountEntity.getSchool();
-        this.major = accountEntity.getMajor();
-        this.gender = accountEntity.getGender();
-        this.personalId = accountEntity.getPersonalId();
-    }
-
     public String getUsername() {
         return username;
     }

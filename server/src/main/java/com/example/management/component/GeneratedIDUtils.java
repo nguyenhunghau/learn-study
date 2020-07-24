@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author LeDinhTuan
+ * @author Nguyen HUng Hau
  */
 @Component
 public class GeneratedIDUtils {

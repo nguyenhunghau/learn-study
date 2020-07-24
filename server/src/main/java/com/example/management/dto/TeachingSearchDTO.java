@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  *
- * @author Admin
+ * @author Nguyen Hung Hau
  */
 public class TeachingSearchDTO {
     

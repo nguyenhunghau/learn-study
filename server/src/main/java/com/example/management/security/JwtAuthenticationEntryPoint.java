@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {

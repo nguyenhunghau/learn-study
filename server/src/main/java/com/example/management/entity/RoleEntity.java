@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @Entity
 @Table(name = "role")

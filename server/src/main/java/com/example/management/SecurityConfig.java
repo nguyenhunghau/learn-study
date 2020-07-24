@@ -3,7 +3,6 @@ package com.example.management;
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.security.JwtAuthenticationEntryPoint;
 import com.example.management.security.JwtTokenFilter;
-import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,15 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 //</editor-fold>
 
 /**
  *
  * @author Nguyen Hung Hau
- * @email nguyenhunghau@fabercompany.co.jp
  */
 @Configuration
 @EnableWebSecurity
@@ -50,26 +45,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    private static final RequestMatcher SECURITY_EXCLUSION_MATCHER;
-
-    static {
-        String[] urls = new String[]{
-            "/account/login",
-            "/refreshToken",
-            "/health",
-            "/ping"
-        };
-
-        //Build Matcher List
-        LinkedList<RequestMatcher> matcherList = new LinkedList<>();
-        for (String url : urls) {
-            matcherList.add(new AntPathRequestMatcher(url));
-        }
-
-        //Link Matchers in "OR" config.
-        SECURITY_EXCLUSION_MATCHER = new OrRequestMatcher(matcherList);
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -83,7 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        // We don't need CSRF for this example
         httpSecurity.csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().cors().and()
@@ -102,8 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-    
 
     @Override
     public void configure(WebSecurity web) throws Exception {

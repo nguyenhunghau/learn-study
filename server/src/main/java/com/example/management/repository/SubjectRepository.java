@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 /**
  *
- * @author Admin
+ * @author Nguyen Hung Hau
  */
 public interface SubjectRepository extends CrudRepository<SubjectEntity, Integer>{
 

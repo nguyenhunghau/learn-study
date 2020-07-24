@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.management.security;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.constant.MyConstant;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.io.Serializable;
@@ -19,6 +14,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+//</editor-fold>
 
 @Component
 public class JwtTokenUtil implements Serializable {
@@ -29,7 +25,7 @@ public class JwtTokenUtil implements Serializable {
 
 //	@Value("${jwt.secret}")
     private String secret = "secret";
-    
+
     public String getTokenRequest(HttpServletRequest request) {
 //        final String requestTokenHeader = request.getHeader("Authorization");
 //        
@@ -38,19 +34,22 @@ public class JwtTokenUtil implements Serializable {
 //        }
         return getTokenFromCookie(request);
     }
-    
+
     private String getTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        if(cookies == null) {
+        if (cookies == null) {
             return null;
         }
         for (Cookie cookie : cookies) {
-            if (MyConstant.ACCESS_TOKEN.equals(cookie.getName())) {
-                String accessToken = cookie.getValue();
-                if (accessToken == null) return null;
-
-                return accessToken;//SecurityCipher.decrypt(accessToken);
+            if (!MyConstant.ACCESS_TOKEN.equals(cookie.getName())) {
+                continue;
             }
+            String accessToken = cookie.getValue();
+            if (accessToken == null) {
+                return null;
+            }
+
+            return accessToken;//SecurityCipher.decrypt(accessToken);
         }
         return null;
     }

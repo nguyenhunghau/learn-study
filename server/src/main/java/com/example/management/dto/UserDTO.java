@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 public class UserDTO {
     

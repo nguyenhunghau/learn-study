@@ -42,15 +42,8 @@ public class EmailUtils {
    @Value("${send_grid.from_name}")
    private String sendGridFromName;
    
-   private static final Logger logger = LoggerFactory.getLogger(EmailUtils.class);
+   private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtils.class);
    
-   //<editor-fold defaultstate="collapsed" desc="SEND MAIL AFTER FINISH ANALYTIS JOB">
-   public boolean sendMailInfoAnalystJob(String subject, String content, List<String> sendToEmails, List<String> ccEmails, List<String> bccEmails) {
-       Mail mail = buildMailToSend(subject, content, sendToEmails, ccEmails, bccEmails);
-       return send(mail);
-   }
-//</editor-fold>
-
    public void sendMail(String subject, String content, List<String> sendToEmails, List<String> ccEmails, List<String> bccEmails) {
        Mail mail = buildMailToSend(subject, content, sendToEmails, ccEmails, bccEmails);
        send(mail);
@@ -63,7 +56,7 @@ public class EmailUtils {
                 + "Mới bạn nhấn vào link bên dưới để active tài khoản<br>" + link;
         List<String> sendToEmails = new ArrayList<>();
         sendToEmails.add(account.getEmail());
-        Mail mail = buildMailToSend(subject, bodyMail, sendToEmails, new ArrayList<String>(), new ArrayList<String>());
+        Mail mail = buildMailToSend(subject, bodyMail, sendToEmails, new ArrayList<>(), new ArrayList<>());
         return send(mail);
     }
 
@@ -80,7 +73,7 @@ public class EmailUtils {
            System.out.println(response.getStatusCode());
            return true;
        } catch (IOException ex) {
-           logger.error("Error sent mail with subject " + mail.getSubject(), ex);
+           LOGGER.error("Error sent mail with subject " + mail.getSubject(), ex);
            return false;
        }
    }

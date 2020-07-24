@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 
 public interface TeachingRepository extends CrudRepository<TeachingClassEntity, Integer> {
