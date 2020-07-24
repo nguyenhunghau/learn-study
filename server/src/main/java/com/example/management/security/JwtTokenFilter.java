@@ -20,16 +20,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
-//    
-//    private Filter delegate;
-//    private RequestMatcher ignoredRequests;
-//
-//    public JwtTokenFilter(RequestMatcher matcher, Filter delegate)  {
-//        super();
-//        this.delegate = delegate;
-//        this.ignoredRequests = matcher;
-//    }
-//    
     @Autowired
     private CustomUserDetailsService jwtUserDetailsService;
 

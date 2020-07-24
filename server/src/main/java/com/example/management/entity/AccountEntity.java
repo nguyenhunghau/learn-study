@@ -122,7 +122,6 @@ public class AccountEntity implements Serializable {
         this.personalId = accountEntity.getPersonalId();
     }
 
-
     public AccountEntity() {
     }
 
