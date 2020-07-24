@@ -1,5 +1,6 @@
 package com.example.management.controller;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.constant.MyConstant;
 import com.example.management.dto.JwtResponseDTO;
 import com.example.management.dto.UserDTO;
@@ -8,10 +9,10 @@ import com.example.management.entity.AccountEntity;
 import com.example.management.security.CustomUserDetailsService;
 import com.example.management.security.JwtTokenUtil;
 import com.example.management.service.AccountService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,10 +30,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+//</editor-fold>
+
 
 /**
  *
- * @author Admin
+ * @author Nguyen Hung Hau
  */
 @RestController
 @RequestMapping("/account")
@@ -49,6 +52,8 @@ public class AccountController {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountController.class);
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
@@ -62,16 +67,11 @@ public class AccountController {
 
     @RequestMapping(value = "/getAccount", method = RequestMethod.GET)
     public ResponseEntity<?> getAccount(HttpServletRequest request, @RequestParam("code") String accountCode) throws Exception {
-//        if (accountEntity.isPresent()) {
-//            return ResponseEntity.ok(accountEntity.get());
-//        }
         return ResponseEntity.ok(accountService.getProfile(accountCode, jwtTokenUtil.getTokenRequest(request)));
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@Valid @RequestBody UserDTO user, 
-//            @CookieValue(name = "accessToken", required = false) String accessToken, 
-//            @CookieValue(name = "refreshToken", required = false) String refreshToken, 
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body("Username or password empty");
@@ -87,9 +87,10 @@ public class AccountController {
                 .path("/")
                 .build().toString());
             
-            return ResponseEntity.ok().headers(responseHeaders).body(new JwtResponseDTO(token, userLoginDTO.getCode()));
+            return ResponseEntity.ok().headers(responseHeaders)
+                    .body(new JwtResponseDTO(token, userLoginDTO.getCode()));
         } catch (Exception ex) {
-            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Error when authenticate account", ex);
             return ResponseEntity.badRequest().body(ex);
         }
     }
@@ -105,12 +106,13 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, @RequestPart(value = "photo", required = false) MultipartFile photo,
+    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, 
+            @RequestPart(value = "photo", required = false) MultipartFile photo,
             @RequestPart(value = "certificate", required = false) MultipartFile certificate) {
         try {
             return ResponseEntity.ok(accountService.update(account, photo, certificate));
         } catch (Exception ex) {
-            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Error when upload profile", ex);
             return ResponseEntity.badRequest().body(ex);
         }
     }
@@ -121,7 +123,7 @@ public class AccountController {
             String token = jwtTokenUtil.getTokenRequest(request);
             return ResponseEntity.ok(accountService.changePassword(userDTO, token));
         } catch (Exception ex) {
-            Logger.getLogger(AccountController.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("Error when chaging password", ex);
             return ResponseEntity.badRequest().body(ex);
         }
     }

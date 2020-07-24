@@ -1,5 +1,6 @@
 package com.example.management.dto;
 
+import com.example.management.entity.AccountEntity;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,10 @@ public class UserLoginDTO implements UserDetails{
         this.username = username;
         this.code = code;
         this.password = password;
+    }
+    
+    public UserLoginDTO (AccountEntity account) {
+        this(account.getUsername(), account.getCode(), account.getPassword());
     }
 
     @Override

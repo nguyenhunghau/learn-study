@@ -1,6 +1,6 @@
 package com.example.management.service;
 
-import com.example.management.component.EmailUtils;
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.component.GeneratedIDUtils;
 import com.example.management.component.UploadFile;
 import com.example.management.dto.UserDTO;
@@ -16,13 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+//</editor-fold>
 
 /**
  *
- * @author Admin
+ * @author Nguyen Hung Hau
  */
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -32,14 +32,14 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-    
-    private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
-    
+
     @Autowired
     private PasswordEncoder bcryptEncoder;
-    
+
     @Autowired
     private GeneratedIDUtils generatedIDUtils;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
 
     @Override
     public AccountEntity login(String accessToken, String refreshToken) {
@@ -48,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
 //        HttpHeaders responseHeaders = new HttpHeaders();
 //        Token newAccessToken;
 //        Token newRefreshToken;
-        
+
         return accountRepository.findByUsernameAndPass(accessToken, refreshToken);
     }
 
@@ -58,26 +58,27 @@ public class AccountServiceImpl implements AccountService {
     }
 
     public AccountEntity update(AccountEntity accountEntity) {
-        Optional<AccountEntity> existed = accountRepository.findByUsername(accountEntity.getUsername(), true);
-        if (existed.isPresent()) {
-            existed.get().merge(accountEntity);
-            return accountRepository.save(existed.get());
+        Optional<AccountEntity> accountExisted = accountRepository.findByUsername(accountEntity.getUsername(), true);
+        if (!accountExisted.isPresent()) {
+            return null;
         }
-        return null;
+        accountExisted.get().merge(accountEntity);
+        return accountRepository.save(accountExisted.get());
     }
 
     @Override
     public Boolean changePassword(String username, String oldPassword, String newPassord) {
-        Optional<AccountEntity> existed = accountRepository.findByUsername(username, true);
-        if (!existed.isPresent()) {
+        Optional<AccountEntity> accountExisted = accountRepository.findByUsername(username, true);
+        if (!accountExisted.isPresent()) {
             return false;
         }
-        AccountEntity entity = existed.get();
-        if (entity.getPassword().equals(oldPassword)) {
-            entity.setPassword(newPassord);
-            accountRepository.save(entity);
+        AccountEntity entity = accountExisted.get();
+        if (!entity.getPassword().equals(oldPassword)) {
+            return false;
         }
-        return false;
+        entity.setPassword(newPassord);
+        accountRepository.save(entity);
+        return true;
     }
 
     @Override
@@ -89,21 +90,19 @@ public class AccountServiceImpl implements AccountService {
     public AccountEntity getProfile(String code, String token) {
         AccountEntity entity = accountRepository.findByCode(code);
         entity.setPassword(null);
-        if(token == null) {
+        if (token == null) {
             entity.setUsername(null);
             return entity;
         }
         try {
             String username = jwtTokenUtil.getUsernameFromToken(token);
-            if(username.equals(entity.getUsername())) {
+            if (username.equals(entity.getUsername())) {
                 return entity;
             }
         } catch (IllegalArgumentException e) {
-            logger.error("Error update Account " + code, e);
-            System.out.println("Unable to get JWT Token");
+            LOGGER.error("Unable to get JWT Token with accountCode " + code, e);
         } catch (ExpiredJwtException e) {
-            logger.error("Error update Account " + code, e);
-            System.out.println("JWT Token has expired");
+            LOGGER.error("JWT Token has expired " + code, e);
         }
         entity.setUsername(null);
         return entity;
@@ -122,23 +121,22 @@ public class AccountServiceImpl implements AccountService {
                 accountEntity.setCertificate(accountEntity.getCode() + "/certificate/" + certificate.getOriginalFilename());
             }
         } catch (IOException | IllegalStateException ex) {
-            logger.error("Error update Account " + accountEntity.getCode(), ex);
+            LOGGER.error("Error update Account " + accountEntity.getCode(), ex);
         }
         return update(accountEntity);
     }
 
     @Override
     public boolean changePassword(UserDTO userDTO, String token) {
-         String username = jwtTokenUtil.getUsernameFromToken(token);
-         System.out.println(username + "\n" + bcryptEncoder.encode(userDTO.getPassword()));
-         AccountEntity account = accountRepository.findByUsername(username, true).get();
-         if(account != null && bcryptEncoder.matches(userDTO.getPassword(), account.getPassword())) {
-             account.setPassword(bcryptEncoder.encode(userDTO.getPasswordConfirm()));
-             account.setUpdated(new Date());
-             accountRepository.save(account);
-             return true;
-         }
-         return false;
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        AccountEntity account = accountRepository.findByUsername(username, true).get();
+        if (account != null && bcryptEncoder.matches(userDTO.getPassword(), account.getPassword())) {
+            account.setPassword(bcryptEncoder.encode(userDTO.getPasswordConfirm()));
+            account.setUpdated(new Date());
+            accountRepository.save(account);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -147,7 +145,7 @@ public class AccountServiceImpl implements AccountService {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.MINUTE, -15);
-        if(account.getCreated().compareTo(cal.getTime()) < 0) {
+        if (account.getCreated().compareTo(cal.getTime()) < 0) {
             return false;
         }
         String newCode = generatedIDUtils.gemeratedID();

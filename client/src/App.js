@@ -14,32 +14,48 @@ import { Profile } from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import ReactNotifications from 'react-notifications-component';
 import { CookiesProvider } from 'react-cookie';
+import { createStore } from 'redux';
+import Counter from './pages/redux/index';
+import { Provider } from 'react-redux';
+import RootReducer from './redux/reducer/root-reducer';
+
+
+
+
+const store = createStore(RootReducer);
+// store.dispatch({ type: "INCREMENT" });
+// store.dispatch({ type: "INCREMENT" });
+// store.dispatch({ type: "DECREMENT" });
+// store.dispatch({ type: "RESET" });
 
 class App extends React.Component {
 
   render() {
 
     return (
-      <CookiesProvider>
-      <div className="App">
-        {/* <ErrorBoundary> */}
-          <ReactNotifications />
-          <Router>
-            <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/validation" component={Validation} />
-              <Route exact path="/table" component={Table} />
-              <Route exact path="/teaching" component={TeachingClass} />
-              <Route exact path="/teaching-register" component={RegisterTeaching} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/change-password" component={ChangePassword} />
-              <Route exact path="/register" component={Register} />
-              <Route exact path="/profile" component={Profile} />
-              <Route exact path="/profile/:code" component={Profile} />
-            </Switch>
-          </Router>
-      </div>
+      <Provider store={store}>
+        <CookiesProvider>
+          <div className="App">
+            {/* <ErrorBoundary> */}
+            <ReactNotifications />
+            <Router>
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/validation" component={Validation} />
+                <Route exact path="/table" component={Table} />
+                <Route exact path="/teaching" component={TeachingClass} />
+                <Route exact path="/teaching-register" component={RegisterTeaching} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/change-password" component={ChangePassword} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/profile" component={Profile} />
+                <Route exact path="/profile/:code" component={Profile} />
+                <Route exact path="/redux" component={Counter} />
+              </Switch>
+            </Router>
+          </div>
         </CookiesProvider>
+      </Provider>
     );
   }
 }

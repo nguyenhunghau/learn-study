@@ -44,7 +44,7 @@ class ChangePassword extends React.Component {
             if(data) {
                 Notification.show({
                     title: 'Thông báo',
-                    type: 'danger',
+                    type: 'success',
                     message: 'Đổi mật khẩu thành công'
                 })
             }

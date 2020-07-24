@@ -1,10 +1,12 @@
 package com.example.management.security;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.component.EmailUtils;
 import com.example.management.component.GeneratedIDUtils;
 import com.example.management.dto.UserDTO;
 import com.example.management.dto.UserLoginDTO;
 import com.example.management.entity.AccountEntity;
+import com.example.management.exception.EmailException;
 import com.example.management.repository.AccountRepository;
 import com.google.gson.JsonObject;
 import java.util.Date;
@@ -15,10 +17,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+//</editor-fold>
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @Component
 public class CustomUserDetailsService implements UserDetailsService {
@@ -37,15 +40,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserLoginDTO loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AccountEntity> entity = this.accountRepository.findByUsername(username, true);
-        if (!entity.isPresent()) {
+        Optional<AccountEntity> optional = this.accountRepository.findByUsername(username, true);
+        if (!optional.isPresent()) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-        return new UserLoginDTO(entity.get().getUsername(), entity.get().getCode(), entity.get().getPassword());
+        AccountEntity account = optional.get();
+        return new UserLoginDTO(account);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public JsonObject save(UserDTO user) throws Exception {
+    @Transactional(rollbackFor = EmailException.class)
+    public JsonObject save(UserDTO user) throws EmailException {
         JsonObject result = new JsonObject();
         JsonObject message = new JsonObject();
         if(!user.getPassword().equals(user.getPasswordConfirm())) {
@@ -76,6 +80,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             result.addProperty("success", "success");
             return result;
         }
-        throw new Exception("Error when send mail confirm email");
+        throw new EmailException("Error when send mail confirm email");
     }
 }

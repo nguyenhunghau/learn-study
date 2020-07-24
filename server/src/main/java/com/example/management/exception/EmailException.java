@@ -4,9 +4,9 @@ package com.example.management.exception;
  *
  * @author Nguyen Hung Hau
  */
-public class NotFoundException extends NullPointerException{
+public class EmailException extends Exception{
     
-    public NotFoundException(String message) {
+    public EmailException(String message) {
         super(message);
     }
 }

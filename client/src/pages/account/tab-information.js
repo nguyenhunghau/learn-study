@@ -2,11 +2,28 @@ import React, { useState, useEffect, useRef } from "react";
 import { URL_DOWNLOAD, UPDATE_ACCOUNT } from '../../constants/path'
 import Address from '../../components/address'
 import API from '../../components/api'
-import { getCode } from '../../components/component-function'
+import { getCode } from '../../components/component-function';
+import { connect } from 'react-redux';
 
-export default function TabInformation(prop) {
+function mapStateToProps(state) {
+    return {
+        account: state.account.account
+    };
+}
 
-    const [account, setAccount] = useState(prop.account);
+const mapDispatchToProps = dispatch => {
+    return {
+        handleChangeRadio: (targetValue) => {
+            return {
+                type: "CHANGE_RADIO", value: { 'gender': targetValue }
+            }
+        }
+    }
+};
+
+function TabInformation(prop) {
+    console.log(prop);
+    const [account, setAccount] = useState({addressId: 1}); //useState(prop.account);
     const [certificate, setCertificate] = useState();
     const [gender, setGender] = useState();
     const [photo, setPhoto] = useState();
@@ -35,7 +52,8 @@ export default function TabInformation(prop) {
     }
 
     const handleChangeRadio = (event) => {
-        setAccount({ ...account, 'gender': event.target.value })
+        prop.handleChangeRadio(event.target.value);
+        // setAccount({ ...account, 'gender': event.target.value })
     }
 
     const changeAddess = (addressId) => {
@@ -147,3 +165,5 @@ export default function TabInformation(prop) {
         </div>
     )
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabInformation);

@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author Admin
+ * @author Nguyen Hung Hau
  */
 public interface SubjectService {
     

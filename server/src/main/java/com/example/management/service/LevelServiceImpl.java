@@ -1,19 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.management.service;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.entity.LevelEntity;
 import com.example.management.repository.LevelRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+//</editor-fold>
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @Service
 public class LevelServiceImpl implements LevelService{

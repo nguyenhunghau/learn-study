@@ -1,5 +1,6 @@
 package com.example.management.controller;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.dto.TeachingSearchDTO;
 import com.example.management.entity.TeachingClassEntity;
 import com.example.management.exception.NotFoundException;
@@ -9,8 +10,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+//</editor-fold>
 
 /**
  *
- * @author USER
+ * @author Nguyen Hung Hau
  */
 @RestController
 @RequestMapping("/teaching")
