@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import {increment, decrement} from '../../redux/action/action-counter';
 
 // Add this function:
@@ -17,11 +17,13 @@ const mapDispatchToProps = dispatch => {
 };
 
 function Counter(props) {
+    const dispatch = useDispatch();
+    const count = useSelector(state =>  state.counter.count);
     // const [count, setCount] = useState(0);
 
     const increment = () => {
-        props.increment();
-        // props.dispatch({ type: "INCREMENT" });
+        // props.increment();
+        dispatch({ type: "INCREMENT" });
         // console.log(props);
         // setCount(props.count);
         // setCount(count + 1);
@@ -38,11 +40,12 @@ function Counter(props) {
             <h2>Counter</h2>
             <div>
                 <button onClick={decrement}>-</button>
-                <span>{props.count || 0}</span>
+                <span>{count || 0}</span>
                 <button onClick={increment}>+</button>
             </div>
         </div>
     );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+// export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+export default Counter;

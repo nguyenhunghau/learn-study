@@ -3,27 +3,39 @@ import { URL_DOWNLOAD, UPDATE_ACCOUNT } from '../../constants/path'
 import Address from '../../components/address'
 import API from '../../components/api'
 import { getCode } from '../../components/component-function';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 
 function mapStateToProps(state) {
     return {
-        account: state.account.account
+        account: state.account
     };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
+        // handleChangeRadio: dispatch({value: "newvalue", type: 'CHANGE_RADIO'});
         handleChangeRadio: (targetValue) => {
-            return {
+            return dispatch({
                 type: "CHANGE_RADIO", value: { 'gender': targetValue }
-            }
+            })
+        },
+        changeInput:  (targetValue, typeData) => {
+            return dispatch({
+                type: 'HANDLE_INPUT', value: { typeData: targetValue }
+            })
         }
     }
 };
 
 function TabInformation(prop) {
-    console.log(prop);
-    const [account, setAccount] = useState({addressId: 1}); //useState(prop.account);
+    // console.log(prop);
+    // const [account, setAccount] = useState(prop.account || { addressId: '35'});
+    const account = useSelector(state => state.account);
+    const dispatch = useDispatch();
+    const setAccount = () => {
+
+    }
+    // const {account} = prop;
     const [certificate, setCertificate] = useState();
     const [gender, setGender] = useState();
     const [photo, setPhoto] = useState();
@@ -53,12 +65,26 @@ function TabInformation(prop) {
 
     const handleChangeRadio = (event) => {
         prop.handleChangeRadio(event.target.value);
+        // setAccount(prop.account);
         // setAccount({ ...account, 'gender': event.target.value })
     }
 
-    const changeAddess = (addressId) => {
-        setAccount({ ...account, "addressId": addressId });
+    const changeInput = (targetValue, typeData) => {
+        // prop.changeInput(value, type);
+        const newData = {};
+        newData[typeData] = targetValue;
+        dispatch({
+            type: 'HANDLE_INPUT', value: newData
+        });
     }
+
+    const changeAddess = (addressId) => {
+        // setAccount({ ...account, "addressId": addressId });
+    }
+
+    useEffect(() => {
+        setAccount(prop.account);
+    }, prop.account);
 
     return (
         <div class="card-body">
@@ -84,7 +110,7 @@ function TabInformation(prop) {
                     <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Email <span style={{ 'color': 'red' }}>*</span></label>
                         <div class="col-sm-10">
-                            <input type="email" className={classTextbox} id="inputEmail" placeholder="Email" value={account.email} onChange={(e) => setAccount({ ...account, "email": e.target.value })} data="abc" />
+                            <input type="email" className={classTextbox} id="inputEmail" placeholder="Email" value={account.email} onChange={(e) => changeInput(e.target.value, 'email')} onChanges={(e) => setAccount({ ...account, "email": e.target.value })} data="abc" />
                         </div>
                     </div>
                     <div class="form-group row">
@@ -166,4 +192,5 @@ function TabInformation(prop) {
     )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabInformation);
+// export default connect(mapStateToProps, mapDispatchToProps)(TabInformation);
+export default TabInformation;

@@ -10,7 +10,7 @@ import { RegisterTeaching } from './pages/teaching/register';
 import Login from './pages/login/index';
 import Register from './pages/register/index'
 import ChangePassword from './pages/account/change-pass'
-import { Profile } from './pages/account/profile'
+import Profile from './pages/account/profile'
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import ReactNotifications from 'react-notifications-component';
 import { CookiesProvider } from 'react-cookie';
@@ -20,11 +20,9 @@ import { Provider } from 'react-redux';
 import RootReducer from './redux/reducer/root-reducer';
 
 
-
-
 const store = createStore(RootReducer);
 // store.dispatch({ type: "INCREMENT" });
-// store.dispatch({ type: "INCREMENT" });
+store.dispatch({ type: "CHANGE_RADIO" });
 // store.dispatch({ type: "DECREMENT" });
 // store.dispatch({ type: "RESET" });
 

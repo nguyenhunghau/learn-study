@@ -13,10 +13,19 @@ import { URL_GET_ACCOUNT, UPDATE_ACCOUNT } from '../../constants/path'
 import API from '../../components/api'
 import { getCode } from '../../components/component-function'
 import Notification from '../../components/notifycation';
+import { useSelector, useDispatch } from 'react-redux';
 
-export const Profile = (props) => {
-    const [account, setAccount] = useState({ addressId: '35' });
+function mapStateToProps(state) {
+    return {
+        account: state.account
+    };
+}
+
+const Profile = (props) => {
+    // const [account, setAccount] = useState({ addressId: '35' });
     const history = useHistory();
+    const account = useSelector(state => state.account);
+    const dispatch = useDispatch();
 
     // const changeImage = (newLogo) => {
     //     setLogo(`${URL_IMAGE}${newLogo}`);
@@ -37,7 +46,8 @@ export const Profile = (props) => {
             if(!data.addressId) {
                 data.addressId = -1;
             }
-            setAccount(data);
+            // setAccount(data);
+            dispatch({type: 'FETCH_ACCOUNT', value: data});
             console.log('Finish get data');
         } catch (error) {
             Notification.show({
@@ -140,7 +150,7 @@ export const Profile = (props) => {
                                 <div class="card" id="tab_profile">
                                     <Tabs defaultActiveKey="Profile" id="uncontrolled-tab-example">
                                         <Tab eventKey="Profile" title="Thông tin cá nhân">
-                                            {account.name ? <TabInformation changeAccount={setAccount} account={account} profile={true}/> : ''}
+                                            {true ? <TabInformation profile={true}/> : ''}
                                         </Tab>
                                         <Tab eventKey="Timeline" title="Đổi mật khẩu">
                                             <ChangePassword />
@@ -161,3 +171,4 @@ export const Profile = (props) => {
         </div>
     )
 }
+export default Profile;
