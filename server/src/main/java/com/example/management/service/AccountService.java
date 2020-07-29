@@ -3,6 +3,7 @@ package com.example.management.service;
 import com.example.management.dto.AccountDTO;
 import com.example.management.dto.UserDTO;
 import com.example.management.entity.AccountEntity;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,4 +30,10 @@ public interface AccountService {
     public AccountDTO getProfile(String code, String token);
     
     public boolean changePassword(UserDTO userDTO, String token);
+
+    public List<AccountDTO> findAllAccount();
+
+    public AccountDTO findById(int id);
+
+    public void update(AccountDTO accountDTO);
 }

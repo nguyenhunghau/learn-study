@@ -8,16 +8,15 @@ import com.example.management.dto.UserDTO;
 import com.example.management.entity.AccountEntity;
 import com.example.management.repository.AccountRepository;
 import com.example.management.security.JwtTokenUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -160,5 +159,24 @@ public class AccountServiceImpl implements AccountService {
         account.setUpdated(new Date());
         accountRepository.save(account);
         return true;
+    }
+
+    @Override
+    public List<AccountDTO> findAllAccount() {
+         ModelMapper modelMapper = new ModelMapper();
+         List<AccountEntity> accountList = accountRepository.findAll();
+         return modelMapper.map(accountList, new TypeToken<List<AccountDTO>>(){}.getType());
+    }
+
+    @Override
+    public AccountDTO findById(int id) {
+         ModelMapper modelMapper = new ModelMapper();
+         return modelMapper.map(accountRepository.findById(id).get(), AccountDTO.class);
+    }
+
+    @Override
+    public void update(AccountDTO accountDTO) {
+         ModelMapper modelMapper = new ModelMapper();
+        accountRepository.save(modelMapper.map(accountDTO, AccountEntity.class));
     }
 }

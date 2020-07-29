@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>List Account</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    </head>
+    <body>
+        <h1>Account List</h1>
+        <a href="addPerson">Add Account</a>
+        <br/><br/>
+        <div>
+            <table border="1">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Birthday</th>
+                    <th>Action</th>
+                </tr>
+                <tr th:each="account: ${accountList}">
+                    <td th:utext="${account.name}">...</td>
+                    <td th:utext="${account.email}">...</td>
+                    <td th:utext="${account.phone}">...</td>
+                    <td th:utext="${account.birthday}">...</td>
+                    <td>
+                        <a th:attr="href=|getAccount/${account.id}|">Edit</a>
+                        <button th:attr="onclick=|getAccount/(${account.id})|">Delete</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

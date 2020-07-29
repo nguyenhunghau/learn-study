@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter @Setter
 public class AccountDTO {
-    
+    private int id;
     private String username;
     private String name;
     private Date birthday;
