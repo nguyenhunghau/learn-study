@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.ServletContext;
+import lombok.Cleanup;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +37,7 @@ public class ImageService {
     public byte[] getImage(String link) throws UnsupportedEncodingException, IOException {
         link = URLDecoder.decode(link, "UTF-8");
         try {
-            final InputStream in = new FileInputStream(new File(MyConstant.IMAGE_FOLDER + link));
+            @Cleanup final InputStream in = new FileInputStream(new File(MyConstant.IMAGE_FOLDER + link));
             return IOUtils.toByteArray(in);
         } catch (IOException ex) {
             LOGGER.error("Not found link " + link, ex);

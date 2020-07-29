@@ -20,6 +20,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.Setter;
 //</editor-fold>
 
 /**
@@ -37,6 +39,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "TeachingClassEntity.findByUnitId", query = "SELECT t FROM TeachingClassEntity t WHERE t.unitEntity.id = :unitId")
     , @NamedQuery(name = "TeachingClassEntity.findByTypeTeaching", query = "SELECT t FROM TeachingClassEntity t WHERE t.typeTeaching.id = :typeTeaching")
     , @NamedQuery(name = "TeachingClassEntity.findByAccountId", query = "SELECT t FROM TeachingClassEntity t WHERE t.accountEntity.id = :accountId")})
+@Getter @Setter
 public class TeachingClassEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -92,125 +95,6 @@ public class TeachingClassEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ACCOUNT_ID")
     private AccountEntity accountEntity;
-
-    public TeachingClassEntity() {
-    }
-
-    public TeachingClassEntity(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getLevelIds() {
-        return levelIds;
-    }
-
-    public void setLevelIds(String level) {
-        this.levelIds = level;
-    }
-
-    public String getTimetable() {
-        return timetable;
-    }
-
-    public void setTimetable(String timetable) {
-        this.timetable = timetable;
-    }
-
-    public Integer getCost() {
-        return cost;
-    }
-
-    public void setCost(Integer cost) {
-        this.cost = cost;
-    }
-
-    public String getTypeTeaching() {
-        return typeTeaching;
-    }
-
-    public void setTypeTeaching(String typeTeaching) {
-        this.typeTeaching = typeTeaching;
-    }
-
-    public Integer getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(Integer addressId) {
-        this.addressId = addressId;
-    }
-
-    public UnitEntity getUnitEntity() {
-        return unitEntity;
-    }
-
-    public void setUnitEntity(UnitEntity unitEntity) {
-        this.unitEntity = unitEntity;
-    }
-
-    public AccountEntity getAccountEntity() {
-        return accountEntity;
-    }
-
-    public void setAccountEntity(AccountEntity accountEntity) {
-        this.accountEntity = accountEntity;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Date getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Integer getNumPeriod() {
-        return numPeriod;
-    }
-
-    public void setNumPeriod(Integer numPeriod) {
-        this.numPeriod = numPeriod;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public SubjectEntity getSubjectEntity() {
-        return subjectEntity;
-    }
-
-    public void setSubjectEntity(SubjectEntity subjectEntity) {
-        this.subjectEntity = subjectEntity;
-    }
 
     public void merge(TeachingClassEntity entity) {
         this.addressId = entity.getAddressId();

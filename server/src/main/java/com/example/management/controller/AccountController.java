@@ -2,6 +2,7 @@ package com.example.management.controller;
 
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
 import com.example.management.constant.MyConstant;
+import com.example.management.dto.AccountDTO;
 import com.example.management.dto.JwtResponseDTO;
 import com.example.management.dto.UserDTO;
 import com.example.management.dto.UserLoginDTO;
@@ -106,7 +107,7 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountEntity account, 
+    public ResponseEntity<?> updateProfile(@RequestPart("account") AccountDTO account, 
             @RequestPart(value = "photo", required = false) MultipartFile photo,
             @RequestPart(value = "certificate", required = false) MultipartFile certificate) {
         try {

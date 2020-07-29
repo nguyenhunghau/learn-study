@@ -12,6 +12,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  *
@@ -25,6 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "LevelEntity.findById", query = "SELECT l FROM LevelEntity l WHERE l.id = :id")
     , @NamedQuery(name = "LevelEntity.findByName", query = "SELECT l FROM LevelEntity l WHERE l.name = :name")
     , @NamedQuery(name = "LevelEntity.findAllActive", query = "SELECT l FROM LevelEntity l WHERE l.isActive = :isActive")})
+@NoArgsConstructor
+@Getter @Setter
 public class LevelEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,35 +44,7 @@ public class LevelEntity implements Serializable {
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
 
-    public LevelEntity() {
-    }
-
     public LevelEntity(Integer id) {
         this.id = id;
     }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-    
 }

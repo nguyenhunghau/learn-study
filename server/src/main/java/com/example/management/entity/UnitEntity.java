@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.management.entity;
 
+//<editor-fold defaultstate="collapsed" desc="IMPORT">
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,6 +13,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import lombok.Getter;
+import lombok.Setter;
+//</editor-fold>
 
 /**
  *
@@ -30,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "UnitEntity.findById", query = "SELECT u FROM UnitEntity u WHERE u.id = :id")
     , @NamedQuery(name = "UnitEntity.findByName", query = "SELECT u FROM UnitEntity u WHERE u.name = :name")
     , @NamedQuery(name = "UnitEntity.findAllActive", query = "SELECT u FROM UnitEntity u")})
+@Getter @Setter
 public class UnitEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,35 +43,4 @@ public class UnitEntity implements Serializable {
     private String name;
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
-
-    public UnitEntity() {
-    }
-
-    public UnitEntity(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
 }

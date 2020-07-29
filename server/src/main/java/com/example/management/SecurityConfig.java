@@ -1,6 +1,7 @@
 package com.example.management;
 
 //<editor-fold defaultstate="collapsed" desc="IMPORT">
+import com.example.management.constant.MyConstant;
 import com.example.management.security.JwtAuthenticationEntryPoint;
 import com.example.management.security.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and().cors().and()
+                .logout().logoutUrl("/account/logout").invalidateHttpSession(true).deleteCookies(MyConstant.ACCESS_TOKEN).and()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/account/login", "/account/register", 
                         "/image/data", "/teaching/getAll", "/teaching/**",  "/subject/**", 
