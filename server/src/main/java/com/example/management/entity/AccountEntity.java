@@ -45,8 +45,8 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class AccountEntity implements Serializable {
 
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     @Size(max = 250)
     @Column(name = "USERNAME")
     private String username;
@@ -58,6 +58,7 @@ public class AccountEntity implements Serializable {
     private String password;
     @Size(max = 250)
     @Column(name = "NAME")
+    @NotBlank
     private String name;
     @Email
     @Size(max = 250)

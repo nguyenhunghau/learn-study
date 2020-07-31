@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      data-layout-decorate="~{layout}">
+    <head>
+        <title>List Account</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <h1>Account List</h1>
+            <a href="addPerson">Add Account</a>
+            <br/><br/>
+            <div>
+                <table border="1">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Birthday</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr th:each="account: ${accountList}">
+                        <td th:utext="${account.name}">...</td>
+                        <td th:utext="${account.email}">...</td>
+                        <td th:utext="${account.phone}">...</td>
+                        <td th:utext="${account.birthday}">...</td>
+                        <td>
+                            <a th:attr="href=|getAccount/${account.id}|">Edit</a>
+                            <a th:attr="href=|deleteAccount/${account.id}|">Delete</a>
+                            <button th:attr="onclick=|deleteAccount(${account.id})|">Delete</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

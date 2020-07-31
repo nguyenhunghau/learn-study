@@ -177,6 +177,13 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void update(AccountDTO accountDTO) {
          ModelMapper modelMapper = new ModelMapper();
-        accountRepository.save(modelMapper.map(accountDTO, AccountEntity.class));
+         AccountEntity accountEntity = accountRepository.findById(accountDTO.getId()).get();
+         accountEntity.merge(modelMapper.map(accountDTO, AccountEntity.class));
+        accountRepository.save(accountEntity);
+    }
+
+    @Override
+    public void delete(int accountId) {
+        accountRepository.deleteById(accountId);
     }
 }

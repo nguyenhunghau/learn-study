@@ -36,4 +36,6 @@ public interface AccountService {
     public AccountDTO findById(int id);
 
     public void update(AccountDTO accountDTO);
+
+    public void delete(int accountId);
 }
